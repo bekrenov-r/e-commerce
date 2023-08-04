@@ -1,0 +1,11 @@
+{
+  "size": "M",
+  "color": "RED",
+  "weightKg": 0.5,
+  "imgUrl": "https://example.com/image1.jpg",
+  "itemCode": "ABC123",
+  "barCode": "1234567890",
+  "quantity": 10,
+  "restockQuantity": 5,
+  "reorderQuantity": 2
+}

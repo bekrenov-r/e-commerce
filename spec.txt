@@ -1,0 +1,135 @@
+DATABASES:
+items_data:
+    item(
+        name text,
+        description text,
+        price numeric,
+        discount numeric,
+        category text,
+        subcategory text,
+        gender text,
+        collection text,
+        brand text,
+        material text,
+        season text,
+        rating smallint,
+        id text
+    );
+    item_details(
+        item_id text,
+        created_at timestamp,
+        updated_at timestamp,
+        creating_employee_id text,
+        updating_employee_id text
+    );
+    unique_item(
+        item_id text,
+        size text,
+        color text,
+        weight_kg numeric,
+        img_url text,
+        item_code text,
+        bar_code text,
+        quantity int,
+        restock_quantity int,
+        reorder_quantity int,
+        id text
+    );
+    review(customer_id text, item_id text, rating smallint, content text, created_at timestamp, updated_at timestamp)
+    item_update(timestamp, employee_id, item_id, updated_data, id) ?
+
+users_data:
+    users and authorities for security
+    customer(first_name text, last_name text, email text, phone_number_prefix text, phone_number text, is_registered boolean, created_at timestamp, id text)
+    wish_list(customer_id text, item_id text);
+    cart(customer_id text, item_id text, quantity int);
+
+    Authorities:
+        CUSTOMER - create orders, watch products
+        EMPLOYEE - create/update/delete items
+        ADMIN - manage employees
+
+orders_data:
+    order(customer_id text, number text, status text, items_price numeric, items_price_after_discount numeric, delivery_price numeric, tax numeric, total_price numeric, id text)
+    order_details(order_id text, delivery_id text, receipt_url text, created_at timestamp, last_updated_at timestamp, returning_deadline date)
+    delivery(method text, order_id text, customer_id text, company text, address_id text, is_paid boolean, shipment_date date, delivery_date date, status text, number text, id text)
+    address(country text, country_code text, city text, street text, building_number text, flat_number text, postal_code text)
+    order_item(order_id text, item_id text, quantity int, price numeric, price_after_discount numeric)
+
+    order_table is related to delivery table by delivery_id column
+    order_details table is related to order table by column order_id, which is also primary key
+    delivery table is related to order table by order_id column
+    address table is related to delivery table by address_id method
+    order_item table is related to order table by order_id column
+
+    OrderStatus: PENDING, AWAITING_SHIPMENT, SHIPPED, DELIVERED, CANCELLED, RETURNED;
+    DeliveryMethod: POST_OFFICE(oddzial pocztowy), COURIER(kurier), RECEIVE_IN_STORE(odbior w sklepie), PARCEL_LOCKER(paczkomat)
+    DeliveryStatus: PENDING, PROCESSING, SHIPPED, DELIVERED
+
+REQ {
+    id is string token
+    summary page contains info: price for items, price for items after discount, shipping price, total price, total price after discount
+    generate pdf receipt for each order
+    send emails to customer with info about status of order
+    floating sort by popularity(first x most popular items are marked as popular)
+    consider different types of sizes (eg s/m/l for shirts, but 30-45 for boots)
+}
+
+
+ENDPOINTS:
+    items:
+
+    GET
+        /api/v1/items/{id}
+            response(for single item): {
+                name,
+                description,
+                price,
+                discount,
+                priceAfterDiscount,
+                all sizes,
+                all available sizes,
+                all colors,
+                all available colors,
+                all photos,
+                description,
+                code,
+                reviews (first page),
+                similar items,
+                is On Wish List,
+                is available,
+                is new,
+                is popular,
+                brand,
+                rating,
+                reviewsCount
+            }
+        /api/v1/items/{gender}/{category}
+        /api/v1/items/{gender}/{category}/{subcategory}
+        /api/v1/items/{age-group}/{gender}/{category}
+        /api/v1/items/{age-group}/{gender}/{category}/{subcategory}
+        /api/v1/items/{season}
+        /api/v1/items/{collection}
+        /api/v1/items/with-discount (sorted by discount asc)
+        /api/v1/items/new (sorted by newity)
+            response(for list of items){
+                quantity found, (in header)
+                [
+                    id,
+                    name,
+                    price,
+                    is on wish list,
+                    photos,
+                    brand,
+                    rating,
+                    all colors,
+                    discount,
+                    is new,
+                    is popular
+                ]
+            }
+            params(optional): sort, price range (divided by .), sizes, colors, brands, season, materials, rating
+
+    reviews:
+        GET /api/v1/reviews
+            params: itemId, page, sort
