@@ -46,38 +46,38 @@ public class ItemFilteringProcessor {
 
             if(priceRange != null){
                 DoubleRange parsedRange = StringParser.parseDoubleRange(priceRange);
-                items = itemFilters.filterByPriceRange(parsedRange);
+                itemFilters.byPriceRange(parsedRange);
             }
 
             if(sizes != null){
                 List<String> sizesList = StringParser.parseDelimitedList(sizes, "\\.");
-                items = itemFilters.filterBySizes(sizesList);
+                itemFilters.bySizes(sizesList);
             }
 
             if(colors != null){
                 List<ColorEnum> colorsList = StringParser.parseColors(colors);
-                items = itemFilters.filterByColors(colorsList);
+                itemFilters.byColors(colorsList);
             }
 
             if(brands != null){
                 List<String> brandsList = StringParser.parseDelimitedList(brands, "\\.");
-                items = itemFilters.filterByBrands(brandsList);
+                itemFilters.byBrands(brandsList);
             }
 
             if(season != null){
-                items = itemFilters.filterBySeason(season);
+                itemFilters.bySeason(season);
             }
 
             if(materials != null){
                 List<Material> materialList = StringParser.parseMaterials(materials);
-                items = itemFilters.filterByMaterials(materialList);
+                itemFilters.byMaterials(materialList);
             }
 
             if(rating != null){
-                items = itemFilters.filterByRating(rating);
+                itemFilters.byRating(rating);
             }
 
-            return items;
+            return itemFilters.filter();
         }
     }
 }
