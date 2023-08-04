@@ -42,6 +42,7 @@ public class ItemService {
     public List<ItemResponse> getAllItemsByGenderAndCategoryWithFilters(
             Gender gender, Long categoryId, String sort, String priceRange, String sizes, String colors, String brands, Season season, String materials, Double rating
     ) {
+//        System.out.println(gender + " " + categoryId + " " + priceRange + " " + sizes + " " + brands + " " + season + " " + materials + " " + rating);
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new EntityNotFoundException("No category found for id: " + categoryId));
 

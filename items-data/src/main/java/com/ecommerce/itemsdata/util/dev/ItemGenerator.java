@@ -78,8 +78,6 @@ public class ItemGenerator {
     );
     private final List<String> brands = Arrays.asList("Louis Vuitton", "Gucci", "Balenciaga", "Dior Homme", "Prada", "Salvatore Ferragamo", "Chanel", "Armani", "Yves Saint Laurent", "Burberry", "Hermès", "Adidas", "Lululemon", "Zara", "UNIQLO", "H&M", "Cartier", "Tiffany & Co.", "Moncler", "Rolex", "Patek Philippe");
     private final List<Material> materials = Arrays.stream(Material.values()).toList();
-    private final SizeRepository sizeRepository;
-    private final ColorRepository colorRepository;
 
     public Item generate(){
         Random rand = new Random();

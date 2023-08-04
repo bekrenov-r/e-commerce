@@ -40,9 +40,8 @@ public class ItemFilteringProcessor {
                 String materials,
                 Double rating
         ){
-            if(items == null){
-                throw new NullPointerException("Can't filter null list of items");
-            }
+            if(items == null) throw new NullPointerException("Can't filter null list of items");
+
 
             if(priceRange != null){
                 DoubleRange parsedRange = StringParser.parseDoubleRange(priceRange);

@@ -1,6 +1,7 @@
 package com.ecommerce.itemsdata.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,6 +14,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class UniqueItem {
 
     @Id
@@ -22,8 +24,8 @@ public class UniqueItem {
     @Column(name = "size")
     private String size;
 
-    @Column(name = "color")
-    private String color;
+    @Column(name = "color_id")
+    private String colorId;
 
     @Column(name = "weight_kg")
     private BigDecimal weightKg;
@@ -50,15 +52,4 @@ public class UniqueItem {
     @JoinColumn(name = "item_id")
     private Item item;
 
-    public UniqueItem(String size, String color, BigDecimal weightKg, String imgUrl, String itemCode, String barCode, Integer quantity, Integer restockQuantity, Integer reorderQuantity) {
-        this.size = size;
-        this.color = color;
-        this.weightKg = weightKg;
-        this.imgUrl = imgUrl;
-        this.itemCode = itemCode;
-        this.barCode = barCode;
-        this.quantity = quantity;
-        this.restockQuantity = restockQuantity;
-        this.reorderQuantity = reorderQuantity;
-    }
 }

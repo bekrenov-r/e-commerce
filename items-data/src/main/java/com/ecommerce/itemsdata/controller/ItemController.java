@@ -17,10 +17,16 @@ public class ItemController {
 
     private final ItemService itemService;
 
-    @GetMapping("/{id}")
+    /*@GetMapping("/{id}")
     public ResponseEntity<ItemDetailedResponse> getItemById(@PathVariable Long id){
         // todo: to be implemented
         return null;
+    }*/
+
+    // temp
+    @GetMapping("/{id}")
+    public ResponseEntity<Item> getItemById(@PathVariable Long id){
+        return ResponseEntity.ok(itemService.getItemById(id));
     }
 
     @GetMapping("/gender/{gender}/category/{categoryId}")
@@ -29,9 +35,9 @@ public class ItemController {
             @PathVariable("categoryId") Long categoryId,
             @RequestParam(name = "sort", required = false) String sort,
             @RequestParam(name = "priceRange", required = false) String priceRange,
-            @RequestParam(name = "size", required = false) String sizes,
-            @RequestParam(name = "color", required = false) String colors,
-            @RequestParam(name = "brand", required = false) String brands,
+            @RequestParam(name = "sizes", required = false) String sizes,
+            @RequestParam(name = "colors", required = false) String colors,
+            @RequestParam(name = "brands", required = false) String brands,
             @RequestParam(name = "season", required = false) Season season,
             @RequestParam(name = "materials", required = false) String materials,
             @RequestParam(name = "minRating", required = false) Double rating
