@@ -80,14 +80,14 @@ create table image (
 );
 
 CREATE TABLE item_details (
-  item_id int primary key,
+  item_id int,
   orders_count_total bigint,
   orders_count_last_month int,
   quantity int,
   created_at timestamp,
   updated_at timestamp,
-  creating_employee_id text,
-  updating_employee_id text,
+  creating_employee_id int,
+  updating_employee_id int,
   FOREIGN KEY (item_id) REFERENCES item (id)
 );
 

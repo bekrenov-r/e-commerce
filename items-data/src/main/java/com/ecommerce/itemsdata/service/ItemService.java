@@ -6,25 +6,18 @@ import com.ecommerce.itemsdata.model.*;
 import com.ecommerce.itemsdata.repository.CategoryRepository;
 import com.ecommerce.itemsdata.repository.ItemDetailsRepository;
 import com.ecommerce.itemsdata.repository.ItemRepository;
-import com.ecommerce.itemsdata.util.StringParser;
+import com.ecommerce.itemsdata.service.filter.ItemFilteringProcessor;
+import com.ecommerce.itemsdata.service.sort.ItemSortComparator;
+import com.ecommerce.itemsdata.service.sort.SortOption;
 import com.ecommerce.itemsdata.util.dev.ItemGenerator;
-import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang.math.IntRange;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,33 +26,29 @@ import java.util.stream.Collectors;
 public class ItemService {
 
     private final ItemRepository itemRepository;
+    private final CategoryRepository categoryRepository;
     private final ItemDetailsRepository itemDetailsRepository;
     private final ItemGenerator itemGenerator;
     private final ItemToDtoMapper itemToDtoMapper;
     private final ItemFilteringProcessor itemFilteringProcessor;
-    private final CategoryRepository categoryRepository;
 
-    public List<ItemResponse> getAllItemsByGenderAndCategoryWithFilters(
-            Gender gender, Long categoryId, String sort, String priceRange, String sizes, String colors, String brands, Season season, String materials, Double rating
+
+    public List<ItemResponse> getAllItemsByGenderAndCategoryFilteredAndSorted(
+            Gender gender, Long categoryId, SortOption sort, String priceRange, String sizes, String colors, String brands, Season season, String materials, Double rating
     ) {
-//        System.out.println(gender + " " + categoryId + " " + priceRange + " " + sizes + " " + brands + " " + season + " " + materials + " " + rating);
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new EntityNotFoundException("No category found for id: " + categoryId));
 
-        List<Item> filteredItems = itemFilteringProcessor
+        List<Item> items = itemFilteringProcessor
                 .forItems(itemRepository.findAllByGenderAndCategory(gender, category))
                 .withArgs(priceRange, sizes, colors, brands, season, materials, rating);
 
-        System.out.println(
-                filteredItems.stream()
-                        .map(Item::getSizes)
-                        .flatMap(Collection::stream)
-                        .map(Size::getValue)
-                        .distinct()
-                        .collect(Collectors.toList())
-        );
+        items = items.stream()
+                .sorted(ItemSortComparator.forOption(sort))
+                .collect(Collectors.toList());
 
-        return filteredItems.stream()
+
+        return items.stream()
                 .map(itemToDtoMapper::itemToResponse)
                 .toList();
     }
@@ -68,23 +57,15 @@ public class ItemService {
         return itemRepository.findById(id).orElse(null);
     }
 
-    // method for dev purpose
-    public void createSampleItems(int quantity) {
-        for(int i = 0; i < quantity; i++){
-            Item item = itemGenerator.generate();
-            createItem(item);
-        }
-    }
-
     public ResponseEntity<Void> createItem(Item item) {
         item.setId(null);
         Item savedItem = itemRepository.save(item);
         ItemResponse itemDTO = itemToDtoMapper.itemToResponse(savedItem);
 
-        // todo: get creatingEmployeeId from security context
-        ItemDetails itemDetails = new ItemDetails(0, 0, LocalDateTime.now(), "asd");
+        /*// todo: get creatingEmployeeId from security context
+        ItemDetails itemDetails = new ItemDetails(0, 0, LocalDateTime.now(), 0L);
         itemDetails.setItem(savedItem);
-        itemDetailsRepository.save(itemDetails);
+        itemDetailsRepository.save(itemDetails);*/
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
@@ -93,7 +74,13 @@ public class ItemService {
         return ResponseEntity.created(location).body(null);
     }
 
-
+    // method for dev purpose
+    public void createSampleItems(int quantity) {
+        for(int i = 0; i < quantity; i++){
+            Item item = itemGenerator.generateItemWithDetails();
+            createItem(item);
+        }
+    }
 
     /*private Item createItemWithDetails(Item item) {
 

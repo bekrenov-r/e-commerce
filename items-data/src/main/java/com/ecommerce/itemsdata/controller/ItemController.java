@@ -4,6 +4,7 @@ import com.ecommerce.itemsdata.dto.response.ItemDetailedResponse;
 import com.ecommerce.itemsdata.dto.response.ItemResponse;
 import com.ecommerce.itemsdata.model.*;
 import com.ecommerce.itemsdata.service.ItemService;
+import com.ecommerce.itemsdata.service.sort.SortOption;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +34,7 @@ public class ItemController {
     public ResponseEntity<List<ItemResponse>> getAllItemsByGenderAndCategory(
             @PathVariable("gender") Gender gender,
             @PathVariable("categoryId") Long categoryId,
-            @RequestParam(name = "sort", required = false) String sort,
+            @RequestParam(name = "sort", required = false) SortOption sort,
             @RequestParam(name = "priceRange", required = false) String priceRange,
             @RequestParam(name = "sizes", required = false) String sizes,
             @RequestParam(name = "colors", required = false) String colors,
@@ -43,7 +44,7 @@ public class ItemController {
             @RequestParam(name = "minRating", required = false) Double rating
     ){
         return ResponseEntity.ok(
-                itemService.getAllItemsByGenderAndCategoryWithFilters(gender, categoryId, sort, priceRange, sizes, colors, brands, season, materials, rating)
+                itemService.getAllItemsByGenderAndCategoryFilteredAndSorted(gender, categoryId, sort, priceRange, sizes, colors, brands, season, materials, rating)
         );
     }
 
@@ -133,9 +134,9 @@ public class ItemController {
     }
 
     // method for dev purpose
-    @GetMapping("/createSampleItems")
-    public void createSampleItems(){
-        itemService.createSampleItems(100);
+    @GetMapping("/createSampleItems/{quantity}")
+    public void createSampleItems(@PathVariable Integer quantity){
+        itemService.createSampleItems(quantity);
     }
 
 }

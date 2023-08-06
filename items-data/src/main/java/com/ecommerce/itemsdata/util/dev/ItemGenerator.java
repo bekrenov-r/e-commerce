@@ -1,15 +1,14 @@
 package com.ecommerce.itemsdata.util.dev;
 
 import com.ecommerce.itemsdata.model.*;
-import com.ecommerce.itemsdata.repository.CategoryRepository;
-import com.ecommerce.itemsdata.repository.ColorRepository;
-import com.ecommerce.itemsdata.repository.SizeRepository;
-import com.ecommerce.itemsdata.repository.SubcategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -79,11 +78,8 @@ public class ItemGenerator {
     private final List<String> brands = Arrays.asList("Louis Vuitton", "Gucci", "Balenciaga", "Dior Homme", "Prada", "Salvatore Ferragamo", "Chanel", "Armani", "Yves Saint Laurent", "Burberry", "Hermès", "Adidas", "Lululemon", "Zara", "UNIQLO", "H&M", "Cartier", "Tiffany & Co.", "Moncler", "Rolex", "Patek Philippe");
     private final List<Material> materials = Arrays.stream(Material.values()).toList();
 
-    public Item generate(){
+    public Item generateItem(){
         Random rand = new Random();
-//        List<Category> categories = categoryRepository.findAll();
-//        List<Size> allSizes = sizeRepository.findAll();
-//        List<Color> allColors = colorRepository.findAll();
 
         Category category = categories.get(rand.nextInt(categories.size()));
         List<Subcategory> subcategories = category.getSubcategories();
@@ -97,6 +93,10 @@ public class ItemGenerator {
         String description = "Description";
         Double price = rand.nextInt(90) + 10 - 0.01;
         Double discount = BigDecimal.valueOf(rand.nextDouble(0.4)).round(new MathContext(2)).doubleValue();
+        BigDecimal priceBD = BigDecimal.valueOf(price);
+        BigDecimal discountBD = BigDecimal.valueOf(discount);
+        Double priceAfterDiscount =
+                priceBD.subtract(priceBD.multiply(discountBD)).round(new MathContext(2)).doubleValue();
         Gender gender = Gender.values()[rand.nextInt(Gender.values().length)];
         AgeGroup ageGroup = AgeGroup.values()[rand.nextInt(AgeGroup.values().length)];
         String collection = "Collection";
@@ -106,35 +106,57 @@ public class ItemGenerator {
         Double rating = BigDecimal.valueOf(rand.nextDouble(3.0) + 2).round(new MathContext(2)).doubleValue();
         int reviewsCount = rand.nextInt(1000);
         String itemCode = generateItemCode();
-        return new Item(
-                0L,
-                itemName,
-                description,
-                price,
-                discount,
-                category,
-                subcategory,
-                null,
-                colors,
-                sizes,
-                gender,
-                ageGroup,
-                collection,
-                brand,
-                material,
-                season,
-                rating,
-                reviewsCount,
-                itemCode,
-                null
-        );
+        return Item.builder()
+                .name(itemName)
+                .description(description)
+                .price(price)
+                .discount(discount)
+                .priceAfterDiscount(priceAfterDiscount)
+                .category(category)
+                .subcategory(subcategory)
+                .colors(colors)
+                .sizes(sizes)
+                .gender(gender)
+                .ageGroup(ageGroup)
+                .collection(collection)
+                .brand(brand)
+                .material(material)
+                .season(season)
+                .rating(rating)
+                .reviewsCount(reviewsCount)
+                .itemCode(itemCode)
+                .build();
+    }
+
+    public Item generateItemWithDetails(){
+        Item item = this.generateItem();
+        ItemDetails details = this.generateDetails();
+        details.setItem(item);
+        item.setItemDetails(details);
+        return item;
+    }
+
+    private ItemDetails generateDetails() {
+        Random rand = new Random();
+        LocalDate date = LocalDate.ofEpochDay(rand.nextInt(18262, 19357));
+        LocalDateTime createdAt = LocalDateTime.of(date, LocalTime.now());
+        Integer ordersCountLastMonth = rand.nextInt(30);
+        Integer ordersCountTotal = rand.nextInt(100);
+        return new ItemDetails(ordersCountTotal, ordersCountLastMonth, createdAt, 0L);
     }
 
     public List<Item> generateMultiple(int num){
         return Stream
-                .generate(this::generate)
+                .generate(this::generateItem)
                 .limit(num)
-                .toList();
+                .collect(Collectors.toList());
+    }
+
+    public List<Item> generateMultipleWithDetails(int num){
+        return Stream
+                .generate(this::generateItemWithDetails)
+                .limit(num)
+                .collect(Collectors.toList());
     }
 
     private String capitalize(String s){

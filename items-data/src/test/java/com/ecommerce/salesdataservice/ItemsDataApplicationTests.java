@@ -4,17 +4,11 @@ import com.ecommerce.itemsdata.ItemsDataApplication;
 import com.ecommerce.itemsdata.controller.ItemController;
 import com.ecommerce.itemsdata.model.Item;
 import com.ecommerce.itemsdata.service.ItemService;
-import com.ecommerce.itemsdata.util.StringParser;
 import com.ecommerce.itemsdata.util.dev.ItemGenerator;
 import org.apache.commons.lang.math.DoubleRange;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.Arrays;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(classes = {ItemsDataApplication.class})
 class ItemsDataApplicationTests {
@@ -39,7 +33,7 @@ class ItemsDataApplicationTests {
 
 	@Test
 	void generateItem(){
-		Item item = itemGenerator.generate();
+		Item item = itemGenerator.generateItem();
 		System.out.println(item);
 	}
 

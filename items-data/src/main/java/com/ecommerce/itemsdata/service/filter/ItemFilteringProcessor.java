@@ -1,32 +1,27 @@
-package com.ecommerce.itemsdata.service;
+package com.ecommerce.itemsdata.service.filter;
 
 import com.ecommerce.itemsdata.model.*;
-import com.ecommerce.itemsdata.repository.ColorRepository;
 import com.ecommerce.itemsdata.util.StringParser;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang.math.DoubleRange;
-import org.apache.commons.lang.math.IntRange;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Component
 @RequiredArgsConstructor
 public class ItemFilteringProcessor {
 
-    public StreamFilteringProcessor forItems(List<Item> items){
-        return new StreamFilteringProcessor(items);
+    public Processor forItems(List<Item> items){
+        return new Processor(items);
     }
 
-    public class StreamFilteringProcessor {
+    public class Processor {
 
         private List<Item> items;
         private final ItemFilters itemFilters;
 
-        public StreamFilteringProcessor(List<Item> items) {
+        public Processor(List<Item> items) {
             this.items = items;
             this.itemFilters = new ItemFilters(items);
         }
@@ -63,18 +58,16 @@ public class ItemFilteringProcessor {
                 itemFilters.byBrands(brandsList);
             }
 
-            if(season != null){
-                itemFilters.bySeason(season);
-            }
+            if(season != null) itemFilters.bySeason(season);
+
 
             if(materials != null){
                 List<Material> materialList = StringParser.parseMaterials(materials);
                 itemFilters.byMaterials(materialList);
             }
 
-            if(rating != null){
-                itemFilters.byRating(rating);
-            }
+            if(rating != null) itemFilters.byRating(rating);
+
 
             return itemFilters.filter();
         }

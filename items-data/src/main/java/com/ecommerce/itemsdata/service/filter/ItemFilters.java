@@ -1,4 +1,4 @@
-package com.ecommerce.itemsdata.service;
+package com.ecommerce.itemsdata.service.filter;
 
 import com.ecommerce.itemsdata.model.*;
 import org.apache.commons.lang.math.DoubleRange;

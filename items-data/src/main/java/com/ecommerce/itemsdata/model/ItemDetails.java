@@ -2,9 +2,7 @@ package com.ecommerce.itemsdata.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -14,12 +12,14 @@ import java.util.UUID;
 @Table(name = "item_details")
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class ItemDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "item_id")
+    private Long itemId;
 
     @OneToOne
     @JoinColumn(name = "item_id")
@@ -40,23 +40,16 @@ public class ItemDetails {
     private LocalDateTime updatedAt;
 
     @Column(name = "creating_employee_id")
-    private String creatingEmployeeId;
+    private Long creatingEmployeeId;
 
     @Column(name = "updating_employee_id")
-    private String updatingEmployeeId;
+    private Long updatingEmployeeId;
 
-    public ItemDetails(Integer ordersCountTotal, Integer ordersCountLastMonth, LocalDateTime createdAt, String creatingEmployeeId) {
+    public ItemDetails(Integer ordersCountTotal, Integer ordersCountLastMonth, LocalDateTime createdAt, Long creatingEmployeeId) {
         this.ordersCountTotal = ordersCountTotal;
         this.ordersCountLastMonth = ordersCountLastMonth;
         this.createdAt = createdAt;
         this.creatingEmployeeId = creatingEmployeeId;
-    }
-
-    public ItemDetails(LocalDateTime createdAt, LocalDateTime updatedAt, String creatingEmployeeId, String updatingEmployeeId) {
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.creatingEmployeeId = creatingEmployeeId;
-        this.updatingEmployeeId = updatingEmployeeId;
     }
 
     @Override

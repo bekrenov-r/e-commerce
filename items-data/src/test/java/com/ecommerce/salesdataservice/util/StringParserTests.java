@@ -1,13 +1,9 @@
 package com.ecommerce.salesdataservice.util;
 
 import com.ecommerce.itemsdata.ItemsDataApplication;
-import com.ecommerce.itemsdata.model.Color;
-import com.ecommerce.itemsdata.model.Item;
 import com.ecommerce.itemsdata.model.Material;
-import com.ecommerce.itemsdata.model.Size;
-import com.ecommerce.itemsdata.service.ItemFilteringProcessor;
+import com.ecommerce.itemsdata.service.filter.ItemFilteringProcessor;
 import com.ecommerce.itemsdata.util.StringParser;
-import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +13,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static com.ecommerce.itemsdata.model.ColorEnum.*;
 import static com.ecommerce.itemsdata.model.Material.*;
 
 @SpringBootTest(classes = {ItemsDataApplication.class})
@@ -48,36 +43,6 @@ public class StringParserTests {
 
         assertThrows(IllegalArgumentException.class, action);
     }
-
-    /*@Test
-    void parseColors(){
-        String colors = "black.white.yellow.green";
-        List<Color> expected = Arrays.asList(black, white, yellow, green);
-
-        List<Color> parsedColors = StringParser.parseColors(colors);
-
-        assertIterableEquals(expected, parsedColors);
-    }
-
-    @Test
-    void parseColors_someColorsDontExistOrNotPresented(){
-        String colors = "black.white.yellow.green.purple.asd.djajdsjf";
-        List<Color> expected = Arrays.asList(black, white, yellow, green);
-
-        List<Color> parsedColors = StringParser.parseColors(colors);
-
-        assertIterableEquals(expected, parsedColors);
-    }
-
-    @Test
-    void parseColors_ignoringCase(){
-        String colors = "bLaCk.White.YELLOW.green";
-        List<Color> expected = Arrays.asList(black, white, yellow, green);
-
-        List<Color> parsedColors = StringParser.parseColors(colors);
-
-        assertIterableEquals(expected, parsedColors);
-    }*/
 
     @Test
     void parseMaterials_ignoringCase(){

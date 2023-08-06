@@ -2,7 +2,7 @@ package com.ecommerce.salesdataservice.filter;
 
 import com.ecommerce.itemsdata.ItemsDataApplication;
 import com.ecommerce.itemsdata.model.*;
-import com.ecommerce.itemsdata.service.ItemFilteringProcessor;
+import com.ecommerce.itemsdata.service.filter.ItemFilteringProcessor;
 import com.ecommerce.itemsdata.util.dev.ItemGenerator;
 import org.apache.commons.lang.math.DoubleRange;
 import org.junit.jupiter.api.*;
@@ -75,13 +75,6 @@ public class ItemFilteringProcessorTests {
                     .forItems(data)
                     .withArgs(null, null, colorsUnparsedStr, null, null, null, null);
             boolean success = allItemsMatchByColor(filteredItems, colorsParsed);
-//            List<ColorEnum> filteredItemsColors = filteredItems.stream()
-//                    .map(Item::getColors)
-//                    .flatMap(Collection::stream)
-//                    .map(Color::getValue)
-//                    .distinct()
-//                    .collect(Collectors.toList());
-//            filteredItemsColors.retainAll(expected);
 
             assertTrue(success);
         }
