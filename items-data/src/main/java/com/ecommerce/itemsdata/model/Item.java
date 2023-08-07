@@ -223,18 +223,16 @@ public class Item {
     @Override
     public String toString() {
         return "Item{" +
-                "name='" + name + '\'' +
-                ", description='" + description + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", price=" + price +
                 ", discount=" + discount +
-                ", category='" + category + '\'' +
-                ", subcategory='" + subcategory + '\'' +
-                ", gender='" + gender + '\'' +
-                ", ageGroup='" + ageGroup + '\'' +
-                ", collection='" + collection + '\'' +
-                ", brand='" + brand + '\'' +
-                ", material='" + material + '\'' +
-                ", season='" + season + '\'' +
+                ", priceAfterDiscount=" + priceAfterDiscount +
+                ", category=" + category +
+                ", colors=" + colors +
+                ", sizes=" + sizes +
+                ", gender=" + gender +
+                ", ageGroup=" + ageGroup +
                 '}';
     }
 }

@@ -2,8 +2,7 @@ package com.ecommerce.salesdataservice.sort;
 
 import com.ecommerce.itemsdata.ItemsDataApplication;
 import com.ecommerce.itemsdata.model.Item;
-import com.ecommerce.itemsdata.service.filter.ItemFilteringProcessor;
-import com.ecommerce.itemsdata.service.sort.ItemSortComparator;
+import com.ecommerce.itemsdata.service.sort.ItemSortComparators;
 import com.ecommerce.itemsdata.service.sort.SortOption;
 import com.ecommerce.itemsdata.util.dev.ItemGenerator;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,10 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.time.LocalDate;
-import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -37,7 +33,7 @@ public class ItemSortTests {
     @Test
     void sortByPopularityTest(){
         List<Item> sortedItems = data.stream()
-                .sorted(ItemSortComparator.forOption(SortOption.BY_POPULARITY))
+                .sorted(SortOption.BY_POPULARITY.getComparator())
                 .toList();
         boolean success = isSortedByPopularity(sortedItems);
 
@@ -47,7 +43,7 @@ public class ItemSortTests {
     @Test
     void sortByNewTest(){
         List<Item> sortedItems = data.stream()
-                .sorted(ItemSortComparator.forOption(SortOption.BY_NEW))
+                .sorted(SortOption.BY_NEW.getComparator())
                 .toList();
         boolean success = isSortedByNew(sortedItems);
 
@@ -57,7 +53,7 @@ public class ItemSortTests {
     @Test
     void sortByPriceAscTest(){
         List<Item> sortedItems = data.stream()
-                .sorted(ItemSortComparator.forOption(SortOption.BY_PRICE_ASC))
+                .sorted(SortOption.BY_PRICE_ASC.getComparator())
                 .toList();
         boolean success = isSortedByPriceAsc(sortedItems);
 
@@ -67,7 +63,7 @@ public class ItemSortTests {
     @Test
     void sortByPriceDescTest(){
         List<Item> sortedItems = data.stream()
-                .sorted(ItemSortComparator.forOption(SortOption.BY_PRICE_DESC))
+                .sorted(SortOption.BY_PRICE_DESC.getComparator())
                 .toList();
         boolean success = isSortedByPriceDesc(sortedItems);
 
