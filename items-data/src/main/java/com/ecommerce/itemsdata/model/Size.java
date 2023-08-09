@@ -25,4 +25,10 @@ public class Size {
     @Enumerated(EnumType.STRING)
     private SizeType type;
 
+    @Override
+    public String toString() {
+        return "Size{" +
+                "value='" + value + '\'' +
+                '}';
+    }
 }

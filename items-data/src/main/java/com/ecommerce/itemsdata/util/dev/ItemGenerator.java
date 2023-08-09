@@ -32,18 +32,18 @@ public class ItemGenerator {
             ),
             new Category(4L, "SHORTS", List.of()),
             new Category(5L, "HOODIES_AND_SWEATSHIRTS", List.of()),
-            new Category(4L, "SWEATERS", List.of()),
-            new Category(4L, "COATS", List.of()),
-            new Category(4L, "JACKETS", List.of()),
-            new Category(4L, "SHOES", Arrays.asList(
+            new Category(6L, "SWEATERS", List.of()),
+            new Category(7L, "COATS", List.of()),
+            new Category(8L, "JACKETS", List.of()),
+            new Category(9L, "SHOES", Arrays.asList(
                     new Subcategory(4L, "SANDALS", null),
                     new Subcategory(5L, "SNEAKERS", null),
                     new Subcategory(6L, "BOOTS", null))
             ),
-            new Category(4L, "UNDERWEAR", List.of()),
-            new Category(4L, "SOCKS", List.of())
+            new Category(10L, "UNDERWEAR", List.of()),
+            new Category(11L, "SOCKS", List.of())
     );
-    private final List<Size> allSizes = Arrays.asList(
+    private final List<Size> allSizesClothes = Arrays.asList(
             new Size(1L, "XS", clothes),
             new Size(2L, "S", clothes),
             new Size(3L, "M", clothes),
@@ -51,7 +51,10 @@ public class ItemGenerator {
             new Size(5L, "XL", clothes),
             new Size(6L, "2XL", clothes),
             new Size(7L, "3XL", clothes),
-            new Size(8L, "4XL", clothes),
+            new Size(8L, "4XL", clothes)
+
+    );
+    private final List<Size> allSizesShoes = Arrays.asList(
             new Size(9L, "36", shoes),
             new Size(10L, "37", shoes),
             new Size(11L, "38", shoes),
@@ -62,7 +65,6 @@ public class ItemGenerator {
             new Size(16L, "43", shoes),
             new Size(17L, "44", shoes),
             new Size(18L, "45", shoes)
-
     );
     private final List<Color> allColors = Arrays.asList(
             new Color(1L, black),
@@ -83,11 +85,12 @@ public class ItemGenerator {
 
         Category category = categories.get(rand.nextInt(categories.size()));
         List<Subcategory> subcategories = category.getSubcategories();
-        Subcategory subcategory = null;
-        if(!subcategories.isEmpty()){
-            subcategory = subcategories.get(rand.nextInt(subcategories.size()));
-        }
-        List<Size> sizes = randomNumberOfSizes(allSizes);
+        Subcategory subcategory = !subcategories.isEmpty()
+                ? subcategories.get(rand.nextInt(subcategories.size()))
+                : null;
+        List<Size> sizes = randomNumberOfSizes(
+                category.getName().equals("SHOES") ? allSizesShoes : allSizesClothes
+        );
         List<Color> colors = randomNumberOfColors(allColors);
         String itemName = capitalize(category.getName()) + " " + (rand.nextInt(100) + 1);
         String description = "Description";

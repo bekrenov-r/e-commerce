@@ -2,6 +2,8 @@ package com.ecommerce.itemsdata.service;
 
 import com.ecommerce.itemsdata.dto.response.ItemResponse;
 import com.ecommerce.itemsdata.dto.mapper.ItemToDtoMapper;
+import com.ecommerce.itemsdata.exception.ItemApplicationException;
+import com.ecommerce.itemsdata.exception.ItemApplicationExceptionReason;
 import com.ecommerce.itemsdata.model.*;
 import com.ecommerce.itemsdata.repository.CategoryRepository;
 import com.ecommerce.itemsdata.repository.ItemDetailsRepository;
@@ -20,6 +22,8 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.ecommerce.itemsdata.exception.ItemApplicationExceptionReason.*;
+
 @Service
 @RequiredArgsConstructor
 public class ItemService {
@@ -32,21 +36,84 @@ public class ItemService {
     private final ItemFilteringProcessor itemFilteringProcessor;
 
 
-    public List<ItemResponse> getAllItemsByGenderAndCategoryFilteredAndSorted(
-            Gender gender, Long categoryId, SortOption sort, String priceRange, String sizes, String colors, String brands, Season season, String materials, Double rating
+    public List<ItemResponse> getAllItemsByGenderAndCategory(
+            Gender gender,
+            Long categoryId,
+            SortOption sort,
+            String priceRange,
+            String sizes,
+            String colors,
+            String brands,
+            Season season,
+            String materials,
+            Double rating
     ) {
         Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new EntityNotFoundException("No category found for id: " + categoryId));
+                .orElseThrow(() -> new ItemApplicationException(CATEGORY_NOT_FOUND, categoryId));
 
         List<Item> items = itemFilteringProcessor
                 .forItems(itemRepository.findAllByGenderAndCategory(gender, category))
                 .withArgs(priceRange, sizes, colors, brands, season, materials, rating);
 
-        items = items.stream()
-                .sorted(sort.getComparator())
-                .collect(Collectors.toList());
+        return items.stream()
+                .sorted(ItemSortComparators.forOption(sort))
+                .map(itemToDtoMapper::itemToResponse)
+                .toList();
+    }
+
+    public List<ItemResponse> getAllItemsByGenderCategoryAndSubcategory(
+            Gender gender,
+            Long categoryId,
+            Long subcategoryId,
+            SortOption sort,
+            String priceRange,
+            String sizes,
+            String colors,
+            String brands,
+            Season season,
+            String materials,
+            Double rating
+    ) {
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new ItemApplicationException(CATEGORY_NOT_FOUND, categoryId));
+
+        Subcategory subcategory = category.getSubcategories().stream()
+                .filter(sub -> sub.getId().equals(subcategoryId))
+                .findFirst()
+                .orElseThrow(() -> new ItemApplicationException(SUBCATEGORY_NOT_FOUND, subcategoryId, categoryId));
+
+        List<Item> items = itemFilteringProcessor
+                .forItems(itemRepository.findAllByGenderAndCategoryAndSubcategory(gender, category, subcategory))
+                .withArgs(priceRange, sizes, colors, brands, season, materials, rating);
 
         return items.stream()
+                .sorted(ItemSortComparators.forOption(sort))
+                .map(itemToDtoMapper::itemToResponse)
+                .toList();
+    }
+
+    public List<ItemResponse> getAllItemsByAgeGenderAndCategory(
+            AgeGroup ageGroup,
+            Gender gender,
+            Long categoryId,
+            SortOption sort,
+            String priceRange,
+            String sizes,
+            String colors,
+            String brands,
+            Season season,
+            String materials,
+            Double rating
+    ) {
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new ItemApplicationException(CATEGORY_NOT_FOUND, categoryId));
+
+        List<Item> items = itemFilteringProcessor
+                .forItems(itemRepository.findAllByAgeGroupAndGenderAndCategory(ageGroup, gender, category))
+                .withArgs(priceRange, sizes, colors, brands, season, materials, rating);
+
+        return items.stream()
+                .sorted(ItemSortComparators.forOption(sort))
                 .map(itemToDtoMapper::itemToResponse)
                 .toList();
     }
@@ -79,4 +146,6 @@ public class ItemService {
             createItem(item);
         }
     }
+
+
 }
