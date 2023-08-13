@@ -21,20 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ResponseEntityAspect {
 
-    // todo: create advice for adding response source header to ResponseEntity
     private final ResponseSource responseSource;
-
-    @Around("execution(* com.ecommerce.itemsdata.controller.ItemController.getAll*(..))")
-    public ResponseEntity<List<ItemResponse>> addContentLength(ProceedingJoinPoint joinPoint) throws Throwable {
-        ResponseEntity<List<ItemResponse>> responseEntity = (ResponseEntity<List<ItemResponse>>) joinPoint.proceed();
-        HttpHeaders headers = new HttpHeaders();
-        headers.addAll(responseEntity.getHeaders());
-        headers.add("Items-Found", String.valueOf(responseEntity.getBody().size()));
-        return ResponseEntity
-                .status(responseEntity.getStatusCode())
-                .headers(headers)
-                .body(responseEntity.getBody());
-    }
 
     @Around("execution(org.springframework.http.ResponseEntity *(..))")
     public ResponseEntity<?> addResponseSource(ProceedingJoinPoint joinPoint) throws Throwable {

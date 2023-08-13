@@ -6,6 +6,9 @@ public enum Season {
     spring,
     autumn,
     summer,
-    multiseason
+    multiseason;
 
+    public static Season ofString(String s){
+        return Season.valueOf(s.toLowerCase());
+    }
 }

@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
+import static com.ecommerce.itemsdata.service.sort.SortOption.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(classes = {ItemsDataApplication.class})
@@ -33,7 +34,7 @@ public class ItemSortTests {
     @Test
     void sortByPopularityTest(){
         List<Item> sortedItems = data.stream()
-                .sorted(SortOption.BY_POPULARITY.getComparator())
+                .sorted(ItemSortComparators.forOption(BY_POPULARITY))
                 .toList();
         boolean success = isSortedByPopularity(sortedItems);
 
@@ -43,7 +44,7 @@ public class ItemSortTests {
     @Test
     void sortByNewTest(){
         List<Item> sortedItems = data.stream()
-                .sorted(SortOption.BY_NEW.getComparator())
+                .sorted(ItemSortComparators.forOption(BY_NEW))
                 .toList();
         boolean success = isSortedByNew(sortedItems);
 
@@ -53,7 +54,7 @@ public class ItemSortTests {
     @Test
     void sortByPriceAscTest(){
         List<Item> sortedItems = data.stream()
-                .sorted(SortOption.BY_PRICE_ASC.getComparator())
+                .sorted(ItemSortComparators.forOption(BY_PRICE_ASC))
                 .toList();
         boolean success = isSortedByPriceAsc(sortedItems);
 
@@ -63,7 +64,7 @@ public class ItemSortTests {
     @Test
     void sortByPriceDescTest(){
         List<Item> sortedItems = data.stream()
-                .sorted(SortOption.BY_PRICE_DESC.getComparator())
+                .sorted(ItemSortComparators.forOption(BY_PRICE_DESC))
                 .toList();
         boolean success = isSortedByPriceDesc(sortedItems);
 

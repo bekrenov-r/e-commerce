@@ -1,6 +1,5 @@
 package com.ecommerce.itemsdata.controller;
-
-import com.ecommerce.itemsdata.dto.response.ItemDetailedResponse;
+import com.ecommerce.itemsdata.dto.request.FilterOptionsModel;
 import com.ecommerce.itemsdata.dto.response.ItemResponse;
 import com.ecommerce.itemsdata.model.*;
 import com.ecommerce.itemsdata.service.ItemService;
@@ -10,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/items")
@@ -36,19 +34,11 @@ public class ItemController {
             @PathVariable("gender") Gender gender,
             @PathVariable("categoryId") Long categoryId,
             @RequestParam(name = "sort", required = false) SortOption sort,
-            @RequestParam(name = "priceRange", required = false) String priceRange,
-            @RequestParam(name = "sizes", required = false) String sizes,
-            @RequestParam(name = "colors", required = false) String colors,
-            @RequestParam(name = "brands", required = false) String brands,
-            @RequestParam(name = "season", required = false) Season season,
-            @RequestParam(name = "materials", required = false) String materials,
-            @RequestParam(name = "minRating", required = false) Double rating
+            @RequestParam(name = "page") Integer page,
+            @ModelAttribute FilterOptionsModel filters
     ){
-        return ResponseEntity.ok(
-                itemService.getAllItemsByGenderAndCategory(
-                        gender, categoryId, sort, priceRange, sizes, colors, brands, season, materials, rating
-                )
-        );
+        return ResponseEntity
+                .ok(itemService.getAllItemsByGenderAndCategory(gender, categoryId, sort, page, filters));
     }
 
     @GetMapping("/gender/{gender}/category/{categoryId}/{subcategoryId}")
@@ -57,20 +47,13 @@ public class ItemController {
             @PathVariable("categoryId") Long categoryId,
             @PathVariable("subcategoryId") Long subcategoryId,
             @RequestParam(name = "sort", required = false) SortOption sort,
-            @RequestParam(name = "priceRange", required = false) String priceRange,
-            @RequestParam(name = "sizes", required = false) String sizes,
-            @RequestParam(name = "colors", required = false) String colors,
-            @RequestParam(name = "brands", required = false) String brands,
-            @RequestParam(name = "season", required = false) Season season,
-            @RequestParam(name = "materials", required = false) String materials,
-            @RequestParam(name = "minRating", required = false) Double rating
+            @RequestParam(name = "page") Integer page,
+            @ModelAttribute FilterOptionsModel filters
     ){
-        return ResponseEntity.ok(
-                itemService.getAllItemsByGenderCategoryAndSubcategory(
-                        gender, categoryId, subcategoryId, sort, priceRange,
-                        sizes, colors, brands, season, materials, rating
-                )
-        );
+        return ResponseEntity
+                .ok(itemService.getAllItemsByGenderCategoryAndSubcategory(
+                        gender, categoryId, subcategoryId, sort, page, filters
+                ));
     }
 
     @GetMapping("/age-group/{age-group}/gender/{gender}/category/{categoryId}")
@@ -79,19 +62,13 @@ public class ItemController {
             @PathVariable("gender") Gender gender,
             @PathVariable("categoryId") Long categoryId,
             @RequestParam(name = "sort", required = false) SortOption sort,
-            @RequestParam(name = "priceRange", required = false) String priceRange,
-            @RequestParam(name = "sizes", required = false) String sizes,
-            @RequestParam(name = "colors", required = false) String colors,
-            @RequestParam(name = "brands", required = false) String brands,
-            @RequestParam(name = "season", required = false) Season season,
-            @RequestParam(name = "materials", required = false) String materials,
-            @RequestParam(name = "minRating", required = false) Double rating
+            @RequestParam(name = "page") Integer page,
+            @ModelAttribute FilterOptionsModel filters
     ){
-        return ResponseEntity.ok(
-                itemService.getAllItemsByAgeGenderAndCategory(
-                        ageGroup, gender, categoryId, sort, priceRange, sizes, colors, brands, season, materials, rating
-                )
-        );
+        return ResponseEntity
+                .ok(itemService.getAllItemsByAgeGenderAndCategory(
+                        ageGroup, gender, categoryId, sort, page, filters
+                ));
     }
 
     @GetMapping("/age-group/{age-group}/gender/{gender}/category/{category}/{subcategory}")
@@ -101,13 +78,8 @@ public class ItemController {
             @PathVariable("category") String category,
             @PathVariable("subcategory") String subcategory,
             @RequestParam(name = "sort", required = false) String sort,
-            @RequestParam(name = "priceRange", required = false) String priceRange,
-            @RequestParam(name = "size", required = false) String sizes,
-            @RequestParam(name = "color", required = false) String colors,
-            @RequestParam(name = "brand", required = false) String brands,
-            @RequestParam(name = "season", required = false) Season season,
-            @RequestParam(name = "materials", required = false) String materials,
-            @RequestParam(name = "minRating", required = false) Double rating
+            @RequestParam(name = "page") Integer page,
+            @ModelAttribute FilterOptionsModel filters
     ){
         return null;
     }
@@ -140,15 +112,11 @@ public class ItemController {
         return null;
     }
 
-    /*@GetMapping("/test")
-    public void test(@RequestParam("sort") String sort,
+    @GetMapping("/test")
+    public void test(@RequestParam("sort") SortOption sort,
                      @RequestParam("page") Integer page,
-                     @ModelAttribute ItemFiltersRequest filtersRequest) {
-        System.out.println(sort);
-        System.out.println(page);
-        System.out.println(filtersRequest.filter1());
-        System.out.println(filtersRequest.filter2());
-    }*/
+                     @ModelAttribute FilterOptionsModel filters) {;
+    }
 
     @PostMapping
     public ResponseEntity<Void> create(@RequestBody Item item) throws Exception {

@@ -9,12 +9,12 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class ItemFilters {
+public class ItemFiltersProcessor {
 
     private List<Item> items;
     private final Supplier<Stream<Item>> itemsSupplier = () -> items.stream();
 
-    public ItemFilters(List<Item> items) {
+    public ItemFiltersProcessor(List<Item> items) {
         this.items = items;
     }
 
@@ -77,7 +77,7 @@ public class ItemFilters {
                 .collect(Collectors.toList());
     }
 
-    public void byRating(Double rating) {
+    public void byRating(Short rating) {
         items = itemsSupplier.get()
                 .filter(item -> item.getRating() >= rating)
                 .collect(Collectors.toList());

@@ -1,18 +1,17 @@
 package com.ecommerce.itemsdata.service;
 
+import com.ecommerce.itemsdata.dto.request.FilterOptionsModel;
 import com.ecommerce.itemsdata.dto.response.ItemResponse;
 import com.ecommerce.itemsdata.dto.mapper.ItemToDtoMapper;
 import com.ecommerce.itemsdata.exception.ItemApplicationException;
-import com.ecommerce.itemsdata.exception.ItemApplicationExceptionReason;
 import com.ecommerce.itemsdata.model.*;
 import com.ecommerce.itemsdata.repository.CategoryRepository;
 import com.ecommerce.itemsdata.repository.ItemDetailsRepository;
 import com.ecommerce.itemsdata.repository.ItemRepository;
-import com.ecommerce.itemsdata.service.filter.ItemFilteringProcessor;
+import com.ecommerce.itemsdata.service.filter.ItemFilter;
 import com.ecommerce.itemsdata.service.sort.ItemSortComparators;
 import com.ecommerce.itemsdata.service.sort.SortOption;
 import com.ecommerce.itemsdata.util.dev.ItemGenerator;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -20,7 +19,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.ecommerce.itemsdata.exception.ItemApplicationExceptionReason.*;
 
@@ -33,29 +31,20 @@ public class ItemService {
     private final ItemDetailsRepository itemDetailsRepository;
     private final ItemGenerator itemGenerator;
     private final ItemToDtoMapper itemToDtoMapper;
-    private final ItemFilteringProcessor itemFilteringProcessor;
 
 
     public List<ItemResponse> getAllItemsByGenderAndCategory(
             Gender gender,
             Long categoryId,
             SortOption sort,
-            String priceRange,
-            String sizes,
-            String colors,
-            String brands,
-            Season season,
-            String materials,
-            Double rating
+            Integer page,
+            FilterOptionsModel filters
     ) {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new ItemApplicationException(CATEGORY_NOT_FOUND, categoryId));
-
-        List<Item> items = itemFilteringProcessor
-                .forItems(itemRepository.findAllByGenderAndCategory(gender, category))
-                .withArgs(priceRange, sizes, colors, brands, season, materials, rating);
-
-        return items.stream()
+        var items = itemRepository.findAllByGenderAndCategory(gender, category);
+        var filteredItems = this.filterItems(items, filters);
+        return filteredItems.stream()
                 .sorted(ItemSortComparators.forOption(sort))
                 .map(itemToDtoMapper::itemToResponse)
                 .toList();
@@ -66,13 +55,8 @@ public class ItemService {
             Long categoryId,
             Long subcategoryId,
             SortOption sort,
-            String priceRange,
-            String sizes,
-            String colors,
-            String brands,
-            Season season,
-            String materials,
-            Double rating
+            Integer page,
+            FilterOptionsModel filters
     ) {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new ItemApplicationException(CATEGORY_NOT_FOUND, categoryId));
@@ -82,11 +66,9 @@ public class ItemService {
                 .findFirst()
                 .orElseThrow(() -> new ItemApplicationException(SUBCATEGORY_NOT_FOUND, subcategoryId, categoryId));
 
-        List<Item> items = itemFilteringProcessor
-                .forItems(itemRepository.findAllByGenderAndCategoryAndSubcategory(gender, category, subcategory))
-                .withArgs(priceRange, sizes, colors, brands, season, materials, rating);
-
-        return items.stream()
+        var items = itemRepository.findAllByGenderAndCategoryAndSubcategory(gender, category, subcategory);
+        var filteredItems = this.filterItems(items, filters);
+        return filteredItems.stream()
                 .sorted(ItemSortComparators.forOption(sort))
                 .map(itemToDtoMapper::itemToResponse)
                 .toList();
@@ -97,22 +79,14 @@ public class ItemService {
             Gender gender,
             Long categoryId,
             SortOption sort,
-            String priceRange,
-            String sizes,
-            String colors,
-            String brands,
-            Season season,
-            String materials,
-            Double rating
+            Integer page,
+            FilterOptionsModel filters
     ) {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new ItemApplicationException(CATEGORY_NOT_FOUND, categoryId));
-
-        List<Item> items = itemFilteringProcessor
-                .forItems(itemRepository.findAllByAgeGroupAndGenderAndCategory(ageGroup, gender, category))
-                .withArgs(priceRange, sizes, colors, brands, season, materials, rating);
-
-        return items.stream()
+        var items = itemRepository.findAllByAgeGroupAndGenderAndCategory(ageGroup, gender, category);
+        var filteredItems = filterItems(items, filters);
+        return filteredItems.stream()
                 .sorted(ItemSortComparators.forOption(sort))
                 .map(itemToDtoMapper::itemToResponse)
                 .toList();
@@ -139,6 +113,11 @@ public class ItemService {
         return ResponseEntity.created(location).body(null);
     }
 
+    private List<Item> filterItems(List<Item> items, FilterOptionsModel filters) {
+        ItemFilter processor = new ItemFilter(items);
+        return processor.filter(filters);
+    }
+
     // method for dev purpose
     public void createSampleItems(int quantity) {
         for(int i = 0; i < quantity; i++){
@@ -146,6 +125,4 @@ public class ItemService {
             createItem(item);
         }
     }
-
-
 }

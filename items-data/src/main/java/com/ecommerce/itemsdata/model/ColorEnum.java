@@ -10,6 +10,8 @@ public enum ColorEnum {
     blue,
     violet,
     grey,
-    multi
-
+    multi;
+    public static ColorEnum ofString(String s){
+        return ColorEnum.valueOf(s.toLowerCase());
+    }
 }

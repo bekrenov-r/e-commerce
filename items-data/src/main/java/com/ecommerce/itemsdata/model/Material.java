@@ -7,6 +7,10 @@ public enum Material {
     wool,
     cotton,
     artificial_leather,
-    synthetics
+    synthetics;
+
+    public static Material ofString(String s){
+        return Material.valueOf(s.toLowerCase());
+    }
 
 }
