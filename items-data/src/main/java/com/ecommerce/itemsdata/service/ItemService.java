@@ -13,6 +13,8 @@ import com.ecommerce.itemsdata.service.sort.ItemSortComparators;
 import com.ecommerce.itemsdata.service.sort.SortOption;
 import com.ecommerce.itemsdata.util.dev.ItemGenerator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -32,8 +34,11 @@ public class ItemService {
     private final ItemGenerator itemGenerator;
     private final ItemToDtoMapper itemToDtoMapper;
 
+    @Value("${custom.page.size}")
+    private Integer pageSize;
 
-    public List<ItemResponse> getAllItemsByGenderAndCategory(
+
+    public Page<ItemResponse> getAllItemsByGenderAndCategory(
             Gender gender,
             Long categoryId,
             SortOption sort,
@@ -43,14 +48,10 @@ public class ItemService {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new ItemApplicationException(CATEGORY_NOT_FOUND, categoryId));
         var items = itemRepository.findAllByGenderAndCategory(gender, category);
-        var filteredItems = this.filterItems(items, filters);
-        return filteredItems.stream()
-                .sorted(ItemSortComparators.forOption(sort))
-                .map(itemToDtoMapper::itemToResponse)
-                .toList();
+        return this.processItems(items, filters, page, sort);
     }
 
-    public List<ItemResponse> getAllItemsByGenderCategoryAndSubcategory(
+    public Page<ItemResponse> getAllItemsByGenderCategoryAndSubcategory(
             Gender gender,
             Long categoryId,
             Long subcategoryId,
@@ -60,21 +61,15 @@ public class ItemService {
     ) {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new ItemApplicationException(CATEGORY_NOT_FOUND, categoryId));
-
         Subcategory subcategory = category.getSubcategories().stream()
                 .filter(sub -> sub.getId().equals(subcategoryId))
                 .findFirst()
                 .orElseThrow(() -> new ItemApplicationException(SUBCATEGORY_NOT_FOUND, subcategoryId, categoryId));
-
         var items = itemRepository.findAllByGenderAndCategoryAndSubcategory(gender, category, subcategory);
-        var filteredItems = this.filterItems(items, filters);
-        return filteredItems.stream()
-                .sorted(ItemSortComparators.forOption(sort))
-                .map(itemToDtoMapper::itemToResponse)
-                .toList();
+        return this.processItems(items, filters, page, sort);
     }
 
-    public List<ItemResponse> getAllItemsByAgeGenderAndCategory(
+    public Page<ItemResponse> getAllItemsByAgeGenderAndCategory(
             AgeGroup ageGroup,
             Gender gender,
             Long categoryId,
@@ -85,11 +80,28 @@ public class ItemService {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new ItemApplicationException(CATEGORY_NOT_FOUND, categoryId));
         var items = itemRepository.findAllByAgeGroupAndGenderAndCategory(ageGroup, gender, category);
-        var filteredItems = filterItems(items, filters);
-        return filteredItems.stream()
-                .sorted(ItemSortComparators.forOption(sort))
-                .map(itemToDtoMapper::itemToResponse)
-                .toList();
+        return this.processItems(items, filters, page, sort);
+    }
+
+    public Page<ItemResponse> getAllItemsByAgeGenderCategoryAndSubcategory(
+            AgeGroup ageGroup,
+            Gender gender,
+            Long categoryId,
+            Long subcategoryId,
+            SortOption sort,
+            Integer page,
+            FilterOptionsModel filters
+    ) {
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new ItemApplicationException(CATEGORY_NOT_FOUND, categoryId));
+        Subcategory subcategory = category.getSubcategories().stream()
+                .filter(sub -> sub.getId().equals(subcategoryId))
+                .findFirst()
+                .orElseThrow(() -> new ItemApplicationException(SUBCATEGORY_NOT_FOUND, subcategoryId, categoryId));
+        var items = itemRepository.findAllByAgeGroupAndGenderAndCategoryAndSubcategory(
+                ageGroup, gender, category, subcategory
+        );
+        return this.processItems(items, filters, page, sort);
     }
 
     public Item getItemById(Long id) {
@@ -113,9 +125,30 @@ public class ItemService {
         return ResponseEntity.created(location).body(null);
     }
 
+    private Page<ItemResponse> processItems(List<Item> items, FilterOptionsModel filters, Integer page, SortOption sort){
+        var filteredItems = this.filterItems(items, filters);
+        var sortedItems = filteredItems.stream()
+                .sorted(ItemSortComparators.forOption(sort))
+                .toList();
+        Pageable pageRequest = PageRequest.of(page, this.pageSize);
+        List<Item> pageContent = this.getSublistForPageRequest(sortedItems, pageRequest);
+        var itemResponses = pageContent.stream()
+                .map(itemToDtoMapper::itemToResponse)
+                .toList();
+        return new PageImpl<>(itemResponses, pageRequest, items.size());
+    }
+
     private List<Item> filterItems(List<Item> items, FilterOptionsModel filters) {
         ItemFilter processor = new ItemFilter(items);
         return processor.filter(filters);
+    }
+
+    private List<Item> getSublistForPageRequest(List<Item> items, Pageable pageRequest){
+        int start = (int) pageRequest.getOffset();
+        int end = Math.min((start + pageRequest.getPageSize()), items.size());
+        System.out.println(start);
+        System.out.println(end);
+        return items.subList(start, end);
     }
 
     // method for dev purpose

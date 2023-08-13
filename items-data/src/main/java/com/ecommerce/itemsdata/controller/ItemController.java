@@ -5,6 +5,7 @@ import com.ecommerce.itemsdata.model.*;
 import com.ecommerce.itemsdata.service.ItemService;
 import com.ecommerce.itemsdata.service.sort.SortOption;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,11 +31,11 @@ public class ItemController {
     }
 
     @GetMapping("/gender/{gender}/category/{categoryId}")
-    public ResponseEntity<List<ItemResponse>> getAllItemsByGenderAndCategory(
+    public ResponseEntity<Page<ItemResponse>> getAllItemsByGenderAndCategory(
             @PathVariable("gender") Gender gender,
             @PathVariable("categoryId") Long categoryId,
             @RequestParam(name = "sort", required = false) SortOption sort,
-            @RequestParam(name = "page") Integer page,
+            @RequestParam(name = "page", defaultValue = "0") Integer page,
             @ModelAttribute FilterOptionsModel filters
     ){
         return ResponseEntity
@@ -42,12 +43,12 @@ public class ItemController {
     }
 
     @GetMapping("/gender/{gender}/category/{categoryId}/{subcategoryId}")
-    public ResponseEntity<List<ItemResponse>> getAllItemsByGenderCategoryAndSubcategory(
+    public ResponseEntity<Page<ItemResponse>> getAllItemsByGenderCategoryAndSubcategory(
             @PathVariable("gender") Gender gender,
             @PathVariable("categoryId") Long categoryId,
             @PathVariable("subcategoryId") Long subcategoryId,
             @RequestParam(name = "sort", required = false) SortOption sort,
-            @RequestParam(name = "page") Integer page,
+            @RequestParam(name = "page", defaultValue = "0") Integer page,
             @ModelAttribute FilterOptionsModel filters
     ){
         return ResponseEntity
@@ -57,12 +58,12 @@ public class ItemController {
     }
 
     @GetMapping("/age-group/{age-group}/gender/{gender}/category/{categoryId}")
-    public ResponseEntity<List<ItemResponse>> getAllItemsByAgeGenderAndCategory(
+    public ResponseEntity<Page<ItemResponse>> getAllItemsByAgeGenderAndCategory(
             @PathVariable("age-group") AgeGroup ageGroup,
             @PathVariable("gender") Gender gender,
             @PathVariable("categoryId") Long categoryId,
             @RequestParam(name = "sort", required = false) SortOption sort,
-            @RequestParam(name = "page") Integer page,
+            @RequestParam(name = "page", defaultValue = "0") Integer page,
             @ModelAttribute FilterOptionsModel filters
     ){
         return ResponseEntity
@@ -71,21 +72,26 @@ public class ItemController {
                 ));
     }
 
-    @GetMapping("/age-group/{age-group}/gender/{gender}/category/{category}/{subcategory}")
-    public ResponseEntity<List<ItemResponse>> getAllItemsByAgeGenderCategoryAndSubcategory(
+    @GetMapping("/age-group/{age-group}/gender/{gender}/category/{categoryId}/{subcategoryId}")
+    public ResponseEntity<Page<ItemResponse>> getAllItemsByAgeGenderCategoryAndSubcategory(
             @PathVariable("age-group") AgeGroup ageGroup,
             @PathVariable("gender") Gender gender,
-            @PathVariable("category") String category,
-            @PathVariable("subcategory") String subcategory,
-            @RequestParam(name = "sort", required = false) String sort,
-            @RequestParam(name = "page") Integer page,
+            @PathVariable("categoryId") Long categoryId,
+            @PathVariable("subcategoryId") Long subcategoryId,
+            @RequestParam(name = "sort", required = false) SortOption sort,
+            @RequestParam(name = "page", defaultValue = "0") Integer page,
             @ModelAttribute FilterOptionsModel filters
     ){
-        return null;
+        return ResponseEntity
+                .ok(
+                        itemService.getAllItemsByAgeGenderCategoryAndSubcategory(
+                                ageGroup, gender, categoryId, subcategoryId, sort, page, filters
+                        )
+                );
     }
 
     @GetMapping("/by-season/{season}")
-    public ResponseEntity<List<ItemResponse>> getAllItemsBySeason(
+    public ResponseEntity<Page<ItemResponse>> getAllItemsBySeason(
             @PathVariable Season season,
             @RequestParam(name = "sort", required = false) String sort,
             @RequestParam(name = "priceRange", required = false) String priceRange,
@@ -99,7 +105,7 @@ public class ItemController {
     }
 
     @GetMapping("/by-collection/{collection}")
-    public ResponseEntity<List<ItemResponse>> getAllItemsByCollection(
+    public ResponseEntity<Page<ItemResponse>> getAllItemsByCollection(
             @PathVariable String collection,
             @RequestParam(name = "sort", required = false) String sort,
             @RequestParam(name = "priceRange", required = false) String priceRange,
@@ -110,12 +116,6 @@ public class ItemController {
             @RequestParam(name = "minRating", required = false) Double rating
     ){
         return null;
-    }
-
-    @GetMapping("/test")
-    public void test(@RequestParam("sort") SortOption sort,
-                     @RequestParam("page") Integer page,
-                     @ModelAttribute FilterOptionsModel filters) {;
     }
 
     @PostMapping
