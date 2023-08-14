@@ -8,6 +8,9 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+
 @Mapper(componentModel = "spring")
 public abstract class ItemToDtoMapper {
 
@@ -23,7 +26,7 @@ public abstract class ItemToDtoMapper {
     @Mapping(target = "price", source = "item.price")
     @Mapping(target = "discount", source = "item.discount")
     @Mapping(target = "priceAfterDiscount", source = "item.priceAfterDiscount")
-    @Mapping(target = "images", expression = "java(imagesUtil.itemImagesToBytesArrays(item.getImages()))")
+    @Mapping(target = "base64EncodedImages", expression = "java(imagesUtil.encodeAllItemImages(item.getImages()))")
     @Mapping(target = "brand", source = "item.brand")
     @Mapping(target = "rating", source = "item.rating")
     @Mapping(target = "colors", expression = "java(itemMappingDataProcessor.allColorsForItem(item))")

@@ -2,6 +2,9 @@ package com.ecommerce.itemsdata.util.dev;
 
 import com.ecommerce.itemsdata.model.*;
 import lombok.RequiredArgsConstructor;
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -19,8 +22,6 @@ import static com.ecommerce.itemsdata.model.ColorEnum.*;
 @Component
 @RequiredArgsConstructor
 public class ItemGenerator {
-
-//    private static final List<String> itemNames = Arrays.asList("Shirt", "Pants", "Dress", "Skirt", "Blouse", "Jacket", "Coat", "Sweater", "Shorts", "Jeans", "T-Shirt", "Blazer", "Suit", "Socks", "Shoes", "Boots", "Sandals", "Sneakers");
 
     private final List<Category> categories = Arrays.asList(
             new Category(1L, "T_SHIRTS", List.of()),
@@ -88,6 +89,7 @@ public class ItemGenerator {
         Subcategory subcategory = !subcategories.isEmpty()
                 ? subcategories.get(rand.nextInt(subcategories.size()))
                 : null;
+        List<ItemImage> images = Arrays.asList(new ItemImage(null, null, "items-data/src/main/resources/images/iStock-1280562095_63a051a70dbff.jpg", null));
         List<Size> sizes = randomNumberOfSizes(
                 category.getName().equals("SHOES") ? allSizesShoes : allSizesClothes
         );
@@ -109,7 +111,7 @@ public class ItemGenerator {
         Double rating = BigDecimal.valueOf(rand.nextDouble(3.0) + 2).round(new MathContext(2)).doubleValue();
         int reviewsCount = rand.nextInt(1000);
         String itemCode = generateItemCode();
-        return Item.builder()
+        Item result = Item.builder()
                 .name(itemName)
                 .description(description)
                 .price(price)
@@ -129,6 +131,9 @@ public class ItemGenerator {
                 .reviewsCount(reviewsCount)
                 .itemCode(itemCode)
                 .build();
+        images.forEach(image -> image.setItem(result));
+        result.setImages(images);
+        return result;
     }
 
     public Item generateItemWithDetails(){
@@ -197,4 +202,5 @@ public class ItemGenerator {
         }
         return res;
     }
+
 }

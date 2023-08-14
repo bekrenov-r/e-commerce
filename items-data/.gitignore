@@ -3,6 +3,8 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+spec.txt
+items-data/src/test/java/com/ecommerce/salesdataservice/Test.java
 
 ### STS ###
 .apt_generated

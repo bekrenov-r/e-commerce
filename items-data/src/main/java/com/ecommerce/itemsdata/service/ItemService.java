@@ -111,7 +111,7 @@ public class ItemService {
     public ResponseEntity<Void> createItem(Item item) {
         item.setId(null);
         Item savedItem = itemRepository.save(item);
-        ItemResponse itemDTO = itemToDtoMapper.itemToResponse(savedItem);
+//        ItemResponse itemDTO = itemToDtoMapper.itemToResponse(savedItem);
 
         /*// todo: get creatingEmployeeId from security context
         ItemDetails itemDetails = new ItemDetails(0, 0, LocalDateTime.now(), 0L);
@@ -146,8 +146,6 @@ public class ItemService {
     private List<Item> getSublistForPageRequest(List<Item> items, Pageable pageRequest){
         int start = (int) pageRequest.getOffset();
         int end = Math.min((start + pageRequest.getPageSize()), items.size());
-        System.out.println(start);
-        System.out.println(end);
         return items.subList(start, end);
     }
 
