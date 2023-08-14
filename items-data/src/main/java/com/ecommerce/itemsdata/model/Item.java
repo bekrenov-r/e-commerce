@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.List;
 
 @Entity
@@ -107,12 +108,7 @@ public class Item {
         this.description = description;
         this.price = price;
         this.discount = discount;
-
-        BigDecimal priceBD = BigDecimal.valueOf(price);
-        BigDecimal discountBD = BigDecimal.valueOf(discount);
-        BigDecimal priceAfterDiscount =
-                priceBD.subtract(priceBD.multiply(discountBD)).round(new MathContext(2));
-        this.priceAfterDiscount = priceAfterDiscount.doubleValue();
+        this.priceAfterDiscount = calculatePriceAfterDiscount(price, discount);
         this.category = category;
         this.subcategory = subcategory;
         this.images = images;
@@ -218,6 +214,14 @@ public class Item {
 
     public void setUniqueItems(List<UniqueItem> uniqueItems) {
         this.uniqueItems = uniqueItems;
+    }
+
+    public Double calculatePriceAfterDiscount(Double price, Double discount){
+        BigDecimal priceBD = BigDecimal.valueOf(price);
+        BigDecimal discountBD = BigDecimal.valueOf(discount);
+        BigDecimal priceAfterDiscount =
+                priceBD.subtract(priceBD.multiply(discountBD)).round(new MathContext(0));
+        return priceAfterDiscount.setScale(2, RoundingMode.HALF_UP).doubleValue();
     }
 
     @Override
