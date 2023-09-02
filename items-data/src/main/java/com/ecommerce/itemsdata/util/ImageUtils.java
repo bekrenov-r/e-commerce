@@ -2,22 +2,16 @@ package com.ecommerce.itemsdata.util;
 
 import com.ecommerce.itemsdata.model.ItemImage;
 import org.apache.commons.io.FileUtils;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
 @Component
-public class ImagesUtil {
+public class ImageUtils {
 
     public List<String> encodeAllItemImages(List<ItemImage> itemImages) {
         return itemImages.stream()

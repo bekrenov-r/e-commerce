@@ -1,6 +1,5 @@
-package com.ecommerce.salesdataservice;
+package com.ecommerce.itemsdata;
 
-import com.ecommerce.itemsdata.ItemsDataApplication;
 import com.ecommerce.itemsdata.controller.ItemController;
 import com.ecommerce.itemsdata.model.Item;
 import com.ecommerce.itemsdata.service.ItemService;

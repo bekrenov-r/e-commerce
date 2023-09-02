@@ -1,4 +1,4 @@
-package com.ecommerce.salesdataservice.filter;
+package com.ecommerce.itemsdata.filter;
 
 import com.ecommerce.itemsdata.ItemsDataApplication;
 import com.ecommerce.itemsdata.dto.request.FilterOptionsModel;
@@ -6,7 +6,9 @@ import com.ecommerce.itemsdata.model.*;
 import com.ecommerce.itemsdata.service.filter.ItemFilter;
 import com.ecommerce.itemsdata.util.dev.ItemGenerator;
 import org.apache.commons.lang.math.DoubleRange;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,7 +20,7 @@ import java.util.function.Predicate;
 
 import static com.ecommerce.itemsdata.model.ColorEnum.*;
 import static com.ecommerce.itemsdata.model.Material.*;
-import static com.ecommerce.itemsdata.model.Season.*;
+import static com.ecommerce.itemsdata.model.Season.multiseason;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(classes = {ItemsDataApplication.class})

@@ -1,7 +1,11 @@
 package com.ecommerce.itemsdata.controller;
+
 import com.ecommerce.itemsdata.dto.request.FilterOptionsModel;
 import com.ecommerce.itemsdata.dto.response.ItemResponse;
-import com.ecommerce.itemsdata.model.*;
+import com.ecommerce.itemsdata.model.AgeGroup;
+import com.ecommerce.itemsdata.model.Gender;
+import com.ecommerce.itemsdata.model.Item;
+import com.ecommerce.itemsdata.model.Season;
 import com.ecommerce.itemsdata.service.ItemService;
 import com.ecommerce.itemsdata.service.sort.SortOption;
 import lombok.RequiredArgsConstructor;
@@ -9,20 +13,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/items")
 @RequiredArgsConstructor
 public class ItemController {
 
     private final ItemService itemService;
-
-    /*@GetMapping("/{id}")
-    public ResponseEntity<ItemDetailedResponse> getItemById(@PathVariable Long id){
-        // todo: to be implemented
-        return null;
-    }*/
 
     // temp
     @GetMapping("/{id}")
@@ -42,7 +38,7 @@ public class ItemController {
                 .ok(itemService.getAllItemsByGenderAndCategory(gender, categoryId, sort, page, filters));
     }
 
-    @GetMapping("/gender/{gender}/category/{categoryId}/{subcategoryId}")
+    @GetMapping("/gender/{gender}/category/{categoryId}/subcategory/{subcategoryId}")
     public ResponseEntity<Page<ItemResponse>> getAllItemsByGenderCategoryAndSubcategory(
             @PathVariable("gender") Gender gender,
             @PathVariable("categoryId") Long categoryId,
@@ -72,7 +68,7 @@ public class ItemController {
                 ));
     }
 
-    @GetMapping("/age-group/{age-group}/gender/{gender}/category/{categoryId}/{subcategoryId}")
+    @GetMapping("/age-group/{age-group}/gender/{gender}/category/{categoryId}/subcategory/{subcategoryId}")
     public ResponseEntity<Page<ItemResponse>> getAllItemsByAgeGenderCategoryAndSubcategory(
             @PathVariable("age-group") AgeGroup ageGroup,
             @PathVariable("gender") Gender gender,

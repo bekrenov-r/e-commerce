@@ -1,9 +1,8 @@
-package com.ecommerce.salesdataservice.sort;
+package com.ecommerce.itemsdata.sort;
 
 import com.ecommerce.itemsdata.ItemsDataApplication;
 import com.ecommerce.itemsdata.model.Item;
 import com.ecommerce.itemsdata.service.sort.ItemSortComparators;
-import com.ecommerce.itemsdata.service.sort.SortOption;
 import com.ecommerce.itemsdata.util.dev.ItemGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,7 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.List;
 
 import static com.ecommerce.itemsdata.service.sort.SortOption.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(classes = {ItemsDataApplication.class})
 public class ItemSortTests {

@@ -1,8 +1,6 @@
 package com.ecommerce.itemsdata.dto.response;
 
-import com.ecommerce.itemsdata.model.Color;
 import com.ecommerce.itemsdata.model.ColorEnum;
-import org.springframework.core.io.ByteArrayResource;
 
 import java.util.List;
 
@@ -12,7 +10,7 @@ public record ItemResponse(
         Double price,
         Double discount,
         Double priceAfterDiscount,
-        List<String> base64EncodedImages,
+        List<String> images,
         String brand,
         Double rating,
         List<ColorEnum> colors,

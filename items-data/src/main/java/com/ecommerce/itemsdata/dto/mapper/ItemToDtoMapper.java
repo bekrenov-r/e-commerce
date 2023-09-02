@@ -2,37 +2,31 @@ package com.ecommerce.itemsdata.dto.mapper;
 
 import com.ecommerce.itemsdata.dto.response.ItemResponse;
 import com.ecommerce.itemsdata.model.Item;
-import com.ecommerce.itemsdata.service.ItemMetadataService;
-import com.ecommerce.itemsdata.util.ImagesUtil;
+import com.ecommerce.itemsdata.util.ImageUtils;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.io.IOException;
-import java.net.URISyntaxException;
 
 @Mapper(componentModel = "spring")
 public abstract class ItemToDtoMapper {
 
     @Autowired
-    protected ImagesUtil imagesUtil;
+    protected ImageUtils imageUtils;
     @Autowired
-    protected ItemMetadataService itemMetadataService;
-    @Autowired
-    protected ItemMappingDataProcessor itemMappingDataProcessor;
+    protected ItemMappingService itemMappingService;
 
     @Mapping(target = "id", source = "item.id")
     @Mapping(target = "name", source = "item.name")
     @Mapping(target = "price", source = "item.price")
     @Mapping(target = "discount", source = "item.discount")
     @Mapping(target = "priceAfterDiscount", source = "item.priceAfterDiscount")
-    @Mapping(target = "base64EncodedImages", expression = "java(imagesUtil.encodeAllItemImages(item.getImages()))")
+    @Mapping(target = "images", expression = "java(imageUtils.encodeAllItemImages(item.getImages()))")
     @Mapping(target = "brand", source = "item.brand")
     @Mapping(target = "rating", source = "item.rating")
-    @Mapping(target = "colors", expression = "java(itemMappingDataProcessor.allColorsForItem(item))")
-    @Mapping(target = "isOnWishList", expression = "java(itemMappingDataProcessor.isItemOnWishList(item.getId()))")
-    @Mapping(target = "isNew", expression = "java(itemMetadataService.isItemNew(item.getId()))")
-    @Mapping(target = "isPopular", expression = "java(itemMetadataService.isItemPopular(item.getId()))")
+    @Mapping(target = "colors", expression = "java(itemMappingService.allColorsForItem(item))")
+    @Mapping(target = "isOnWishList", expression = "java(itemMappingService.isItemOnWishList(item.getId()))")
+    @Mapping(target = "isNew", expression = "java(itemMappingService.isItemNew(item))")
+    @Mapping(target = "isPopular", expression = "java(itemMappingService.isItemPopular(item))")
     public abstract ItemResponse itemToResponse(Item item);
 
 }
