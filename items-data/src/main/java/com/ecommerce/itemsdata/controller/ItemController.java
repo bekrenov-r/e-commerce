@@ -10,8 +10,6 @@ import com.ecommerce.itemsdata.service.ItemService;
 import com.ecommerce.itemsdata.service.sort.SortOption;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,16 +36,8 @@ public class ItemController {
             @RequestParam(name = "page", defaultValue = "0") Integer page,
             @ModelAttribute FilterOptionsModel filters
     ){
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Access-Control-Allow-Origin", "*");
-        headers.add("Access-Control-Allow-Headers",
-                "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-        headers.add("Access-Control-Allow-Methods",
-                "GET, POST, PATCH, PUT, DELETE, OPTIONS");
         return ResponseEntity
-                .status(HttpStatus.OK)
-                .headers(headers)
-                .body(itemService.getAllItemsByGenderAndCategory(gender, categoryId, sort, page, filters));
+                .ok(itemService.getAllItemsByGenderAndCategory(gender, categoryId, sort, page, filters));
     }
 
     @GetMapping("/gender/{gender}/category/{categoryId}/subcategory/{subcategoryId}")
