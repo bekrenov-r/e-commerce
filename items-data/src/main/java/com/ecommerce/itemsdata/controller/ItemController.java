@@ -10,8 +10,12 @@ import com.ecommerce.itemsdata.service.ItemService;
 import com.ecommerce.itemsdata.service.sort.SortOption;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/items")
@@ -35,7 +39,9 @@ public class ItemController {
             @ModelAttribute FilterOptionsModel filters
     ){
         return ResponseEntity
-                .ok(itemService.getAllItemsByGenderAndCategory(gender, categoryId, sort, page, filters));
+                .status(HttpStatus.OK)
+                .header(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*")
+                .body(itemService.getAllItemsByGenderAndCategory(gender, categoryId, sort, page, filters));
     }
 
     @GetMapping("/gender/{gender}/category/{categoryId}/subcategory/{subcategoryId}")
@@ -126,4 +132,8 @@ public class ItemController {
         itemService.createSampleItems(quantity);
     }
 
+    @GetMapping("/test")
+    public Map<String, String> test(){
+        return Map.of("test", "test");
+    }
 }
