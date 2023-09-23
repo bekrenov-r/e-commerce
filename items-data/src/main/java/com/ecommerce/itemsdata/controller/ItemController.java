@@ -38,9 +38,15 @@ public class ItemController {
             @RequestParam(name = "page", defaultValue = "0") Integer page,
             @ModelAttribute FilterOptionsModel filters
     ){
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Access-Control-Allow-Origin", "*");
+        headers.add("Access-Control-Allow-Headers",
+                "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+        headers.add("Access-Control-Allow-Methods",
+                "GET, POST, PATCH, PUT, DELETE, OPTIONS");
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .header(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*")
+                .headers(headers)
                 .body(itemService.getAllItemsByGenderAndCategory(gender, categoryId, sort, page, filters));
     }
 
