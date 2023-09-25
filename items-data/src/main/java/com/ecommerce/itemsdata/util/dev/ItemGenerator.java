@@ -2,9 +2,6 @@ package com.ecommerce.itemsdata.util.dev;
 
 import com.ecommerce.itemsdata.model.*;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -16,8 +13,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.ecommerce.itemsdata.model.SizeType.*;
 import static com.ecommerce.itemsdata.model.ColorEnum.*;
+import static com.ecommerce.itemsdata.model.SizeType.CLOTHES;
+import static com.ecommerce.itemsdata.model.SizeType.SHOES;
 
 @Component
 @RequiredArgsConstructor
@@ -45,38 +43,38 @@ public class ItemGenerator {
             new Category(11L, "SOCKS", List.of())
     );
     private final List<Size> allSizesClothes = Arrays.asList(
-            new Size(1L, "XS", clothes),
-            new Size(2L, "S", clothes),
-            new Size(3L, "M", clothes),
-            new Size(4L, "L", clothes),
-            new Size(5L, "XL", clothes),
-            new Size(6L, "2XL", clothes),
-            new Size(7L, "3XL", clothes),
-            new Size(8L, "4XL", clothes)
+            new Size(1L, "XS", CLOTHES),
+            new Size(2L, "S", CLOTHES),
+            new Size(3L, "M", CLOTHES),
+            new Size(4L, "L", CLOTHES),
+            new Size(5L, "XL", CLOTHES),
+            new Size(6L, "2XL", CLOTHES),
+            new Size(7L, "3XL", CLOTHES),
+            new Size(8L, "4XL", CLOTHES)
 
     );
     private final List<Size> allSizesShoes = Arrays.asList(
-            new Size(9L, "36", shoes),
-            new Size(10L, "37", shoes),
-            new Size(11L, "38", shoes),
-            new Size(12L, "39", shoes),
-            new Size(13L, "40", shoes),
-            new Size(14L, "41", shoes),
-            new Size(15L, "42", shoes),
-            new Size(16L, "43", shoes),
-            new Size(17L, "44", shoes),
-            new Size(18L, "45", shoes)
+            new Size(9L, "36", SHOES),
+            new Size(10L, "37", SHOES),
+            new Size(11L, "38", SHOES),
+            new Size(12L, "39", SHOES),
+            new Size(13L, "40", SHOES),
+            new Size(14L, "41", SHOES),
+            new Size(15L, "42", SHOES),
+            new Size(16L, "43", SHOES),
+            new Size(17L, "44", SHOES),
+            new Size(18L, "45", SHOES)
     );
     private final List<Color> allColors = Arrays.asList(
-            new Color(1L, black),
-            new Color(2L, white),
-            new Color(3L, red),
-            new Color(4L, yellow),
-            new Color(5L, green),
-            new Color(6L, blue),
-            new Color(7L, violet),
-            new Color(8L, grey),
-            new Color(9L, multi)
+            new Color(1L, BLACK),
+            new Color(2L, WHITE),
+            new Color(3L, RED),
+            new Color(4L, YELLOW),
+            new Color(5L, GREEN),
+            new Color(6L, BLUE),
+            new Color(7L, VIOLET),
+            new Color(8L, GREY),
+            new Color(9L, MULTI)
     );
     private final List<String> brands = Arrays.asList("Louis Vuitton", "Gucci", "Balenciaga", "Dior Homme", "Prada", "Salvatore Ferragamo", "Chanel", "Armani", "Yves Saint Laurent", "Burberry", "Hermès", "Adidas", "Lululemon", "Zara", "UNIQLO", "H&M", "Cartier", "Tiffany & Co.", "Moncler", "Rolex", "Patek Philippe");
     private final List<Material> materials = Arrays.stream(Material.values()).toList();

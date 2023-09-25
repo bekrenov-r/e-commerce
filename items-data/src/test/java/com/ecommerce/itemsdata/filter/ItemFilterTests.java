@@ -20,7 +20,7 @@ import java.util.function.Predicate;
 
 import static com.ecommerce.itemsdata.model.ColorEnum.*;
 import static com.ecommerce.itemsdata.model.Material.*;
-import static com.ecommerce.itemsdata.model.Season.multiseason;
+import static com.ecommerce.itemsdata.model.Season.MULTISEASON;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(classes = {ItemsDataApplication.class})
@@ -80,7 +80,7 @@ public class ItemFilterTests {
         @Test
         void filterItemsByColors_ignoringCase(){
             // arrange
-            List<ColorEnum> colors = Arrays.asList(black, blue, yellow);
+            List<ColorEnum> colors = Arrays.asList(BLACK, BLUE, YELLOW);
 
             // act
             List<Item> filteredItems = itemFilter.filter(
@@ -114,7 +114,7 @@ public class ItemFilterTests {
         @Test
         void filterItemsBySeason(){
             // arrange
-            Season season = multiseason;
+            Season season = MULTISEASON;
 
             // act
             List<Item> filteredItems = itemFilter.filter(
@@ -131,7 +131,7 @@ public class ItemFilterTests {
         @Test
         void filterItemsByMaterials(){
             // arrange
-            List<Material> materials = Arrays.asList(wool, denim);
+            List<Material> materials = Arrays.asList(WOOL, DENIM);
 
             // act
             List<Item> filteredItems = itemFilter.filter(
@@ -152,7 +152,7 @@ public class ItemFilterTests {
         void testFilterItemsBySizesAndColors(){
             // arrange
             List<String> sizes = Arrays.asList("S", "XS");
-            List<ColorEnum> colors = Arrays.asList(white, black, yellow);
+            List<ColorEnum> colors = Arrays.asList(WHITE, BLACK, YELLOW);
 
             // act
             List<Item> filteredItems = itemFilter.filter(
@@ -173,8 +173,8 @@ public class ItemFilterTests {
         @Test
         void filterItemsBySizesColorsAndMaterials(){
             List<String> sizes = Arrays.asList("L", "XL");
-            List<ColorEnum> colors = Arrays.asList(green, violet);
-            List<Material> materials = Arrays.asList(cotton, synthetics);
+            List<ColorEnum> colors = Arrays.asList(GREEN, VIOLET);
+            List<Material> materials = Arrays.asList(COTTON, SYNTHETICS);
 
             List<Item> filteredItems = itemFilter.filter(
                     new FilterOptionsModel(

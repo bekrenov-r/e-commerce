@@ -2,15 +2,15 @@ package com.ecommerce.itemsdata.model;
 
 public enum Material {
 
-    denim,
-    leather,
-    wool,
-    cotton,
-    artificial_leather,
-    synthetics;
+    DENIM,
+    LEATHER,
+    WOOL,
+    COTTON,
+    ARTIFICIAL_LEATHER,
+    SYNTHETICS;
 
     public static Material ofString(String s){
-        return Material.valueOf(s.toLowerCase());
+        return Material.valueOf(s.toUpperCase());
     }
 
 }

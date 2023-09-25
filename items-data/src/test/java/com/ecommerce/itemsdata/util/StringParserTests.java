@@ -38,7 +38,7 @@ public class StringParserTests {
     @Test
     void parseMaterials_ignoringCase(){
         String materials = "DENIM.Leather.WoOl.Cotton";
-        List<Material> expected = Arrays.asList(denim, leather, wool, cotton);
+        List<Material> expected = Arrays.asList(DENIM, LEATHER, WOOL, COTTON);
 
         List<Material> parsedMaterials = StringParser.parseMaterials(materials);
 

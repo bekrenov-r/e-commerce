@@ -136,7 +136,7 @@ insert into subcategory values
                             ('SNEAKERS', 9),
                             ('BOOTS', 9);
 
-insert into size values('XS', 'clothes'), ('S', 'clothes'), ('M', 'clothes'), ('L', 'clothes'), ('XL', 'clothes'), ('2XL', 'clothes'), ('3XL', 'clothes'), ('4XL', 'clothes'),
-                       ('36', 'shoes'), ('37', 'shoes'), ('38', 'shoes'), ('39', 'shoes'), ('40', 'shoes'), ('41', 'shoes'), ('42', 'shoes'), ('43', 'shoes'), ('44', 'shoes'), ('45', 'shoes');
+insert into size values('XS', 'CLOTHES'), ('S', 'CLOTHES'), ('M', 'CLOTHES'), ('L', 'CLOTHES'), ('XL', 'CLOTHES'), ('2XL', 'CLOTHES'), ('3XL', 'CLOTHES'), ('4XL', 'CLOTHES'),
+                       ('36', 'SHOES'), ('37', 'SHOES'), ('38', 'SHOES'), ('39', 'SHOES'), ('40', 'SHOES'), ('41', 'SHOES'), ('42', 'SHOES'), ('43', 'SHOES'), ('44', 'SHOES'), ('45', 'SHOES');
 
-insert into color values('black'), ('white'), ('red'), ('yellow'), ('green'), ('blue'), ('violet'), ('grey'), ('multi');
+insert into color values('BLACK'), ('WHITE'), ('RED'), ('YELLOW'), ('GREEN'), ('BLUE'), ('VIOLET'), ('GREY'), ('MULTI');

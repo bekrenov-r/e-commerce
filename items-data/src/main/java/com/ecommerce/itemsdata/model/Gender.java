@@ -1,18 +1,17 @@
 package com.ecommerce.itemsdata.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
 public enum Gender {
 
-    male("M"),
-    female("F");
+    MALE,
+    FEMALE,
+    UNISEX;
 
-    private final String gender;
-
-    Gender(String gender) {
-        this.gender = gender;
-    }
-
-    @Override
-    public String toString() {
-        return gender;
+    public static Gender ofString(String s){
+        return Gender.valueOf(s.toUpperCase());
     }
 }

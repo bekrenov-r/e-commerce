@@ -2,13 +2,13 @@ package com.ecommerce.itemsdata.model;
 
 public enum Season {
 
-    winter,
-    spring,
-    autumn,
-    summer,
-    multiseason;
+    WINTER,
+    SPRING,
+    AUTUMN,
+    SUMMER,
+    MULTISEASON;
 
     public static Season ofString(String s){
-        return Season.valueOf(s.toLowerCase());
+        return Season.valueOf(s.toUpperCase());
     }
 }
