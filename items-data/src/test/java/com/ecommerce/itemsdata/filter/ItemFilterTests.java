@@ -97,15 +97,15 @@ public class ItemFilterTests {
         @Test
         void filterItemsByBrands_ignoringCase(){
             // arrange
-            List<String> brands = Arrays.asList("gucci", "Balenciaga", "New balance");
+            List<Long> brandsIds = Arrays.asList(2L, 7L, 10L);
 
             // act
             List<Item> filteredItems = itemFilter.filter(
                     new FilterOptionsModel(
-                            null, null, null, brands, null, null, null
+                            null, null, null, brandsIds, null, null, null
                     )
             );
-            boolean success = allItemsMatchByBrandIgnoreCase(filteredItems, brands);
+            boolean success = allItemsMatchByBrandIgnoreCase(filteredItems, brandsIds);
 
             // assert
             assertTrue(success);
@@ -244,12 +244,9 @@ public class ItemFilterTests {
                 .reduce(true, (a,b) -> a && b);
     }
 
-    private boolean allItemsMatchByBrandIgnoreCase(List<Item> items, List<String> brands){
-        List<String> brandsLowercase = brands.stream()
-                .map(String::toLowerCase)
-                .toList();
+    private boolean allItemsMatchByBrandIgnoreCase(List<Item> items, List<Long> brandsIds){
         return items.stream()
-                .map(item -> brandsLowercase.contains(item.getBrand().toLowerCase()))
+                .map(item -> brandsIds.contains(item.getBrand().getId()))
                 .reduce(true, (a,b) -> a && b);
     }
 

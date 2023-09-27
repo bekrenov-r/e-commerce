@@ -1,7 +1,7 @@
 package com.ecommerce.itemsdata.service.filter;
 
 import com.ecommerce.itemsdata.dto.request.FilterOptionsModel;
-import com.ecommerce.itemsdata.model.*;
+import com.ecommerce.itemsdata.model.Item;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang.math.DoubleRange;
 import org.springframework.stereotype.Component;
@@ -31,8 +31,8 @@ public class ItemFilter {
         if(filterOptions.colors() != null)
             processor.byColors(filterOptions.colors());
 
-        if(filterOptions.brands() != null)
-            processor.byBrands(filterOptions.brands());
+        if(filterOptions.brandsIds() != null)
+            processor.byBrands(filterOptions.brandsIds());
 
         if(filterOptions.season() != null)
             processor.bySeason(filterOptions.season());

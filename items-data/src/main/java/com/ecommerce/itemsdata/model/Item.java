@@ -1,7 +1,10 @@
 package com.ecommerce.itemsdata.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -71,8 +74,9 @@ public class Item {
     @Column(name = "collection")
     private String collection;
 
-    @Column(name = "brand")
-    private String brand;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "brand_id", referencedColumnName = "id")
+    private Brand brand;
 
     @Column(name = "material")
     @Enumerated(EnumType.STRING)
@@ -84,9 +88,6 @@ public class Item {
 
     @Column(name = "rating")
     private Double rating;
-
-    @Column(name = "reviews_count")
-    private Integer reviewsCount;
 
     @Column(name = "item_code")
     private String itemCode;
@@ -102,7 +103,7 @@ public class Item {
             cascade = CascadeType.ALL)
     private List<UniqueItem> uniqueItems;
 
-    public Item(Long id, String name, String description, Double price, Double discount, Category category, Subcategory subcategory, List<ItemImage> images, List<Color> colors, List<Size> sizes, Gender gender, AgeGroup ageGroup, String collection, String brand, Material material, Season season, Double rating, Integer reviewsCount, String itemCode, List<UniqueItem> uniqueItems, ItemDetails itemDetails) {
+    public Item(Long id, String name, String description, Double price, Double discount, Category category, Subcategory subcategory, List<ItemImage> images, List<Color> colors, List<Size> sizes, Gender gender, AgeGroup ageGroup, String collection, Brand brand, Material material, Season season, Double rating, String itemCode, List<UniqueItem> uniqueItems, ItemDetails itemDetails) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -121,7 +122,6 @@ public class Item {
         this.material = material;
         this.season = season;
         this.rating = rating;
-        this.reviewsCount = reviewsCount;
         this.itemCode = itemCode;
         this.uniqueItems = uniqueItems;
         this.itemDetails = itemDetails;
@@ -183,7 +183,7 @@ public class Item {
         this.collection = collection;
     }
 
-    public void setBrand(String brand) {
+    public void setBrand(Brand brand) {
         this.brand = brand;
     }
 
@@ -197,10 +197,6 @@ public class Item {
 
     public void setRating(Double rating) {
         this.rating = rating;
-    }
-
-    public void setReviewsCount(Integer reviewsCount) {
-        this.reviewsCount = reviewsCount;
     }
 
     public void setItemCode(String itemCode) {

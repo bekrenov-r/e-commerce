@@ -47,6 +47,7 @@ public class ItemController {
             @RequestParam(name = "page", defaultValue = "0") Integer page,
             @ModelAttribute FilterOptionsModel filters
     ){
+        System.out.println(filters.brandsIds());
         return ResponseEntity
                 .ok(itemService.getAllItemsByGenderCategoryAndSubcategory(
                         gender, categoryId, subcategoryId, sort, page, filters
