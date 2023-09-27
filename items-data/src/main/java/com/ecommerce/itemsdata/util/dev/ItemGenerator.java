@@ -76,7 +76,28 @@ public class ItemGenerator {
             new Color(8L, GREY),
             new Color(9L, MULTI)
     );
-    private final List<String> brands = Arrays.asList("Louis Vuitton", "Gucci", "Balenciaga", "Dior Homme", "Prada", "Salvatore Ferragamo", "Chanel", "Armani", "Yves Saint Laurent", "Burberry", "Hermès", "Adidas", "Lululemon", "Zara", "UNIQLO", "H&M", "Cartier", "Tiffany & Co.", "Moncler", "Rolex", "Patek Philippe");
+    private final List<Brand> brands = Arrays.asList(
+            new Brand(1L, "Louis Vuitton"),
+            new Brand(2L, "Gucci"),
+            new Brand(3L, "Balenciaga"),
+            new Brand(4L, "Dior Homme"),
+            new Brand(5L, "Prada"),
+            new Brand(6L, "Salvatore Ferragamo"),
+            new Brand(7L, "Chanel"),
+            new Brand(8L, "Armani"),
+            new Brand(9L, "Yves Saint Laurent"),
+            new Brand(10L, "Burberry"),
+            new Brand(11L, "Hermès"),
+            new Brand(12L, "Lululemon"),
+            new Brand(13L, "Zara"),
+            new Brand(14L, "UNIQLO"),
+            new Brand(15L, "H&M"),
+            new Brand(16L, "Cartier"),
+            new Brand(17L, "Tiffany & Co."),
+            new Brand(18L, "Moncler"),
+            new Brand(19L, "Rolex"),
+            new Brand(20L, "Patek Philippe")
+    );
     private final List<Material> materials = Arrays.stream(Material.values()).toList();
 
     public Item generateItem(){
@@ -103,11 +124,10 @@ public class ItemGenerator {
         Gender gender = Gender.values()[rand.nextInt(Gender.values().length)];
         AgeGroup ageGroup = AgeGroup.values()[rand.nextInt(AgeGroup.values().length)];
         String collection = "Collection";
-        String brand = brands.get(rand.nextInt(brands.size()));
+        Brand brand = brands.get(rand.nextInt(brands.size()));
         Material material = materials.get(rand.nextInt(materials.size()));
         Season season = Season.values()[rand.nextInt(Season.values().length)];
         Double rating = BigDecimal.valueOf(rand.nextDouble(3.0) + 2).round(new MathContext(2)).doubleValue();
-        int reviewsCount = rand.nextInt(1000);
         String itemCode = generateItemCode();
         Item result = Item.builder()
                 .name(itemName)
@@ -126,7 +146,6 @@ public class ItemGenerator {
                 .material(material)
                 .season(season)
                 .rating(rating)
-                .reviewsCount(reviewsCount)
                 .itemCode(itemCode)
                 .build();
         images.forEach(image -> image.setItem(result));

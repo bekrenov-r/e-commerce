@@ -21,7 +21,7 @@ public abstract class ItemToDtoMapper {
     @Mapping(target = "discount", source = "item.discount")
     @Mapping(target = "priceAfterDiscount", source = "item.priceAfterDiscount")
     @Mapping(target = "images", expression = "java(imageUtils.encodeAllItemImages(item.getImages()))")
-    @Mapping(target = "brand", source = "item.brand")
+    @Mapping(target = "brand", source = "item.brand.name")
     @Mapping(target = "rating", source = "item.rating")
     @Mapping(target = "colors", expression = "java(itemMappingService.allColorsForItem(item))")
     @Mapping(target = "isOnWishList", expression = "java(itemMappingService.isItemOnWishList(item.getId()))")

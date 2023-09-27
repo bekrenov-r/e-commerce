@@ -10,7 +10,7 @@ public record FilterOptionsModel(
         List<Integer> priceRange,
         List<String> sizes,
         List<ColorEnum> colors,
-        List<String> brands,
+        List<Long> brandsIds,
         List<Material> materials,
         Season season,
         Short rating

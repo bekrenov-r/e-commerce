@@ -1,16 +1,7 @@
 -- \c items_data
 
-drop table if exists item cascade;
-drop table if exists item_details cascade;
-drop table if exists unique_item cascade;
-drop table if exists category cascade;
-drop table if exists subcategory cascade;
-drop table if exists image cascade;
-drop table if exists review cascade;
-drop table if exists size cascade;
-drop table if exists color cascade;
-drop table if exists item_size cascade;
-drop table if exists item_color cascade;
+drop schema public cascade;
+create schema public;
 
 create table category (
   name text,
@@ -35,6 +26,11 @@ create table color (
     id serial primary key
 );
 
+create table brand(
+    name text,
+    id serial primary key
+);
+
 CREATE TABLE item (
   name text,
   description text,
@@ -43,14 +39,13 @@ CREATE TABLE item (
   price_after_discount numeric,
   category_id int,
   subcategory_id int,
+  brand_id text,
   gender text,
   age_group text,
   collection text,
-  brand text,
   material text,
   season text,
   rating numeric,
-  reviews_count int,
   item_code text,
   id serial PRIMARY KEY,
   foreign key (category_id) references category(id),
@@ -136,7 +131,29 @@ insert into subcategory values
                             ('SNEAKERS', 9),
                             ('BOOTS', 9);
 
-insert into size values('XS', 'CLOTHES'), ('S', 'CLOTHES'), ('M', 'CLOTHES'), ('L', 'CLOTHES'), ('XL', 'CLOTHES'), ('2XL', 'CLOTHES'), ('3XL', 'CLOTHES'), ('4XL', 'CLOTHES'),
+insert into size values  ('XS', 'CLOTHES'), ('S', 'CLOTHES'), ('M', 'CLOTHES'), ('L', 'CLOTHES'), ('XL', 'CLOTHES'), ('2XL', 'CLOTHES'), ('3XL', 'CLOTHES'), ('4XL', 'CLOTHES'),
                        ('36', 'SHOES'), ('37', 'SHOES'), ('38', 'SHOES'), ('39', 'SHOES'), ('40', 'SHOES'), ('41', 'SHOES'), ('42', 'SHOES'), ('43', 'SHOES'), ('44', 'SHOES'), ('45', 'SHOES');
 
-insert into color values('BLACK'), ('WHITE'), ('RED'), ('YELLOW'), ('GREEN'), ('BLUE'), ('VIOLET'), ('GREY'), ('MULTI');
+insert into color values ('BLACK'), ('WHITE'), ('RED'), ('YELLOW'), ('GREEN'), ('BLUE'), ('VIOLET'), ('GREY'), ('MULTI');
+
+insert into brand values
+    ('Louis Vuitton'),
+    ('Gucci'),
+    ('Balenciaga'),
+    ('Dior Homme'),
+    ('Prada'),
+    ('Salvatore Ferragamo'),
+    ('Chanel'),
+    ('Armani'),
+    ('Yves Saint Laurent'),
+    ('Burberry'),
+    ('Hermès'),
+    ('Lululemon'),
+    ('Zara'),
+    ('UNIQLO'),
+    ('H&M'),
+    ('Cartier'),
+    ('Tiffany & Co.'),
+    ('Moncler'),
+    ('Rolex'),
+    ('Patek Philippe');

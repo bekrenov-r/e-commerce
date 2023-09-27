@@ -56,12 +56,12 @@ public class ItemFiltersProcessor {
                 .collect(Collectors.toList());
     }
 
-    public void byBrands(List<String> brands) {
-        List<String> brandsLowercase = brands.stream()
+    public void byBrands(List<Long> brandsIds) {
+        /*List<String> brandsLowercase = brands.stream()
                 .map(String::toLowerCase)
-                .toList();
+                .toList();*/
         items = itemsSupplier.get()
-                .filter(item -> brandsLowercase.contains(item.getBrand().toLowerCase()))
+                .filter(item -> brandsIds.contains(item.getBrand().getId()))
                 .collect(Collectors.toList());
     }
 
