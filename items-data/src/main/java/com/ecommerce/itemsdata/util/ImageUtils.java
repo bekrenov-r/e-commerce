@@ -7,23 +7,31 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.Base64;
 import java.util.List;
 
 @Component
 public class ImageUtils {
 
-    public List<String> encodeAllItemImages(List<ItemImage> itemImages) {
+    public List<byte[]> convertAllItemImages(List<ItemImage> itemImages) {
         return itemImages.stream()
-                .map(this::encodeItemImage)
+                .map(this::imageToByteArray)
                 .toList();
     }
 
-    public String encodeItemImage(ItemImage itemImage) {
+    public byte[] imageToByteArray(ItemImage itemImage) {
         try {
             File file = Paths.get(itemImage.getPath()).toAbsolutePath().toFile();
-            byte[] fileContent = FileUtils.readFileToByteArray(file);
-            return Base64.getEncoder().encodeToString(fileContent);
+            return FileUtils.readFileToByteArray(file);
+        } catch(IOException ex){
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    public byte[] imagePathToByteArray(String path) {
+        try {
+            File file = Paths.get(path).toAbsolutePath().toFile();
+            return FileUtils.readFileToByteArray(file);
         } catch(IOException ex){
             ex.printStackTrace();
             return null;

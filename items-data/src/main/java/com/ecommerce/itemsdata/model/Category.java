@@ -23,6 +23,9 @@ public class Category {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "img_url")
+    private String imagePath;
+
     @OneToMany(mappedBy = "category",
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)

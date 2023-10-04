@@ -5,6 +5,7 @@ create schema public;
 
 create table category (
   name text,
+  img_url text,
   id serial primary key
 );
 
@@ -111,17 +112,18 @@ create table review (
 );
 
 insert into category values
-                         ('T_SHIRTS'),
-                         ('SHIRTS'),
-                         ('TROUSERS'),
-                         ('SHORTS'),
-                         ('HOODIES_AND_SWEATSHIRTS'),
-                         ('SWEATERS'),
-                         ('COATS'),
-                         ('JACKETS'),
-                         ('SHOES'),
-                         ('UNDERWEAR'),
-                         ('SOCKS');
+                         ('T_SHIRTS', 'items-data/src/main/resources/images/category/t_shirts.png'),
+                         ('SHIRTS', 'items-data/src/main/resources/images/category/shirts.png'),
+                         ('TROUSERS', 'items-data/src/main/resources/images/category/trousers.png'),
+                         ('SHORTS', 'items-data/src/main/resources/images/category/shorts.png'),
+                         ('HOODIES_AND_SWEATSHIRTS', 'items-data/src/main/resources/images/category/hoodies_and_sweatshirts.png'),
+                         ('SWEATERS', 'items-data/src/main/resources/images/category/sweaters.png'),
+                         ('COATS', 'items-data/src/main/resources/images/category/coats.png'),
+                         ('JACKETS', 'items-data/src/main/resources/images/category/jackets.png'),
+                         ('SHOES', 'items-data/src/main/resources/images/category/shoes.png'),
+                         ('UNDERWEAR', 'items-data/src/main/resources/images/category/underwear.png'),
+                         ('SOCKS', 'items-data/src/main/resources/images/category/socks.png'),
+                         ('ACCESSORIES', 'items-data/src/main/resources/images/category/accessories.png');
 
 insert into subcategory values
                             ('JEANS', 3),
