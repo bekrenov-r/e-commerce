@@ -8,8 +8,7 @@ import lombok.Getter;
 public enum Gender {
 
     MALE,
-    FEMALE,
-    UNISEX;
+    FEMALE;
 
     public static Gender ofString(String s){
         return Gender.valueOf(s.toUpperCase());
