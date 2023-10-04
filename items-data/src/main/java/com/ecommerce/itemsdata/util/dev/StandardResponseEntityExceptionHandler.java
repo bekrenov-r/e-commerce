@@ -25,8 +25,7 @@ public class StandardResponseEntityExceptionHandler extends ResponseEntityExcept
         ErrorDetail errorDetail = new ErrorDetail(
                 LocalDateTime.now(),
                 HttpStatus.INTERNAL_SERVER_ERROR,
-                ex.getMessage(),
-                responseSource.toString()
+                ex.getMessage()
         );
         ex.printStackTrace();
         return new ResponseEntity<>(errorDetail, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -37,8 +36,7 @@ public class StandardResponseEntityExceptionHandler extends ResponseEntityExcept
         ErrorDetail errorDetail = new ErrorDetail(
                 LocalDateTime.now(),
                 HttpStatus.NOT_FOUND,
-                ex.getMessage(),
-                responseSource.toString()
+                ex.getMessage()
         );
 
         return new ResponseEntity<>(errorDetail, HttpStatus.NOT_FOUND);
@@ -49,8 +47,7 @@ public class StandardResponseEntityExceptionHandler extends ResponseEntityExcept
         ErrorDetail errorDetail = new ErrorDetail(
                 LocalDateTime.now(),
                 HttpStatus.BAD_REQUEST,
-                ex.getMessage(),
-                responseSource.toString()
+                ex.getMessage()
         );
 
         return new ResponseEntity<>(errorDetail, HttpStatus.BAD_REQUEST);
@@ -63,8 +60,7 @@ public class StandardResponseEntityExceptionHandler extends ResponseEntityExcept
         ErrorDetail errorDetail = new ErrorDetail(
                 LocalDateTime.now(),
                 status,
-                ex.getMessage(),
-                responseSource.toString()
+                ex.getMessage()
         );
 
         return new ResponseEntity<>(errorDetail, status);
@@ -84,8 +80,7 @@ public class StandardResponseEntityExceptionHandler extends ResponseEntityExcept
         ErrorDetail errorDetail = new ErrorDetail(
                 LocalDateTime.now(),
                 status,
-                message.toString(),
-                responseSource.toString()
+                message.toString()
         );
         return new ResponseEntity<>(errorDetail, status);
     }

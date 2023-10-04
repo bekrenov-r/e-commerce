@@ -1,13 +1,15 @@
 package com.ecommerce.itemsdata.util.dev;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatusCode;
 
 import java.time.LocalDateTime;
 
 @NoArgsConstructor
-@Data
+@AllArgsConstructor
+@Builder
 public class ErrorDetail {
 
     private LocalDateTime timestamp;
@@ -18,13 +20,11 @@ public class ErrorDetail {
 
     private String message;
 
-    private String source;
 
-    public ErrorDetail(LocalDateTime timestamp, HttpStatusCode error, String message, String source) {
+    public ErrorDetail(LocalDateTime timestamp, HttpStatusCode error, String message) {
         this.timestamp = timestamp;
         this.error = error;
         this.statusCode = error.value();
         this.message = message;
-        this.source = source;
     }
 }
