@@ -12,6 +12,6 @@ public class ResponseSource {
     public String toString(){
         String applicationName = environment.getProperty("spring.application.name");
         String port = environment.getProperty("server.port");
-        return String.format("name=%s, port=%s", applicationName, port);
+        return String.format("%s:%s", applicationName, port);
     }
 }
