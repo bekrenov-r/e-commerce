@@ -1,13 +1,15 @@
 package com.ecommerce.itemsdata.util.dev;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.http.HttpStatusCode;
 
 import java.time.LocalDateTime;
 
 @NoArgsConstructor
-@Data
+@AllArgsConstructor
+@Getter
+@Setter
+@Builder
 public class ErrorDetail {
 
     private LocalDateTime timestamp;
