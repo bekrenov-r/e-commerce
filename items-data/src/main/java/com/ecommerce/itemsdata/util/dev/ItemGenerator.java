@@ -22,26 +22,26 @@ import static com.ecommerce.itemsdata.model.SizeType.SHOES;
 public class ItemGenerator {
 
     private final List<Category> categories = Arrays.asList(
-            new Category(1L, "T_SHIRTS", "items-data/src/main/resources/images/category/t_shirts.png", List.of()),
-            new Category(2L, "SHIRTS", "items-data/src/main/resources/images/category/shirts.png", List.of()),
-            new Category(3L, "TROUSERS", "items-data/src/main/resources/images/category/trousers.png", Arrays.asList(
+            new Category(1L, "T_SHIRTS", "t_shirts.png", List.of()),
+            new Category(2L, "SHIRTS", "shirts.png", List.of()),
+            new Category(3L, "TROUSERS", "trousers.png", Arrays.asList(
                     new Subcategory(1L, "JEANS", null),
                     new Subcategory(2L, "JOGGERS", null),
                     new Subcategory(3L, "SPORT", null))
             ),
-            new Category(4L, "SHORTS", "items-data/src/main/resources/images/category/shorts.png", List.of()),
-            new Category(5L, "HOODIES_AND_SWEATSHIRTS", "items-data/src/main/resources/images/category/hoodies_and_sweatshirts.png", List.of()),
-            new Category(6L, "SWEATERS", "items-data/src/main/resources/images/category/sweaters.png", List.of()),
-            new Category(7L, "COATS", "items-data/src/main/resources/images/category/coats.png", List.of()),
-            new Category(8L, "JACKETS", "items-data/src/main/resources/images/category/jackets.png", List.of()),
-            new Category(9L, "SHOES", "items-data/src/main/resources/images/category/shoes.png", Arrays.asList(
+            new Category(4L, "SHORTS", "shorts.png", List.of()),
+            new Category(5L, "HOODIES_AND_SWEATSHIRTS", "hoodies_and_sweatshirts.png", List.of()),
+            new Category(6L, "SWEATERS", "sweaters.png", List.of()),
+            new Category(7L, "COATS", "coats.png", List.of()),
+            new Category(8L, "JACKETS", "jackets.png", List.of()),
+            new Category(9L, "SHOES", "shoes.png", Arrays.asList(
                     new Subcategory(4L, "SANDALS",  null),
                     new Subcategory(5L, "SNEAKERS", null),
                     new Subcategory(6L, "BOOTS", null))
             ),
-            new Category(10L, "UNDERWEAR", "items-data/src/main/resources/images/category/underwear.png", List.of()),
-            new Category(11L, "SOCKS", "items-data/src/main/resources/images/category/socks.png", List.of()),
-            new Category(11L, "ACCESSORIES", "items-data/src/main/resources/images/category/accessories.png", List.of())
+            new Category(10L, "UNDERWEAR", "underwear.png", List.of()),
+            new Category(11L, "SOCKS", "socks.png", List.of()),
+            new Category(11L, "ACCESSORIES", "accessories.png", List.of())
     );
     private final List<Size> allSizesClothes = Arrays.asList(
             new Size(1L, "XS", CLOTHES),
@@ -146,9 +146,7 @@ public class ItemGenerator {
                 .brand(brand)
                 .material(material)
                 .season(season)
-                .rating(rating)
-                .itemCode(itemCode)
-                .build();
+.build();
         images.forEach(image -> image.setItem(result));
         result.setImages(images);
         return result;

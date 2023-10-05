@@ -17,6 +17,10 @@ custom:
     size: 20
   strategy:
     popular-items-limit-in-scope: 10
+  category:
+    img-path-prefix:
+      men: items-data/src/main/resources/images/category/men/
+      women: items-data/src/main/resources/images/category/women/
 eureka:
   client:
     serviceUrl:

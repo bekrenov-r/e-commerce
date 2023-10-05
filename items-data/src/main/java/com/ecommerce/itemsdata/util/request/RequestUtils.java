@@ -1,6 +1,7 @@
 package com.ecommerce.itemsdata.util.request;
 
 import com.ecommerce.itemsdata.util.StringUtils;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -27,6 +28,10 @@ public class RequestUtils {
         } else {
             return COLLECTION;
         }
+    }
+
+    public HttpServletRequest getRequest() {
+        return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
     }
 
     public String getRequestURI() {

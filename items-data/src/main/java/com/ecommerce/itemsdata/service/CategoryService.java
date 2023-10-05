@@ -6,6 +6,7 @@ import com.ecommerce.itemsdata.dto.response.CategoryResponse;
 import com.ecommerce.itemsdata.dto.response.SubcategoryResponse;
 import com.ecommerce.itemsdata.exception.ItemApplicationException;
 import com.ecommerce.itemsdata.model.Category;
+import com.ecommerce.itemsdata.model.Gender;
 import com.ecommerce.itemsdata.repository.CategoryRepository;
 import com.ecommerce.itemsdata.repository.SubcategoryRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,9 +24,9 @@ public class CategoryService {
     private final CategoryMapper categoryMapper;
     private final SubcategoryMapper subcategoryMapper;
 
-    public List<CategoryResponse> getAllCategories() {
+    public List<CategoryResponse> getAllCategories(Gender gender) {
         return categoryRepository.findAll().stream()
-                .map(categoryMapper::categoryToResponse)
+                .map(category -> categoryMapper.categoryToResponse(category, gender))
                 .toList();
     }
 
