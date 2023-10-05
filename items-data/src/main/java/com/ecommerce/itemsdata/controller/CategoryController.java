@@ -2,13 +2,11 @@ package com.ecommerce.itemsdata.controller;
 
 import com.ecommerce.itemsdata.dto.response.CategoryResponse;
 import com.ecommerce.itemsdata.dto.response.SubcategoryResponse;
+import com.ecommerce.itemsdata.model.Gender;
 import com.ecommerce.itemsdata.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,8 +17,8 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping
-    public ResponseEntity<List<CategoryResponse>> getAllCategories(){
-        return ResponseEntity.ok(categoryService.getAllCategories());
+    public ResponseEntity<List<CategoryResponse>> getAllCategories(@RequestParam Gender gender){
+        return ResponseEntity.ok(categoryService.getAllCategories(gender));
     }
 
     @GetMapping("/{categoryId}/subcategories")

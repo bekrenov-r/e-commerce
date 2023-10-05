@@ -23,8 +23,8 @@ public class Category {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "img_url")
-    private String imagePath;
+    @Column(name = "img_name")
+    private String imageName;
 
     @OneToMany(mappedBy = "category",
             cascade = CascadeType.ALL,
