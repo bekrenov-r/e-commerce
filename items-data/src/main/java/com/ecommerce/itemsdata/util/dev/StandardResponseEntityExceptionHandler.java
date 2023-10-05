@@ -1,7 +1,7 @@
 package com.ecommerce.itemsdata.util.dev;
 
 import jakarta.persistence.EntityNotFoundException;
-import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -15,19 +15,17 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import java.time.LocalDateTime;
 
-@AllArgsConstructor
+@Slf4j
 public class StandardResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
-
-    protected final ResponseSource responseSource;
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorDetail> handleAllExceptions(Exception ex, WebRequest webRequest){
+        this.logException(ex);
         ErrorDetail errorDetail = new ErrorDetail(
                 LocalDateTime.now(),
                 HttpStatus.INTERNAL_SERVER_ERROR,
                 ex.getMessage()
         );
-        ex.printStackTrace();
         return new ResponseEntity<>(errorDetail, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
@@ -83,6 +81,10 @@ public class StandardResponseEntityExceptionHandler extends ResponseEntityExcept
                 message.toString()
         );
         return new ResponseEntity<>(errorDetail, status);
+    }
+
+    protected void logException(Exception ex){
+        log.error(ex.getClass().getSimpleName() + ": ", ex);
     }
 
 }
