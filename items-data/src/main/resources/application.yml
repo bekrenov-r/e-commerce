@@ -26,6 +26,11 @@ eureka:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka
 #      defaultZone: http://naming-server:8761/eureka
+springdoc:
+  api-docs:
+    path: /items/docs # these urls will be used to load the api docs of this service by the api gateway
+  swagger-ui:
+    enabled: false
 
 #logging.level.org.springframework.web.client.RestTemplate=DEBUG
 #logging.level.root=OFF

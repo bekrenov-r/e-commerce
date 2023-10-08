@@ -16,3 +16,4 @@ buildNumber.properties
 # JDT-specific (Eclipse Java Development Tools)
 .classpath
 /items-data/sql/select_items_by_criteria.sql
+/todo.txt
