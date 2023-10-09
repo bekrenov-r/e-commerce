@@ -30,7 +30,7 @@ public class CategoryService {
                 .toList();
     }
 
-    public List<SubcategoryResponse> getAllSubcategoriesInCategory(Long categoryId) {
+    public List<SubcategoryResponse> getAllSubcategoriesInCategory(String categoryId) {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new ItemApplicationException(CATEGORY_NOT_FOUND, categoryId));
         return subcategoryRepository.findAllByCategory(category)

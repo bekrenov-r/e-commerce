@@ -6,12 +6,12 @@ create schema public;
 create table category (
   name text,
   img_name text,
-  id serial primary key
+  id text primary key
 );
 
 create table subcategory (
   name text,
-  category_id int,
+  category_id text,
   id serial primary key,
   foreign key (category_id) references category(id)
 );
@@ -38,7 +38,7 @@ CREATE TABLE item (
   price numeric,
   discount numeric,
   price_after_discount numeric,
-  category_id int,
+  category_id text,
   subcategory_id int,
   brand_id text,
   gender text,
@@ -112,26 +112,26 @@ create table review (
 );
 
 insert into category values
-                         ('T_SHIRTS', 't_shirts.png'),
-                         ('SHIRTS', 'shirts.png'),
-                         ('TROUSERS', 'trousers.png'),
-                         ('SHORTS', 'shorts.png'),
-                         ('HOODIES_AND_SWEATSHIRTS', 'hoodies_and_sweatshirts.png'),
-                         ('SWEATERS', 'sweaters.png'),
-                         ('COATS', 'coats.png'),
-                         ('JACKETS', 'jackets.png'),
-                         ('SHOES', 'shoes.png'),
-                         ('UNDERWEAR', 'underwear.png'),
-                         ('SOCKS', 'socks.png'),
-                         ('ACCESSORIES', 'accessories.png');
+                         ('T-Shirts', 't_shirts.png', 't-shirts'),
+                         ('Shirts', 'shirts.png', 'shirts'),
+                         ('Trousers', 'trousers.png', 'trousers'),
+                         ('Shorts', 'shorts.png', 'shorts'),
+                         ('Hoodies & Sweatshirts', 'hoodies_and_sweatshirts.png', 'hoodies-and-sweatshirts'),
+                         ('Sweaters', 'sweaters.png', 'sweaters'),
+                         ('Coats', 'coats.png', 'coats'),
+                         ('Jackets', 'jackets.png', 'jackets'),
+                         ('Shoes', 'shoes.png', 'shoes'),
+                         ('Underwear', 'underwear.png', 'underwear'),
+                         ('Socks', 'socks.png', 'socks'),
+                         ('Accessories', 'accessories.png', 'accessories');
 
 insert into subcategory values
-                            ('JEANS', 3),
-                            ('JOGGERS', 3),
-                            ('SPORT', 3),
-                            ('SANDALS', 9),
-                            ('SNEAKERS', 9),
-                            ('BOOTS', 9);
+                            ('JEANS', 'trousers'),
+                            ('JOGGERS', 'trousers'),
+                            ('SPORT', 'trousers'),
+                            ('SANDALS', 'shoes'),
+                            ('SNEAKERS', 'shoes'),
+                            ('BOOTS', 'shoes');
 
 insert into size values  ('XS', 'CLOTHES'), ('S', 'CLOTHES'), ('M', 'CLOTHES'), ('L', 'CLOTHES'), ('XL', 'CLOTHES'), ('2XL', 'CLOTHES'), ('3XL', 'CLOTHES'), ('4XL', 'CLOTHES'),
                        ('36', 'SHOES'), ('37', 'SHOES'), ('38', 'SHOES'), ('39', 'SHOES'), ('40', 'SHOES'), ('41', 'SHOES'), ('42', 'SHOES'), ('43', 'SHOES'), ('44', 'SHOES'), ('45', 'SHOES');
