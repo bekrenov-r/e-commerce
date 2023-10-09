@@ -10,7 +10,6 @@ public record ItemResponse(
         Double price,
         Double discount,
         Double priceAfterDiscount,
-        List<byte[]> images,
         String brand,
         Double rating,
         List<ColorEnum> colors,
