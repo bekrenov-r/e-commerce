@@ -30,8 +30,8 @@ public abstract class CategoryMapper {
     @Named("mapImage")
     public byte[] mapImage(String imageName, @Context Gender gender){
         String imgPathPrefix = switch(gender){
-            case MALE -> IMG_PREFIX_MEN;
-            case FEMALE -> IMG_PREFIX_WOMEN;
+            case MEN -> IMG_PREFIX_MEN;
+            case WOMEN -> IMG_PREFIX_WOMEN;
         };
         return imageUtils.imagePathToByteArray(imgPathPrefix + imageName);
     }
