@@ -22,7 +22,7 @@ public class CategoryController {
     }
 
     @GetMapping("/{categoryId}/subcategories")
-    public ResponseEntity<List<SubcategoryResponse>> getAllSubcategoriesInCategory(@PathVariable Long categoryId){
+    public ResponseEntity<List<SubcategoryResponse>> getAllSubcategoriesInCategory(@PathVariable String categoryId){
         return ResponseEntity.ok(categoryService.getAllSubcategoriesInCategory(categoryId));
     }
 }

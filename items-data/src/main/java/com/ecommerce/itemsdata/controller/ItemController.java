@@ -29,7 +29,7 @@ public class ItemController {
     @GetMapping("/gender/{gender}/category/{categoryId}")
     public ResponseEntity<Page<ItemResponse>> getAllItemsByGenderAndCategory(
             @PathVariable("gender") Gender gender,
-            @PathVariable("categoryId") Long categoryId,
+            @PathVariable("categoryId") String categoryId,
             @RequestParam(name = "sort", required = false) SortOption sort,
             @RequestParam(name = "page", defaultValue = "0") Integer page,
             @ModelAttribute FilterOptionsModel filters
@@ -41,7 +41,7 @@ public class ItemController {
     @GetMapping("/gender/{gender}/category/{categoryId}/subcategory/{subcategoryId}")
     public ResponseEntity<Page<ItemResponse>> getAllItemsByGenderCategoryAndSubcategory(
             @PathVariable("gender") Gender gender,
-            @PathVariable("categoryId") Long categoryId,
+            @PathVariable("categoryId") String categoryId,
             @PathVariable("subcategoryId") Long subcategoryId,
             @RequestParam(name = "sort", required = false) SortOption sort,
             @RequestParam(name = "page", defaultValue = "0") Integer page,
@@ -58,7 +58,7 @@ public class ItemController {
     public ResponseEntity<Page<ItemResponse>> getAllItemsByAgeGenderAndCategory(
             @PathVariable("age-group") AgeGroup ageGroup,
             @PathVariable("gender") Gender gender,
-            @PathVariable("categoryId") Long categoryId,
+            @PathVariable("categoryId") String categoryId,
             @RequestParam(name = "sort", required = false) SortOption sort,
             @RequestParam(name = "page", defaultValue = "0") Integer page,
             @ModelAttribute FilterOptionsModel filters
@@ -73,7 +73,7 @@ public class ItemController {
     public ResponseEntity<Page<ItemResponse>> getAllItemsByAgeGenderCategoryAndSubcategory(
             @PathVariable("age-group") AgeGroup ageGroup,
             @PathVariable("gender") Gender gender,
-            @PathVariable("categoryId") Long categoryId,
+            @PathVariable("categoryId") String categoryId,
             @PathVariable("subcategoryId") Long subcategoryId,
             @RequestParam(name = "sort", required = false) SortOption sort,
             @RequestParam(name = "page", defaultValue = "0") Integer page,

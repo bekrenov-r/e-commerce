@@ -1,8 +1,8 @@
 package com.ecommerce.itemsdata.service;
 
+import com.ecommerce.itemsdata.dto.mapper.ItemToDtoMapper;
 import com.ecommerce.itemsdata.dto.request.FilterOptionsModel;
 import com.ecommerce.itemsdata.dto.response.ItemResponse;
-import com.ecommerce.itemsdata.dto.mapper.ItemToDtoMapper;
 import com.ecommerce.itemsdata.exception.ItemApplicationException;
 import com.ecommerce.itemsdata.model.*;
 import com.ecommerce.itemsdata.repository.CategoryRepository;
@@ -14,7 +14,10 @@ import com.ecommerce.itemsdata.service.sort.SortOption;
 import com.ecommerce.itemsdata.util.dev.ItemGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -22,7 +25,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
-import static com.ecommerce.itemsdata.exception.ItemApplicationExceptionReason.*;
+import static com.ecommerce.itemsdata.exception.ItemApplicationExceptionReason.CATEGORY_NOT_FOUND;
+import static com.ecommerce.itemsdata.exception.ItemApplicationExceptionReason.SUBCATEGORY_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -40,7 +44,7 @@ public class ItemService {
 
     public Page<ItemResponse> getAllItemsByGenderAndCategory(
             Gender gender,
-            Long categoryId,
+            String categoryId,
             SortOption sort,
             Integer page,
             FilterOptionsModel filters
@@ -53,7 +57,7 @@ public class ItemService {
 
     public Page<ItemResponse> getAllItemsByGenderCategoryAndSubcategory(
             Gender gender,
-            Long categoryId,
+            String categoryId,
             Long subcategoryId,
             SortOption sort,
             Integer page,
@@ -72,7 +76,7 @@ public class ItemService {
     public Page<ItemResponse> getAllItemsByAgeGenderAndCategory(
             AgeGroup ageGroup,
             Gender gender,
-            Long categoryId,
+            String categoryId,
             SortOption sort,
             Integer page,
             FilterOptionsModel filters
@@ -86,7 +90,7 @@ public class ItemService {
     public Page<ItemResponse> getAllItemsByAgeGenderCategoryAndSubcategory(
             AgeGroup ageGroup,
             Gender gender,
-            Long categoryId,
+            String categoryId,
             Long subcategoryId,
             SortOption sort,
             Integer page,
