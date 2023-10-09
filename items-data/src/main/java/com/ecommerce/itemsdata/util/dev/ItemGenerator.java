@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -117,11 +118,10 @@ public class ItemGenerator {
         String itemName = capitalize(category.getName()) + " " + (rand.nextInt(100) + 1);
         String description = "Description";
         Double price = rand.nextInt(90) + 10 - 0.01;
-        Double discount = BigDecimal.valueOf(rand.nextDouble(0.4)).round(new MathContext(2)).doubleValue();
-        BigDecimal priceBD = BigDecimal.valueOf(price);
-        BigDecimal discountBD = BigDecimal.valueOf(discount);
-        Double priceAfterDiscount =
-                priceBD.subtract(priceBD.multiply(discountBD)).round(new MathContext(2)).doubleValue();
+        Double discount = BigDecimal.valueOf(rand.nextDouble(0.4))
+                .setScale(2, RoundingMode.HALF_UP)
+                .doubleValue();
+        Double priceAfterDiscount = this.calculatePriceAfterDiscount(price, discount);
         Gender gender = Gender.values()[rand.nextInt(Gender.values().length)];
         AgeGroup ageGroup = AgeGroup.values()[rand.nextInt(AgeGroup.values().length)];
         String collection = "Collection";
@@ -207,6 +207,14 @@ public class ItemGenerator {
             res.add(sizes.get(i));
         }
         return res;
+    }
+
+    public Double calculatePriceAfterDiscount(Double price, Double discount){
+        BigDecimal priceBD = BigDecimal.valueOf(price);
+        BigDecimal discountBD = BigDecimal.valueOf(discount);
+        BigDecimal priceAfterDiscount =
+                priceBD.subtract(priceBD.multiply(discountBD)).setScale(2, RoundingMode.HALF_UP);
+        return priceAfterDiscount.doubleValue();
     }
 
     private List<Color> randomNumberOfColors(List<Color> colors){

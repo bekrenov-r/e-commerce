@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.List;
 
@@ -216,8 +215,8 @@ public class Item {
         BigDecimal priceBD = BigDecimal.valueOf(price);
         BigDecimal discountBD = BigDecimal.valueOf(discount);
         BigDecimal priceAfterDiscount =
-                priceBD.subtract(priceBD.multiply(discountBD)).round(new MathContext(0));
-        return priceAfterDiscount.setScale(2, RoundingMode.HALF_UP).doubleValue();
+                priceBD.subtract(priceBD.multiply(discountBD)).setScale(2, RoundingMode.HALF_UP);
+        return priceAfterDiscount.doubleValue();
     }
 
     @Override
