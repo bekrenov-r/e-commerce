@@ -14,21 +14,6 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     List<Item> findAllByCategory(Category category);
     List<Item> findAllByGenderAndCategory(Gender gender, Category category);
     List<Item> findAllByGenderAndCategoryAndSubcategory(Gender gender, Category category, Subcategory subcategory);
-    List<Item> findAllByAgeGroupAndGenderAndCategory(AgeGroup ageGroup, Gender gender, Category category);
-    List<Item> findAllByAgeGroupAndGenderAndCategoryAndSubcategory(
-            AgeGroup ageGroup, Gender gender, Category category, Subcategory subcategory
-    );
-
-    @Query("""
-            from Item i where i.ageGroup = :ageGroup
-            and i.gender = :gender and i.category = :category and i.subcategory = :subcategory
-            order by i.itemDetails.ordersCountLastMonth desc
-            """)
-    List<Item> findPopularByAgeGenderCategoryAndSubcategory(@Param("ageGroup") AgeGroup ageGroup,
-                                                                 @Param("gender") Gender gender,
-                                                                 @Param("category") Category category,
-                                                                 @Param("subcategory") Subcategory subcategory,
-                                                                 Pageable pageable);
 
     @Query("""
             from Item i where i.gender = :gender and i.category = :category and i.subcategory = :subcategory
@@ -38,15 +23,6 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
                                                               @Param("category") Category category,
                                                               @Param("subcategory") Subcategory subcategory,
                                                               Pageable pageable);
-
-    @Query("""
-            from Item i where i.ageGroup = :ageGroup and i.gender = :gender and i.category = :category
-            order by i.itemDetails.ordersCountLastMonth desc
-            """)
-    List<Item> findPopularByAgeGenderAndCategory(@Param("ageGroup") AgeGroup ageGroup,
-                                                      @Param("gender") Gender gender,
-                                                      @Param("category") Category category,
-                                                      Pageable pageable);
 
     @Query("""
             from Item i where i.gender = :gender and i.category = :category

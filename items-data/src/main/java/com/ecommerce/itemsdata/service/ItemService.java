@@ -4,7 +4,10 @@ import com.ecommerce.itemsdata.dto.mapper.ItemToDtoMapper;
 import com.ecommerce.itemsdata.dto.request.FilterOptionsModel;
 import com.ecommerce.itemsdata.dto.response.ItemResponse;
 import com.ecommerce.itemsdata.exception.ItemApplicationException;
-import com.ecommerce.itemsdata.model.*;
+import com.ecommerce.itemsdata.model.Category;
+import com.ecommerce.itemsdata.model.Gender;
+import com.ecommerce.itemsdata.model.Item;
+import com.ecommerce.itemsdata.model.Subcategory;
 import com.ecommerce.itemsdata.repository.CategoryRepository;
 import com.ecommerce.itemsdata.repository.ItemDetailsRepository;
 import com.ecommerce.itemsdata.repository.ItemRepository;
@@ -70,41 +73,6 @@ public class ItemService {
                 .findFirst()
                 .orElseThrow(() -> new ItemApplicationException(SUBCATEGORY_NOT_FOUND, subcategoryId, categoryId));
         var items = itemRepository.findAllByGenderAndCategoryAndSubcategory(gender, category, subcategory);
-        return this.processItems(items, filters, page, sort);
-    }
-
-    public Page<ItemResponse> getAllItemsByAgeGenderAndCategory(
-            AgeGroup ageGroup,
-            Gender gender,
-            String categoryId,
-            SortOption sort,
-            Integer page,
-            FilterOptionsModel filters
-    ) {
-        Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new ItemApplicationException(CATEGORY_NOT_FOUND, categoryId));
-        var items = itemRepository.findAllByAgeGroupAndGenderAndCategory(ageGroup, gender, category);
-        return this.processItems(items, filters, page, sort);
-    }
-
-    public Page<ItemResponse> getAllItemsByAgeGenderCategoryAndSubcategory(
-            AgeGroup ageGroup,
-            Gender gender,
-            String categoryId,
-            Long subcategoryId,
-            SortOption sort,
-            Integer page,
-            FilterOptionsModel filters
-    ) {
-        Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new ItemApplicationException(CATEGORY_NOT_FOUND, categoryId));
-        Subcategory subcategory = category.getSubcategories().stream()
-                .filter(sub -> sub.getId().equals(subcategoryId))
-                .findFirst()
-                .orElseThrow(() -> new ItemApplicationException(SUBCATEGORY_NOT_FOUND, subcategoryId, categoryId));
-        var items = itemRepository.findAllByAgeGroupAndGenderAndCategoryAndSubcategory(
-                ageGroup, gender, category, subcategory
-        );
         return this.processItems(items, filters, page, sort);
     }
 

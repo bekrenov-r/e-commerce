@@ -66,10 +66,6 @@ public class Item {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    @Column(name = "age_group")
-    @Enumerated(EnumType.STRING)
-    private AgeGroup ageGroup;
-
     @Column(name = "collection")
     private String collection;
 
@@ -102,7 +98,7 @@ public class Item {
             cascade = CascadeType.ALL)
     private List<UniqueItem> uniqueItems;
 
-    public Item(Long id, String name, String description, Double price, Double discount, Category category, Subcategory subcategory, List<ItemImage> images, List<Color> colors, List<Size> sizes, Gender gender, AgeGroup ageGroup, String collection, Brand brand, Material material, Season season, Double rating, String itemCode, List<UniqueItem> uniqueItems, ItemDetails itemDetails) {
+    public Item(Long id, String name, String description, Double price, Double discount, Category category, Subcategory subcategory, List<ItemImage> images, List<Color> colors, List<Size> sizes, Gender gender, String collection, Brand brand, Material material, Season season, Double rating, String itemCode, List<UniqueItem> uniqueItems, ItemDetails itemDetails) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -115,7 +111,6 @@ public class Item {
         this.colors = colors;
         this.sizes = sizes;
         this.gender = gender;
-        this.ageGroup = ageGroup;
         this.collection = collection;
         this.brand = brand;
         this.material = material;
@@ -174,9 +169,6 @@ public class Item {
         this.gender = gender;
     }
 
-    public void setAgeGroup(AgeGroup ageGroup) {
-        this.ageGroup = ageGroup;
-    }
 
     public void setCollection(String collection) {
         this.collection = collection;
@@ -231,7 +223,6 @@ public class Item {
                 ", colors=" + colors +
                 ", sizes=" + sizes +
                 ", gender=" + gender +
-                ", ageGroup=" + ageGroup +
                 '}';
     }
 }

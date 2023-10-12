@@ -42,7 +42,6 @@ CREATE TABLE item (
   subcategory_id int,
   brand_id text,
   gender text,
-  age_group text,
   collection text,
   material text,
   season text,

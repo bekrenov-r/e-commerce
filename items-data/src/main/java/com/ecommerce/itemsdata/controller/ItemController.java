@@ -2,7 +2,6 @@ package com.ecommerce.itemsdata.controller;
 
 import com.ecommerce.itemsdata.dto.request.FilterOptionsModel;
 import com.ecommerce.itemsdata.dto.response.ItemResponse;
-import com.ecommerce.itemsdata.model.AgeGroup;
 import com.ecommerce.itemsdata.model.Gender;
 import com.ecommerce.itemsdata.model.Item;
 import com.ecommerce.itemsdata.model.Season;
@@ -46,45 +45,11 @@ public class ItemController {
             @RequestParam(name = "sort", required = false) SortOption sort,
             @RequestParam(name = "page", defaultValue = "0") Integer page,
             @ModelAttribute FilterOptionsModel filters
-    ){
-        System.out.println(filters.brandsIds());
+    ) {
         return ResponseEntity
                 .ok(itemService.getAllItemsByGenderCategoryAndSubcategory(
                         gender, categoryId, subcategoryId, sort, page, filters
                 ));
-    }
-
-    @GetMapping("/age-group/{age-group}/gender/{gender}/category/{categoryId}")
-    public ResponseEntity<Page<ItemResponse>> getAllItemsByAgeGenderAndCategory(
-            @PathVariable("age-group") AgeGroup ageGroup,
-            @PathVariable("gender") Gender gender,
-            @PathVariable("categoryId") String categoryId,
-            @RequestParam(name = "sort", required = false) SortOption sort,
-            @RequestParam(name = "page", defaultValue = "0") Integer page,
-            @ModelAttribute FilterOptionsModel filters
-    ){
-        return ResponseEntity
-                .ok(itemService.getAllItemsByAgeGenderAndCategory(
-                        ageGroup, gender, categoryId, sort, page, filters
-                ));
-    }
-
-    @GetMapping("/age-group/{age-group}/gender/{gender}/category/{categoryId}/subcategory/{subcategoryId}")
-    public ResponseEntity<Page<ItemResponse>> getAllItemsByAgeGenderCategoryAndSubcategory(
-            @PathVariable("age-group") AgeGroup ageGroup,
-            @PathVariable("gender") Gender gender,
-            @PathVariable("categoryId") String categoryId,
-            @PathVariable("subcategoryId") Long subcategoryId,
-            @RequestParam(name = "sort", required = false) SortOption sort,
-            @RequestParam(name = "page", defaultValue = "0") Integer page,
-            @ModelAttribute FilterOptionsModel filters
-    ){
-        return ResponseEntity
-                .ok(
-                        itemService.getAllItemsByAgeGenderCategoryAndSubcategory(
-                                ageGroup, gender, categoryId, subcategoryId, sort, page, filters
-                        )
-                );
     }
 
     @GetMapping("/by-season/{season}")

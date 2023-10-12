@@ -123,7 +123,6 @@ public class ItemGenerator {
                 .doubleValue();
         Double priceAfterDiscount = this.calculatePriceAfterDiscount(price, discount);
         Gender gender = Gender.values()[rand.nextInt(Gender.values().length)];
-        AgeGroup ageGroup = AgeGroup.values()[rand.nextInt(AgeGroup.values().length)];
         String collection = "Collection";
         Brand brand = brands.get(rand.nextInt(brands.size()));
         Material material = materials.get(rand.nextInt(materials.size()));
@@ -141,7 +140,6 @@ public class ItemGenerator {
                 .colors(colors)
                 .sizes(sizes)
                 .gender(gender)
-                .ageGroup(ageGroup)
                 .collection(collection)
                 .brand(brand)
                 .material(material)

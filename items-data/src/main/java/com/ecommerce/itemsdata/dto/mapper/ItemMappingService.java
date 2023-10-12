@@ -59,15 +59,9 @@ public class ItemMappingService {
     public List<Item> fetchPopularItemsInScope(RequestScope requestScope, Item item){
         Pageable limitPageable = PageRequest.of(0, this.limit);
         return switch(requestScope){
-            case AGE_GENDER_CATEGORY_AND_SUBCATEGORY ->
-                    itemRepository.findPopularByAgeGenderCategoryAndSubcategory(
-                            item.getAgeGroup(), item.getGender(), item.getCategory(), item.getSubcategory(), limitPageable);
             case GENDER_CATEGORY_AND_SUBCATEGORY ->
                     itemRepository.findPopularByGenderCategoryAndSubcategory(
                             item.getGender(), item.getCategory(), item.getSubcategory(), limitPageable);
-            case AGE_GENDER_AND_CATEGORY ->
-                    itemRepository.findPopularByAgeGenderAndCategory(
-                            item.getAgeGroup(), item.getGender(), item.getCategory(), limitPageable);
             case GENDER_AND_CATEGORY ->
                     itemRepository.findPopularByGenderAndCategory(item.getGender(), item.getCategory(), limitPageable);
             case SEASON -> itemRepository.findPopularBySeason(item.getSeason(), limitPageable);
