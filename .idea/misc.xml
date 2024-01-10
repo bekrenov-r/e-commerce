@@ -12,6 +12,13 @@
         <option value="$PROJECT_DIR$/user-data-service/pom.xml" />
         <option value="$PROJECT_DIR$/common/pom.xml" />
         <option value="$PROJECT_DIR$/users-data/pom.xml" />
+        <option value="$PROJECT_DIR$/users/pom.xml" />
+        <option value="$PROJECT_DIR$/config-server/pom.xml" />
+        <option value="$PROJECT_DIR$/catalog/pom.xml" />
+        <option value="$PROJECT_DIR$/eureka-server/pom.xml" />
+        <option value="$PROJECT_DIR$/orders/pom.xml" />
+        <option value="$PROJECT_DIR$/common-lib/pom.xml" />
+        <option value="$PROJECT_DIR$/pom.xml" />
       </list>
     </option>
   </component>

@@ -7,14 +7,14 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="common" />
-        <module name="spring-cloud-config-server" />
         <module name="api-gateway" />
-        <module name="users-data" />
-        <module name="orders-data" />
-        <module name="naming-server" />
+        <module name="config-server" />
+        <module name="orders" />
+        <module name="common-lib" />
+        <module name="eureka-server" />
+        <module name="users" />
       </profile>
-      <profile name="Annotation profile for items-data" enabled="true">
+      <profile name="Annotation profile for E-Commerce Application" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
@@ -24,19 +24,29 @@
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.28/lombok-1.18.28.jar" />
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok-mapstruct-binding/0.2.0/lombok-mapstruct-binding-0.2.0.jar" />
         </processorPath>
-        <module name="items-data" />
+        <module name="catalog" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="api-gateway" target="17" />
+      <module name="catalog" target="17" />
+      <module name="common-lib" target="17" />
+      <module name="config-server" target="17" />
+      <module name="eureka-server" target="17" />
+      <module name="item-service" target="17" />
+      <module name="orders" target="17" />
+      <module name="users" target="17" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="api-gateway" options="-parameters" />
-      <module name="common" options="-parameters" />
-      <module name="items-data" options="-parameters" />
-      <module name="naming-server" options="-parameters" />
-      <module name="orders-data" options="-parameters" />
-      <module name="spring-cloud-config-server" options="-parameters" />
-      <module name="users-data" options="-parameters" />
+      <module name="catalog" options="-parameters" />
+      <module name="common-lib" options="-parameters" />
+      <module name="config-server" options="-parameters" />
+      <module name="eureka-server" options="-parameters" />
+      <module name="orders" options="-parameters" />
+      <module name="users" options="-parameters" />
     </option>
   </component>
 </project>

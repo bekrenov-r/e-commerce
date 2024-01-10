@@ -1,6 +1,8 @@
 server:
   port: 8765
 spring:
+  main:
+    web-application-type: reactive
   application:
     name: api-gateway
 eureka:
@@ -17,5 +19,5 @@ springdoc:
     enabled: true
     path: /api-docs
     urls:
-      - url: /items/docs
-        name: Items Service
+      - url: /catalog/docs
+        name: Catalog Service

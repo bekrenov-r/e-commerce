@@ -106,8 +106,6 @@ ENDPOINTS:
             }
         /api/v1/items/{gender}/{category}
         /api/v1/items/{gender}/{category}/{subcategory}
-        /api/v1/items/{age-group}/{gender}/{category}
-        /api/v1/items/{age-group}/{gender}/{category}/{subcategory}
         /api/v1/items/{season}
         /api/v1/items/{collection}
         /api/v1/items/with-discount (sorted by discount asc)

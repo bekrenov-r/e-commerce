@@ -5,10 +5,11 @@
     <packaging>pom</packaging>
     <modules>
         <module>api-gateway</module>
-        <module>items-data</module>
-        <module>naming-server</module>
-        <module>orders-data</module>
-        <module>users-data</module>
+        <module>catalog</module>
+        <module>eureka-server</module>
+        <module>config-server</module>
+        <module>orders</module>
+        <module>users</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -16,14 +17,15 @@
         <version>3.1.1</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.springcloud</groupId>
-    <artifactId>springcloud</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>springcloud</name>
-    <description>springcloud</description>
+    <groupId>com.ecommerce</groupId>
+    <artifactId>e-commerce-app</artifactId>
+    <version>0.1</version>
+    <name>E-Commerce Application</name>
     <properties>
-        <java.version>11</java.version>
-        <spring-cloud.version>2021.0.4</spring-cloud.version>
+        <java.version>17</java.version>
+        <spring-cloud.version>2022.0.3</spring-cloud.version>
+        <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
+        <org.projectlombok.version>1.18.28</org.projectlombok.version>
     </properties>
 
     <dependencyManagement>
