@@ -110,6 +110,11 @@ create table review (
     id serial primary key
 );
 
+create table landing_page_item(
+    item_id int,
+    foreign key (item_id) references item(id)
+);
+
 insert into category values
                          ('T-Shirts', 't_shirts.png', 't-shirts'),
                          ('Shirts', 'shirts.png', 'shirts'),

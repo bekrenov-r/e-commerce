@@ -39,8 +39,8 @@ public class ItemService {
     private final ItemGenerator itemGenerator;
     private final ItemToDtoMapper itemToDtoMapper;
 
-    @Value("${custom.page.size}")
-    private Integer pageSize;
+    @Value("${custom.page.size.main}")
+    private Integer pageSizeMain;
 
 
     public Page<ItemResponse> getAllItemsByGenderAndCategory(
@@ -100,7 +100,7 @@ public class ItemService {
         var sortedItems = filteredItems.stream()
                 .sorted(ItemSortComparators.forOption(sort))
                 .toList();
-        Pageable pageRequest = PageRequest.of(page, this.pageSize);
+        Pageable pageRequest = PageRequest.of(page, this.pageSizeMain);
         List<Item> pageContent = this.getSublistForPageRequest(sortedItems, pageRequest);
         var itemResponses = pageContent.stream()
                 .map(itemToDtoMapper::itemToResponse)

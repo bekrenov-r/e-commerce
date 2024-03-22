@@ -14,7 +14,9 @@ server:
   port: 8000
 custom:
   page:
-    size: 20
+    size:
+      main: 20
+      landing-page: 12
   strategy:
     popular-items-limit-in-scope: 10
   category:

@@ -5,11 +5,12 @@ import lombok.Getter;
 @Getter
 public class ItemApplicationException extends RuntimeException {
 
-    private ItemApplicationExceptionReason reason;
-    private String message;
+    private final ItemApplicationExceptionReason reason;
+    private final String message;
 
     public ItemApplicationException(ItemApplicationExceptionReason reason) {
         this.message = reason.getMessage();
+        this.reason = reason;
     }
 
     public ItemApplicationException(ItemApplicationExceptionReason reason, Object... args) {
