@@ -25,4 +25,9 @@ public class LandingPageController {
     public void addLandingPageItems(@RequestParam("ids") List<Long> itemsIds){
         landingPageService.addLandingPageItems(itemsIds);
     }
+
+    @DeleteMapping
+    public void removeLandingPageItems(@RequestParam("ids") List<Long> itemsIds){
+        landingPageService.removeLandingPageItems(itemsIds);
+    }
 }

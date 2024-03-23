@@ -1,6 +1,5 @@
 package com.bekrenovr.ecommerce.catalog.repository;
 
-import com.bekrenovr.ecommerce.catalog.exception.ItemApplicationException;
 import com.bekrenovr.ecommerce.catalog.model.Item;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -10,8 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
-import static com.bekrenovr.ecommerce.catalog.exception.ItemApplicationExceptionReason.CANNOT_ADD_ITEMS_TO_LANDING_PAGE;
 
 @Repository
 @RequiredArgsConstructor
@@ -30,20 +27,23 @@ public class LandingPageRepository {
     }
 
     @Transactional
-    public void addLandingPageItems(List<Long> itemsIds) {
-        List<Item> itemsToAdd = itemRepository.findAllById(itemsIds)
-                .stream()
-                .filter(item -> !getLandingPageItems().contains(item))
-                .toList();
+    public void addLandingPageItems(List<Item> itemsToAdd) {
         List<Integer> idsToAdd = itemsToAdd.stream()
                 .map(Item::getId)
                 .map(Long::intValue)
                 .toList();
+        String sql = composeSqlForAddingItems(idsToAdd);
+        Query query = entityManager.createNativeQuery(sql);
+        query.executeUpdate();
+    }
 
-        if(idsToAdd.isEmpty()) throw new ItemApplicationException(CANNOT_ADD_ITEMS_TO_LANDING_PAGE);
-
-        var sql = composeSqlForAddingItems(idsToAdd);
-        System.out.println(sql);
+    @Transactional
+    public void removeLandingPageItems(List<Item> itemsToRemove){
+        List<Integer> idsToRemove = itemsToRemove.stream()
+                .map(Item::getId)
+                .map(Long::intValue)
+                .toList();
+        String sql = composeSqlForRemovingItems(idsToRemove);
         Query query = entityManager.createNativeQuery(sql);
         query.executeUpdate();
     }
@@ -57,6 +57,17 @@ public class LandingPageRepository {
                     .append(idsToAdd.get(i))
                     .append(")")
                     .append(isLast ? "" : ", ");
+        }
+        return sqlBuilder.toString();
+    }
+
+    private String composeSqlForRemovingItems(List<Integer> idsToRemove){
+        StringBuilder sqlBuilder = new StringBuilder("delete from landing_page_item where landing_page_item.item_id in (");
+        for(int i = 0; i < idsToRemove.size(); i++){
+            boolean isLast = i == idsToRemove.size() - 1;
+            sqlBuilder
+                    .append(idsToRemove.get(i))
+                    .append(isLast ? ")" : ", ");
         }
         return sqlBuilder.toString();
     }
