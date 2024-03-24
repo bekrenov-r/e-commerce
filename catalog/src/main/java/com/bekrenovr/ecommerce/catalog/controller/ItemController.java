@@ -12,6 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/items")
 @RequiredArgsConstructor
@@ -21,14 +23,14 @@ public class ItemController {
 
     // temp
     @GetMapping("/{id}")
-    public ResponseEntity<Item> getItemById(@PathVariable Long id){
+    public ResponseEntity<Item> getItemById(@PathVariable UUID id){
         return ResponseEntity.ok(itemService.getItemById(id));
     }
 
     @GetMapping("/gender/{gender}/category/{categoryId}")
     public ResponseEntity<Page<ItemResponse>> getAllItemsByGenderAndCategory(
             @PathVariable("gender") Gender gender,
-            @PathVariable("categoryId") String categoryId,
+            @PathVariable("categoryId") UUID categoryId,
             @RequestParam(name = "sort", required = false) SortOption sort,
             @RequestParam(name = "page", defaultValue = "0") Integer page,
             @ModelAttribute FilterOptionsModel filters
@@ -40,8 +42,8 @@ public class ItemController {
     @GetMapping("/gender/{gender}/category/{categoryId}/subcategory/{subcategoryId}")
     public ResponseEntity<Page<ItemResponse>> getAllItemsByGenderCategoryAndSubcategory(
             @PathVariable("gender") Gender gender,
-            @PathVariable("categoryId") String categoryId,
-            @PathVariable("subcategoryId") Long subcategoryId,
+            @PathVariable("categoryId") UUID categoryId,
+            @PathVariable("subcategoryId") UUID subcategoryId,
             @RequestParam(name = "sort", required = false) SortOption sort,
             @RequestParam(name = "page", defaultValue = "0") Integer page,
             @ModelAttribute FilterOptionsModel filters

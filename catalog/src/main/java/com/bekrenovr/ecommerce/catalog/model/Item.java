@@ -1,26 +1,25 @@
 package com.bekrenovr.ecommerce.catalog.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "item")
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Item {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
     @Column(name = "name")
     private String name;
@@ -98,7 +97,7 @@ public class Item {
             cascade = CascadeType.ALL)
     private List<UniqueItem> uniqueItems;
 
-    public Item(Long id, String name, String description, Double price, Double discount, Category category, Subcategory subcategory, List<ItemImage> images, List<Color> colors, List<Size> sizes, Gender gender, String collection, Brand brand, Material material, Season season, Double rating, String itemCode, List<UniqueItem> uniqueItems, ItemDetails itemDetails) {
+    public Item(UUID id, String name, String description, Double price, Double discount, Category category, Subcategory subcategory, List<ItemImage> images, List<Color> colors, List<Size> sizes, Gender gender, String collection, Brand brand, Material material, Season season, Double rating, String itemCode, List<UniqueItem> uniqueItems, ItemDetails itemDetails) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -121,86 +120,9 @@ public class Item {
         this.itemDetails = itemDetails;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public void setDiscount(Double discount) {
-        this.discount = discount;
-    }
-
-    public void setPriceAfterDiscount(Double priceAfterDiscount) {
-        this.priceAfterDiscount = priceAfterDiscount;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
-    public void setSubcategory(Subcategory subcategory) {
-        this.subcategory = subcategory;
-    }
-
-    public void setImages(List<ItemImage> images) {
-        this.images = images;
-    }
-
-    public void setColors(List<Color> colors) {
-        this.colors = colors;
-    }
-
-    public void setSizes(List<Size> sizes) {
-        this.sizes = sizes;
-    }
-
-    public void setGender(Gender gender) {
-        this.gender = gender;
-    }
-
-
-    public void setCollection(String collection) {
-        this.collection = collection;
-    }
-
-    public void setBrand(Brand brand) {
-        this.brand = brand;
-    }
-
-    public void setMaterial(Material material) {
-        this.material = material;
-    }
-
-    public void setSeason(Season season) {
-        this.season = season;
-    }
-
-    public void setRating(Double rating) {
-        this.rating = rating;
-    }
-
-    public void setItemCode(String itemCode) {
-        this.itemCode = itemCode;
-    }
-
     public void setItemDetails(ItemDetails itemDetails) {
         this.itemDetails = itemDetails;
         this.itemDetails.setItem(this);
-    }
-
-    public void setUniqueItems(List<UniqueItem> uniqueItems) {
-        this.uniqueItems = uniqueItems;
     }
 
     public Double calculatePriceAfterDiscount(Double price, Double discount){

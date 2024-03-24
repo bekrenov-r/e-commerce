@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -40,9 +41,9 @@ public class ItemMappingService {
                 .toList();
     }
 
-    public boolean isItemOnWishList(Long itemId){
+    public boolean isItemOnWishList(UUID itemId){
         // todo: get customerId from security
-        Long customerId = null;
+        UUID customerId = null;
         return customerServiceProxy.isItemOnWishList(itemId, customerId);
     }
 

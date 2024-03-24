@@ -1,4 +1,6 @@
 package com.bekrenovr.ecommerce.catalog.dto.response;
 
-public record SubcategoryResponse(Long id, String name) {
+import java.util.UUID;
+
+public record SubcategoryResponse(UUID id, String name) {
 }

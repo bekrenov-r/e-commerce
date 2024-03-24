@@ -1,6 +1,10 @@
 package com.bekrenovr.ecommerce.catalog.util.dev;
 
 import com.bekrenovr.ecommerce.catalog.model.*;
+import com.bekrenovr.ecommerce.catalog.repository.BrandRepository;
+import com.bekrenovr.ecommerce.catalog.repository.CategoryRepository;
+import com.bekrenovr.ecommerce.catalog.repository.SubcategoryRepository;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -18,85 +22,53 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 public class ItemGenerator {
 
-    private final List<Category> categories = Arrays.asList(
-            new Category("t-shirts", "T-Shirts", "t_shirts.png", List.of()),
-            new Category("shirts", "Shirts", "shirts.png", List.of()),
-            new Category("trousers", "Trousers", "trousers.png", Arrays.asList(
-                    new Subcategory(1L, "JEANS", null),
-                    new Subcategory(2L, "JOGGERS", null),
-                    new Subcategory(3L, "SPORT", null))
-            ),
-            new Category("shorts", "Shorts", "shorts.png", List.of()),
-            new Category("hoodies-and-sweatshirts", "Hoodies & Sweatshirts", "hoodies_and_sweatshirts.png", List.of()),
-            new Category("sweaters", "Sweaters", "sweaters.png", List.of()),
-            new Category("coats", "Coats", "coats.png", List.of()),
-            new Category("jackets", "Jackets", "jackets.png", List.of()),
-            new Category("shoes", "Shoes", "shoes.png", Arrays.asList(
-                    new Subcategory(4L, "SANDALS",  null),
-                    new Subcategory(5L, "SNEAKERS", null),
-                    new Subcategory(6L, "BOOTS", null))
-            ),
-            new Category("underwear", "Underwear", "underwear.png", List.of()),
-            new Category("socks", "Socks", "socks.png", List.of()),
-            new Category("accessories", "Accessories", "accessories.png", List.of())
-    );
+    private final CategoryRepository categoryRepository;
+    private final SubcategoryRepository subcategoryRepository;
+    private final BrandRepository brandRepository;
+
+    private List<Category> categories;
+    private List<Brand> brands;
     private final List<Size> allSizesClothes = Arrays.asList(
-            new Size(1L, "XS", SizeType.CLOTHES),
-            new Size(2L, "S", SizeType.CLOTHES),
-            new Size(3L, "M", SizeType.CLOTHES),
-            new Size(4L, "L", SizeType.CLOTHES),
-            new Size(5L, "XL", SizeType.CLOTHES),
-            new Size(6L, "2XL", SizeType.CLOTHES),
-            new Size(7L, "3XL", SizeType.CLOTHES),
-            new Size(8L, "4XL", SizeType.CLOTHES)
+            new Size(UUID.randomUUID(), "XS", SizeType.CLOTHES),
+            new Size(UUID.randomUUID(), "S", SizeType.CLOTHES),
+            new Size(UUID.randomUUID(), "M", SizeType.CLOTHES),
+            new Size(UUID.randomUUID(), "L", SizeType.CLOTHES),
+            new Size(UUID.randomUUID(), "XL", SizeType.CLOTHES),
+            new Size(UUID.randomUUID(), "2XL", SizeType.CLOTHES),
+            new Size(UUID.randomUUID(), "3XL", SizeType.CLOTHES),
+            new Size(UUID.randomUUID(), "4XL", SizeType.CLOTHES)
 
     );
     private final List<Size> allSizesShoes = Arrays.asList(
-            new Size(9L, "36", SizeType.SHOES),
-            new Size(10L, "37", SizeType.SHOES),
-            new Size(11L, "38", SizeType.SHOES),
-            new Size(12L, "39", SizeType.SHOES),
-            new Size(13L, "40", SizeType.SHOES),
-            new Size(14L, "41", SizeType.SHOES),
-            new Size(15L, "42", SizeType.SHOES),
-            new Size(16L, "43", SizeType.SHOES),
-            new Size(17L, "44", SizeType.SHOES),
-            new Size(18L, "45", SizeType.SHOES)
+            new Size(UUID.randomUUID(), "36", SizeType.SHOES),
+            new Size(UUID.randomUUID(), "37", SizeType.SHOES),
+            new Size(UUID.randomUUID(), "38", SizeType.SHOES),
+            new Size(UUID.randomUUID(), "39", SizeType.SHOES),
+            new Size(UUID.randomUUID(), "40", SizeType.SHOES),
+            new Size(UUID.randomUUID(), "41", SizeType.SHOES),
+            new Size(UUID.randomUUID(), "42", SizeType.SHOES),
+            new Size(UUID.randomUUID(), "43", SizeType.SHOES),
+            new Size(UUID.randomUUID(), "44", SizeType.SHOES),
+            new Size(UUID.randomUUID(), "45", SizeType.SHOES)
     );
     private final List<Color> allColors = Arrays.asList(
-            new Color(1L, ColorEnum.BLACK),
-            new Color(2L, ColorEnum.WHITE),
-            new Color(3L, ColorEnum.RED),
-            new Color(4L, ColorEnum.YELLOW),
-            new Color(5L, ColorEnum.GREEN),
-            new Color(6L, ColorEnum.BLUE),
-            new Color(7L, ColorEnum.VIOLET),
-            new Color(8L, ColorEnum.GREY),
-            new Color(9L, ColorEnum.MULTI)
-    );
-    private final List<Brand> brands = Arrays.asList(
-            new Brand(1L, "Louis Vuitton"),
-            new Brand(2L, "Gucci"),
-            new Brand(3L, "Balenciaga"),
-            new Brand(4L, "Dior Homme"),
-            new Brand(5L, "Prada"),
-            new Brand(6L, "Salvatore Ferragamo"),
-            new Brand(7L, "Chanel"),
-            new Brand(8L, "Armani"),
-            new Brand(9L, "Yves Saint Laurent"),
-            new Brand(10L, "Burberry"),
-            new Brand(11L, "Hermès"),
-            new Brand(12L, "Lululemon"),
-            new Brand(13L, "Zara"),
-            new Brand(14L, "UNIQLO"),
-            new Brand(15L, "H&M"),
-            new Brand(16L, "Cartier"),
-            new Brand(17L, "Tiffany & Co."),
-            new Brand(18L, "Moncler"),
-            new Brand(19L, "Rolex"),
-            new Brand(20L, "Patek Philippe")
+            new Color(UUID.randomUUID(), ColorEnum.BLACK),
+            new Color(UUID.randomUUID(), ColorEnum.WHITE),
+            new Color(UUID.randomUUID(), ColorEnum.RED),
+            new Color(UUID.randomUUID(), ColorEnum.YELLOW),
+            new Color(UUID.randomUUID(), ColorEnum.GREEN),
+            new Color(UUID.randomUUID(), ColorEnum.BLUE),
+            new Color(UUID.randomUUID(), ColorEnum.VIOLET),
+            new Color(UUID.randomUUID(), ColorEnum.GREY),
+            new Color(UUID.randomUUID(), ColorEnum.MULTI)
     );
     private final List<Material> materials = Arrays.stream(Material.values()).toList();
+
+    @PostConstruct
+    void postConstruct(){
+        categories = categoryRepository.findAll();
+        brands = brandRepository.findAll();
+    }
 
     public Item generateItem(){
         Random rand = new Random();
@@ -140,7 +112,9 @@ public class ItemGenerator {
                 .brand(brand)
                 .material(material)
                 .season(season)
-.build();
+                .rating(rating)
+                .itemCode(itemCode)
+                .build();
         images.forEach(image -> image.setItem(result));
         result.setImages(images);
         return result;
@@ -160,7 +134,7 @@ public class ItemGenerator {
         LocalDateTime createdAt = LocalDateTime.of(date, LocalTime.now());
         Integer ordersCountLastMonth = rand.nextInt(30);
         Integer ordersCountTotal = rand.nextInt(100);
-        return new ItemDetails(ordersCountTotal, ordersCountLastMonth, createdAt, 0L);
+        return new ItemDetails(ordersCountTotal, ordersCountLastMonth, createdAt, UUID.randomUUID());
     }
 
     public List<Item> generateMultiple(int num){

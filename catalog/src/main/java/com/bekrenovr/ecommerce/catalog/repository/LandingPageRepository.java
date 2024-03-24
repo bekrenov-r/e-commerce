@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.UUID;
 
 @Repository
 @RequiredArgsConstructor
@@ -19,18 +20,16 @@ public class LandingPageRepository {
 
     public List<Item> getLandingPageItems(){
         Query query = entityManager.createNativeQuery("select item_id from landing_page_item");
-        List<Long> itemsIdsLong = ((List<Integer>) query.getResultList())
+        List<UUID> itemsIds = ((List<UUID>) query.getResultList())
                 .stream()
-                .map(Integer::longValue)
                 .toList();
-        return itemRepository.findAllById(itemsIdsLong);
+        return itemRepository.findAllById(itemsIds);
     }
 
     @Transactional
     public void addLandingPageItems(List<Item> itemsToAdd) {
-        List<Integer> idsToAdd = itemsToAdd.stream()
+        List<UUID> idsToAdd = itemsToAdd.stream()
                 .map(Item::getId)
-                .map(Long::intValue)
                 .toList();
         String sql = composeSqlForAddingItems(idsToAdd);
         Query query = entityManager.createNativeQuery(sql);
@@ -39,16 +38,15 @@ public class LandingPageRepository {
 
     @Transactional
     public void removeLandingPageItems(List<Item> itemsToRemove){
-        List<Integer> idsToRemove = itemsToRemove.stream()
+        List<UUID> idsToRemove = itemsToRemove.stream()
                 .map(Item::getId)
-                .map(Long::intValue)
                 .toList();
         String sql = composeSqlForRemovingItems(idsToRemove);
         Query query = entityManager.createNativeQuery(sql);
         query.executeUpdate();
     }
 
-    private String composeSqlForAddingItems(List<Integer> idsToAdd){
+    private String composeSqlForAddingItems(List<UUID> idsToAdd){
         StringBuilder sqlBuilder = new StringBuilder("insert into landing_page_item values ");
         for(int i = 0; i < idsToAdd.size(); i++){
             boolean isLast = i == idsToAdd.size() - 1;
@@ -61,7 +59,7 @@ public class LandingPageRepository {
         return sqlBuilder.toString();
     }
 
-    private String composeSqlForRemovingItems(List<Integer> idsToRemove){
+    private String composeSqlForRemovingItems(List<UUID> idsToRemove){
         StringBuilder sqlBuilder = new StringBuilder("delete from landing_page_item where landing_page_item.item_id in (");
         for(int i = 0; i < idsToRemove.size(); i++){
             boolean isLast = i == idsToRemove.size() - 1;

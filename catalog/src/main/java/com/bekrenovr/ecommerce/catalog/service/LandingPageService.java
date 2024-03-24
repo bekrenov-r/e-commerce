@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.function.Predicate;
 
 import static com.bekrenovr.ecommerce.catalog.exception.ItemApplicationExceptionReason.CANNOT_ADD_ITEMS_TO_LANDING_PAGE;
@@ -34,7 +35,7 @@ public class LandingPageService {
                 .map(itemToDtoMapper::itemToResponse);
     }
 
-    public void addLandingPageItems(List<Long> itemsIds){
+    public void addLandingPageItems(List<UUID> itemsIds){
         Predicate<Item> isOnLandingPage = item -> landingPageRepository.getLandingPageItems().contains(item);
         List<Item> itemsToAdd = itemRepository.findAllById(itemsIds)
                 .stream()
@@ -44,7 +45,7 @@ public class LandingPageService {
         landingPageRepository.addLandingPageItems(itemsToAdd);
     }
 
-    public void removeLandingPageItems(List<Long> itemsIds){
+    public void removeLandingPageItems(List<UUID> itemsIds){
         List<Item> itemsToRemove = itemRepository.findAllById(itemsIds);
         landingPageRepository.removeLandingPageItems(itemsToRemove);
     }

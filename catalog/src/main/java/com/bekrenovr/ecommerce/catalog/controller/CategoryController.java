@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/items/categories")
@@ -22,7 +23,7 @@ public class CategoryController {
     }
 
     @GetMapping("/{categoryId}/subcategories")
-    public ResponseEntity<List<SubcategoryResponse>> getAllSubcategoriesInCategory(@PathVariable String categoryId){
+    public ResponseEntity<List<SubcategoryResponse>> getAllSubcategoriesInCategory(@PathVariable UUID categoryId){
         return ResponseEntity.ok(categoryService.getAllSubcategoriesInCategory(categoryId));
     }
 }

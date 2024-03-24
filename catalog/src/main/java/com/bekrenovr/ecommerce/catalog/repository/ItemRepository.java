@@ -8,9 +8,10 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.UUID;
 
 @Repository
-public interface ItemRepository extends JpaRepository<Item, Long> {
+public interface ItemRepository extends JpaRepository<Item, UUID> {
     List<Item> findAllByCategory(Category category);
     List<Item> findAllByGenderAndCategory(Gender gender, Category category);
     List<Item> findAllByGenderAndCategoryAndSubcategory(Gender gender, Category category, Subcategory subcategory);

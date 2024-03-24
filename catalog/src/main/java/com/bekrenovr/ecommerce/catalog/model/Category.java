@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "category")
@@ -18,7 +19,7 @@ public class Category {
 
     @Id
     @Column(name = "id")
-    private String id;
+    private UUID id;
 
     @Column(name = "name")
     private String name;
@@ -28,7 +29,7 @@ public class Category {
 
     @OneToMany(mappedBy = "category",
             cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY)
+            fetch = FetchType.EAGER)
     private List<Subcategory> subcategories;
 
 }

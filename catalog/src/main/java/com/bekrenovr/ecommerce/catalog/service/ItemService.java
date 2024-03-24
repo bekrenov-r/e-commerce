@@ -28,6 +28,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -45,7 +46,7 @@ public class ItemService {
 
     public Page<ItemResponse> getAllItemsByGenderAndCategory(
             Gender gender,
-            String categoryId,
+            UUID categoryId,
             SortOption sort,
             Integer page,
             FilterOptionsModel filters
@@ -58,8 +59,8 @@ public class ItemService {
 
     public Page<ItemResponse> getAllItemsByGenderCategoryAndSubcategory(
             Gender gender,
-            String categoryId,
-            Long subcategoryId,
+            UUID categoryId,
+            UUID subcategoryId,
             SortOption sort,
             Integer page,
             FilterOptionsModel filters
@@ -74,7 +75,7 @@ public class ItemService {
         return this.processItems(items, filters, page, sort);
     }
 
-    public Item getItemById(Long id) {
+    public Item getItemById(UUID id) {
         return itemRepository.findById(id).orElse(null);
     }
 

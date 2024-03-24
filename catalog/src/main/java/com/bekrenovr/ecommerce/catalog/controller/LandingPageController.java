@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/items/landing-page")
@@ -22,12 +23,12 @@ public class LandingPageController {
     }
 
     @PostMapping
-    public void addLandingPageItems(@RequestParam("ids") List<Long> itemsIds){
+    public void addLandingPageItems(@RequestParam("ids")List<UUID> itemsIds){
         landingPageService.addLandingPageItems(itemsIds);
     }
 
     @DeleteMapping
-    public void removeLandingPageItems(@RequestParam("ids") List<Long> itemsIds){
+    public void removeLandingPageItems(@RequestParam("ids") List<UUID> itemsIds){
         landingPageService.removeLandingPageItems(itemsIds);
     }
 }

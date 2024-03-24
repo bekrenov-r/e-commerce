@@ -17,7 +17,7 @@ public class ItemResponseEntityExceptionHandler extends StandardResponseEntityEx
         ErrorDetail errorDetail = new ErrorDetail(
                 LocalDateTime.now(),
                 ex.getReason().getStatus(),
-                ex.getReason().getMessage()
+                ex.getMessage()
         );
         return ResponseEntity.status(ex.getReason().getStatus()).body(errorDetail);
     }

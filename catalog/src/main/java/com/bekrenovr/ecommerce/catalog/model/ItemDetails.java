@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "item_details")
@@ -16,8 +17,9 @@ import java.time.LocalDateTime;
 public class ItemDetails {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "item_id")
-    private Long itemId;
+    private UUID itemId;
 
     @OneToOne
     @JoinColumn(name = "item_id")
@@ -38,12 +40,12 @@ public class ItemDetails {
     private LocalDateTime updatedAt;
 
     @Column(name = "creating_employee_id")
-    private Long creatingEmployeeId;
+    private UUID creatingEmployeeId;
 
     @Column(name = "updating_employee_id")
-    private Long updatingEmployeeId;
+    private UUID updatingEmployeeId;
 
-    public ItemDetails(Integer ordersCountTotal, Integer ordersCountLastMonth, LocalDateTime createdAt, Long creatingEmployeeId) {
+    public ItemDetails(Integer ordersCountTotal, Integer ordersCountLastMonth, LocalDateTime createdAt, UUID creatingEmployeeId) {
         this.ordersCountTotal = ordersCountTotal;
         this.ordersCountLastMonth = ordersCountLastMonth;
         this.createdAt = createdAt;

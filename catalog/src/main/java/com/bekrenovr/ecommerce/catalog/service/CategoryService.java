@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 import static com.bekrenovr.ecommerce.catalog.exception.ItemApplicationExceptionReason.CATEGORY_NOT_FOUND;
 
@@ -30,7 +31,7 @@ public class CategoryService {
                 .toList();
     }
 
-    public List<SubcategoryResponse> getAllSubcategoriesInCategory(String categoryId) {
+    public List<SubcategoryResponse> getAllSubcategoriesInCategory(UUID categoryId) {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new ItemApplicationException(CATEGORY_NOT_FOUND, categoryId));
         return subcategoryRepository.findAllByCategory(category)
