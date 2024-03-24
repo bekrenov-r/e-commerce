@@ -3,7 +3,6 @@ package com.bekrenovr.ecommerce.catalog.util.dev;
 import com.bekrenovr.ecommerce.catalog.model.*;
 import com.bekrenovr.ecommerce.catalog.repository.BrandRepository;
 import com.bekrenovr.ecommerce.catalog.repository.CategoryRepository;
-import com.bekrenovr.ecommerce.catalog.repository.SubcategoryRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -23,7 +22,6 @@ import java.util.stream.Stream;
 public class ItemGenerator {
 
     private final CategoryRepository categoryRepository;
-    private final SubcategoryRepository subcategoryRepository;
     private final BrandRepository brandRepository;
 
     private List<Category> categories;
@@ -51,17 +49,7 @@ public class ItemGenerator {
             new Size(UUID.randomUUID(), "44", SizeType.SHOES),
             new Size(UUID.randomUUID(), "45", SizeType.SHOES)
     );
-    private final List<Color> allColors = Arrays.asList(
-            new Color(UUID.randomUUID(), ColorEnum.BLACK),
-            new Color(UUID.randomUUID(), ColorEnum.WHITE),
-            new Color(UUID.randomUUID(), ColorEnum.RED),
-            new Color(UUID.randomUUID(), ColorEnum.YELLOW),
-            new Color(UUID.randomUUID(), ColorEnum.GREEN),
-            new Color(UUID.randomUUID(), ColorEnum.BLUE),
-            new Color(UUID.randomUUID(), ColorEnum.VIOLET),
-            new Color(UUID.randomUUID(), ColorEnum.GREY),
-            new Color(UUID.randomUUID(), ColorEnum.MULTI)
-    );
+    private final List<Color> allColors = Arrays.stream(Color.values()).toList();
     private final List<Material> materials = Arrays.stream(Material.values()).toList();
 
     @PostConstruct
@@ -78,11 +66,8 @@ public class ItemGenerator {
         Subcategory subcategory = !subcategories.isEmpty()
                 ? subcategories.get(rand.nextInt(subcategories.size()))
                 : null;
-        List<ItemImage> images = Arrays.asList(new ItemImage(null, null, "catalog/src/main/resources/images/iStock-1280562095_63a051a70dbff.jpg", null));
-        List<Size> sizes = randomNumberOfSizes(
-                category.getName().equals("SHOES") ? allSizesShoes : allSizesClothes
-        );
-        List<Color> colors = randomNumberOfColors(allColors);
+        List<ItemImage> images = Arrays.asList(new ItemImage(null, "catalog/src/main/resources/images/iStock-1280562095_63a051a70dbff.jpg", null));
+        Color color = allColors.get(rand.nextInt(allColors.size()));
         String itemName = capitalize(category.getName()) + " " + (rand.nextInt(100) + 1);
         String description = "Description";
         Double price = rand.nextInt(90) + 10 - 0.01;
@@ -105,8 +90,7 @@ public class ItemGenerator {
                 .priceAfterDiscount(priceAfterDiscount)
                 .category(category)
                 .subcategory(subcategory)
-                .colors(colors)
-                .sizes(sizes)
+                .color(color)
                 .gender(gender)
                 .collection(collection)
                 .brand(brand)
@@ -117,6 +101,7 @@ public class ItemGenerator {
                 .build();
         images.forEach(image -> image.setItem(result));
         result.setImages(images);
+        result.setUniqueItems(generateUniqueItems(result));
         return result;
     }
 
@@ -135,6 +120,27 @@ public class ItemGenerator {
         Integer ordersCountLastMonth = rand.nextInt(30);
         Integer ordersCountTotal = rand.nextInt(100);
         return new ItemDetails(ordersCountTotal, ordersCountLastMonth, createdAt, UUID.randomUUID());
+    }
+
+    private List<UniqueItem> generateUniqueItems(Item item){
+        List<Size> sizes = item.getCategory().getEnumValue().equals(CategoryEnum.SHOES)
+                ? allSizesShoes : allSizesClothes;
+        return sizes.stream()
+                .map(s -> generateUniqueItem(item, s))
+                .toList();
+    }
+
+    private UniqueItem generateUniqueItem(Item item, Size size){
+        Random rand = new Random();
+        BigDecimal weightKg = BigDecimal.valueOf(rand.nextDouble());
+        return new UniqueItem(
+                null,
+                size.getValue(),
+                weightKg,
+                generateBarcode(),
+                rand.nextInt(21),
+                2, 2,
+                item);
     }
 
     public List<Item> generateMultiple(int num){
@@ -167,6 +173,17 @@ public class ItemGenerator {
         return sb.toString();
     }
 
+    private String generateBarcode() {
+        final int length = 10;
+        Random rand = new Random();
+        return Stream
+                .generate(
+                        () -> String.valueOf(rand.nextInt(10))
+                )
+                .limit(length)
+                .collect(Collectors.joining());
+    }
+
     private List<Size> randomNumberOfSizes(List<Size> sizes){
         Random rand = new Random();
         Collections.shuffle(sizes);
@@ -183,16 +200,6 @@ public class ItemGenerator {
         BigDecimal priceAfterDiscount =
                 priceBD.subtract(priceBD.multiply(discountBD)).setScale(2, RoundingMode.HALF_UP);
         return priceAfterDiscount.doubleValue();
-    }
-
-    private List<Color> randomNumberOfColors(List<Color> colors){
-        Random rand = new Random();
-        Collections.shuffle(colors);
-        List<Color> res = new ArrayList<>();
-        for(int i = 0; i < rand.nextInt(1,colors.size()); i++){
-            res.add(colors.get(i));
-        }
-        return res;
     }
 
 }

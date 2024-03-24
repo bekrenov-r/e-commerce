@@ -29,10 +29,11 @@ public class ItemFiltersProcessor {
                 .map(String::toLowerCase)
                 .toList();
         Predicate<Item> predicate = item -> {
-            List<String> itemSizesLowercase = item.getSizes()
+            List<String> itemSizesLowercase = item.getUniqueItems()
                     .stream()
+                    .map(UniqueItem::getSize)
                     .distinct()
-                    .map(size -> size.getValue().toLowerCase())
+                    .map(String::toLowerCase)
                     .toList();
             return itemSizesLowercase.stream()
                     .anyMatch(sizesLowercase::contains);
@@ -42,17 +43,9 @@ public class ItemFiltersProcessor {
                 .collect(Collectors.toList());
     }
 
-    public void byColors(List<ColorEnum> colors) {
-        Predicate<Item> predicate = item -> {
-            List<ColorEnum> itemColorEnumValues = item.getColors()
-                    .stream()
-                    .map(Color::getValue)
-                    .toList();
-            return itemColorEnumValues.stream()
-                    .anyMatch(colors::contains);
-        };
+    public void byColors(List<Color> colors) {
         items = itemsSupplier.get()
-                .filter(predicate)
+                .filter(item -> colors.contains(item.getColor()))
                 .collect(Collectors.toList());
     }
 

@@ -1,9 +1,7 @@
 package com.bekrenovr.ecommerce.catalog.dto.mapper;
 
-import com.bekrenovr.ecommerce.catalog.model.Color;
-import com.bekrenovr.ecommerce.catalog.model.ColorEnum;
 import com.bekrenovr.ecommerce.catalog.model.Item;
-import com.bekrenovr.ecommerce.catalog.model.Size;
+import com.bekrenovr.ecommerce.catalog.model.UniqueItem;
 import com.bekrenovr.ecommerce.catalog.proxy.CustomerServiceProxy;
 import com.bekrenovr.ecommerce.catalog.repository.ItemRepository;
 import com.bekrenovr.ecommerce.catalog.util.request.RequestScope;
@@ -29,15 +27,10 @@ public class ItemMappingService {
     @Value("${custom.strategy.popular-items-limit-in-scope}")
     private Integer limit;
 
-    public List<ColorEnum> allColorsForItem(Item item){
-        return item.getColors().stream()
-                .map(Color::getValue)
-                .toList();
-    }
-
     public List<String> allSizesForItem(Item item){
-        return item.getSizes().stream()
-                .map(Size::getValue)
+        return item.getUniqueItems()
+                .stream()
+                .map(UniqueItem::getSize)
                 .toList();
     }
 

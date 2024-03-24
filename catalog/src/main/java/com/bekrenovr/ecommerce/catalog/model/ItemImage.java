@@ -20,10 +20,6 @@ public class ItemImage {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "color_id", referencedColumnName = "id")
-    private Color color;
-
     @Column(name = "path")
     private String path;
 

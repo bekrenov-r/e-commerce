@@ -6,6 +6,7 @@ create schema public;
 create table category (
   name text,
   img_name text,
+  enum_value text,
   id uuid primary key
 );
 
@@ -19,11 +20,6 @@ create table subcategory (
 create table size (
     value text,
     type text,
-    id uuid primary key
-);
-
-create table color (
-    value text,
     id uuid primary key
 );
 
@@ -41,6 +37,7 @@ CREATE TABLE item (
   category_id uuid,
   subcategory_id uuid,
   brand_id uuid,
+  color text,
   gender text,
   collection text,
   material text,
@@ -52,23 +49,8 @@ CREATE TABLE item (
   foreign key (subcategory_id) references subcategory(id)
 );
 
-create table item_size (
-  item_id uuid,
-  size_id uuid,
-  foreign key (item_id) references item(id),
-  foreign key (size_id) references size(id)
-);
-
-create table item_color (
-    item_id uuid,
-    color_id uuid,
-    foreign key (item_id) references item(id),
-    foreign key (color_id) references color(id)
-);
-
 create table image (
     item_id uuid,
-    color_id uuid,
     path text,
     id uuid primary key,
     foreign key (item_id) references item(id)
@@ -88,8 +70,7 @@ CREATE TABLE item_details (
 
 CREATE TABLE unique_item (
   item_id uuid,
-  size_id uuid,
-  color_id int,
+  size text,
   weight_kg numeric,
   bar_code text,
   quantity int,
@@ -105,18 +86,18 @@ create table landing_page_item(
 );
 
 INSERT INTO category VALUES
-                         ('T-Shirts', 't_shirts.png', 'c893d218-7b2d-4d8b-a41e-9e42de9cfc9f'),
-                         ('Shirts', 'shirts.png', '7e4f0df0-d3f2-4b92-84e2-9b389b4ca29d'),
-                         ('Trousers', 'trousers.png', 'a719d81d-e219-4e2e-b2d4-f5432198e783'),
-                         ('Shorts', 'shorts.png', 'fac4b21e-339d-478d-8bbc-242b1898b89e'),
-                         ('Hoodies & Sweatshirts', 'hoodies_and_sweatshirts.png', 'd21c5b20-abfb-4e29-8f3e-2facd9e29b92'),
-                         ('Sweaters', 'sweaters.png', '8fcc212f-6789-4e7e-a987-234b12c9bdfd'),
-                         ('Coats', 'coats.png', '52b4d09b-18d2-4b80-b5ab-dfe2c978e2f1'),
-                         ('Jackets', 'jackets.png', '1b324b12-d919-4adf-88b9-238e8721c4bf'),
-                         ('Shoes', 'shoes.png', 'e09c3121-b2df-4f32-a87e-218b9127e00f'),
-                         ('Underwear', 'underwear.png', '9c2b1dbd-daf2-4e0d-b12b-219e8234c189'),
-                         ('Socks', 'socks.png', '481d2b21-1e2f-43ab-b9d1-298db72348f2'),
-                         ('Accessories', 'accessories.png', '0b34c1df-b922-4e28-b122-273db129e98f');
+                         ('T-Shirts', 't_shirts.png', 'T_SHIRTS', 'c893d218-7b2d-4d8b-a41e-9e42de9cfc9f'),
+                         ('Shirts', 'shirts.png', 'SHIRTS', '7e4f0df0-d3f2-4b92-84e2-9b389b4ca29d'),
+                         ('Trousers', 'trousers.png', 'TROUSERS', 'a719d81d-e219-4e2e-b2d4-f5432198e783'),
+                         ('Shorts', 'shorts.png', 'SHORTS', 'fac4b21e-339d-478d-8bbc-242b1898b89e'),
+                         ('Hoodies & Sweatshirts', 'hoodies_and_sweatshirts.png', 'HOODIES_AND_SWEATSHIRTS', 'd21c5b20-abfb-4e29-8f3e-2facd9e29b92'),
+                         ('Sweaters', 'sweaters.png', 'SWEATERS', '8fcc212f-6789-4e7e-a987-234b12c9bdfd'),
+                         ('Coats', 'coats.png', 'COATS', '52b4d09b-18d2-4b80-b5ab-dfe2c978e2f1'),
+                         ('Jackets', 'jackets.png', 'JACKETS', '1b324b12-d919-4adf-88b9-238e8721c4bf'),
+                         ('Shoes', 'shoes.png', 'SHOES', 'e09c3121-b2df-4f32-a87e-218b9127e00f'),
+                         ('Underwear', 'underwear.png', 'UNDERWEAR', '9c2b1dbd-daf2-4e0d-b12b-219e8234c189'),
+                         ('Socks', 'socks.png', 'SOCKS', '481d2b21-1e2f-43ab-b9d1-298db72348f2'),
+                         ('Accessories', 'accessories.png', 'ACCESSORIES', '0b34c1df-b922-4e28-b122-273db129e98f');
 
 INSERT INTO subcategory VALUES
                             ('JEANS', 'a719d81d-e219-4e2e-b2d4-f5432198e783', '27e1d04b-1b23-4b29-aabd-228b98d7ef1f'),

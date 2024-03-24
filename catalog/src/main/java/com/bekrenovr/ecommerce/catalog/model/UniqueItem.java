@@ -24,17 +24,8 @@ public class UniqueItem {
     @Column(name = "size")
     private String size;
 
-    @Column(name = "color_id")
-    private String colorId;
-
     @Column(name = "weight_kg")
     private BigDecimal weightKg;
-
-    @Column(name = "img_url")
-    private String imgUrl;
-
-    @Column(name = "item_code")
-    private String itemCode;
 
     @Column(name = "bar_code")
     private String barCode;

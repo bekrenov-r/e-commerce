@@ -49,17 +49,9 @@ public class Item {
             cascade = CascadeType.ALL)
     private List<ItemImage> images;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "item_color",
-            joinColumns = @JoinColumn(name = "item_id"),
-            inverseJoinColumns = @JoinColumn(name = "color_id"))
-    private List<Color> colors;
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "item_size",
-            joinColumns = @JoinColumn(name = "item_id"),
-            inverseJoinColumns = @JoinColumn(name = "size_id"))
-    private List<Size> sizes;
+    @Column(name = "color")
+    @Enumerated(EnumType.STRING)
+    private Color color;
 
     @Column(name = "gender")
     @Enumerated(EnumType.STRING)
@@ -97,7 +89,7 @@ public class Item {
             cascade = CascadeType.ALL)
     private List<UniqueItem> uniqueItems;
 
-    public Item(UUID id, String name, String description, Double price, Double discount, Category category, Subcategory subcategory, List<ItemImage> images, List<Color> colors, List<Size> sizes, Gender gender, String collection, Brand brand, Material material, Season season, Double rating, String itemCode, List<UniqueItem> uniqueItems, ItemDetails itemDetails) {
+    public Item(UUID id, String name, String description, Double price, Double discount, Category category, Subcategory subcategory, List<ItemImage> images, Gender gender, String collection, Brand brand, Material material, Season season, Double rating, String itemCode, List<UniqueItem> uniqueItems, ItemDetails itemDetails) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -107,8 +99,6 @@ public class Item {
         this.category = category;
         this.subcategory = subcategory;
         this.images = images;
-        this.colors = colors;
-        this.sizes = sizes;
         this.gender = gender;
         this.collection = collection;
         this.brand = brand;
@@ -142,8 +132,6 @@ public class Item {
                 ", discount=" + discount +
                 ", priceAfterDiscount=" + priceAfterDiscount +
                 ", category=" + category +
-                ", colors=" + colors +
-                ", sizes=" + sizes +
                 ", gender=" + gender +
                 '}';
     }

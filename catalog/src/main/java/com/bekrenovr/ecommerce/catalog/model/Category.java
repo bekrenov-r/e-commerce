@@ -24,6 +24,10 @@ public class Category {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "enum_value")
+    @Enumerated(EnumType.STRING)
+    private CategoryEnum enumValue;
+
     @Column(name = "img_name")
     private String imageName;
 

@@ -1,6 +1,6 @@
 package com.bekrenovr.ecommerce.catalog.config;
 
-import com.bekrenovr.ecommerce.catalog.model.ColorEnum;
+import com.bekrenovr.ecommerce.catalog.model.Color;
 import com.bekrenovr.ecommerce.catalog.model.Gender;
 import com.bekrenovr.ecommerce.catalog.model.Material;
 import com.bekrenovr.ecommerce.catalog.model.Season;
@@ -16,7 +16,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addFormatters(FormatterRegistry formatterRegistry){
         formatterRegistry.addConverter(String.class, SortOption.class, SortOption::ofString);
-        formatterRegistry.addConverter(String.class, ColorEnum.class, ColorEnum::ofString);
+        formatterRegistry.addConverter(String.class, Color.class, Color::ofString);
         formatterRegistry.addConverter(String.class, Season.class, Season::ofString);
         formatterRegistry.addConverter(String.class, Material.class, Material::ofString);
         formatterRegistry.addConverter(String.class, Gender.class, Gender::ofString);

@@ -23,7 +23,6 @@ public abstract class ItemToDtoMapper {
     @Mapping(target = "images", expression = "java(imageUtils.convertAllItemImages(item.getImages()))")
     @Mapping(target = "brand", source = "item.brand.name")
     @Mapping(target = "rating", source = "item.rating")
-    @Mapping(target = "colors", expression = "java(itemMappingService.allColorsForItem(item))")
     @Mapping(target = "isOnWishList", expression = "java(itemMappingService.isItemOnWishList(item.getId()))")
     @Mapping(target = "isNew", expression = "java(itemMappingService.isItemNew(item))")
     @Mapping(target = "isPopular", expression = "java(itemMappingService.isItemPopular(item))")

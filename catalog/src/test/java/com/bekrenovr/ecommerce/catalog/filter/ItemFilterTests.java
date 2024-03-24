@@ -18,7 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 
-import static com.bekrenovr.ecommerce.catalog.model.ColorEnum.*;
+import static com.bekrenovr.ecommerce.catalog.model.Color.*;
 import static com.bekrenovr.ecommerce.catalog.model.Material.*;
 import static com.bekrenovr.ecommerce.catalog.model.Season.MULTISEASON;
 import static org.junit.jupiter.api.Assertions.*;
@@ -80,7 +80,7 @@ public class ItemFilterTests {
         @Test
         void filterItemsByColors_ignoringCase(){
             // arrange
-            List<ColorEnum> colors = Arrays.asList(BLACK, BLUE, YELLOW);
+            List<Color> colors = Arrays.asList(BLACK, BLUE, YELLOW);
 
             // act
             List<Item> filteredItems = itemFilter.filter(
@@ -152,7 +152,7 @@ public class ItemFilterTests {
         void testFilterItemsBySizesAndColors(){
             // arrange
             List<String> sizes = Arrays.asList("S", "XS");
-            List<ColorEnum> colors = Arrays.asList(WHITE, BLACK, YELLOW);
+            List<Color> colors = Arrays.asList(WHITE, BLACK, YELLOW);
 
             // act
             List<Item> filteredItems = itemFilter.filter(
@@ -173,7 +173,7 @@ public class ItemFilterTests {
         @Test
         void filterItemsBySizesColorsAndMaterials(){
             List<String> sizes = Arrays.asList("L", "XL");
-            List<ColorEnum> colors = Arrays.asList(GREEN, VIOLET);
+            List<Color> colors = Arrays.asList(GREEN, VIOLET);
             List<Material> materials = Arrays.asList(COTTON, SYNTHETICS);
 
             List<Item> filteredItems = itemFilter.filter(
@@ -212,9 +212,9 @@ public class ItemFilterTests {
 
     private boolean allItemsMatchBySize(List<Item> items, List<String> sizeValues){
         Predicate<Item> predicate = item -> {
-            List<String> itemSizes = item.getSizes()
+            List<String> itemSizes = item.getUniqueItems()
                     .stream()
-                    .map(Size::getValue)
+                    .map(UniqueItem::getSize)
                     .toList();
             return itemSizes.stream()
                     .anyMatch(sizeValues::contains);
@@ -224,18 +224,9 @@ public class ItemFilterTests {
                 .reduce(true, (a,b) -> a && b);
     }
 
-    private boolean allItemsMatchByColor(List<Item> items, List<ColorEnum> colors){
-        Predicate<Item> predicate = item -> {
-            List<ColorEnum> itemColors = item.getColors()
-                    .stream()
-                    .map(Color::getValue)
-                    .toList();
-            return itemColors.stream()
-                    .anyMatch(colors::contains);
-        };
+    private boolean allItemsMatchByColor(List<Item> items, List<Color> colors){
         return items.stream()
-                .map(predicate::test)
-                .reduce(true, (a,b) -> a && b);
+                .allMatch(item -> colors.contains(item.getColor()));
     }
 
     private boolean seasonMatchesForAllItems(List<Item> items, Season season){
