@@ -4,7 +4,6 @@ import com.bekrenovr.ecommerce.catalog.dto.response.CategoryResponse;
 import com.bekrenovr.ecommerce.catalog.model.Category;
 import com.bekrenovr.ecommerce.catalog.model.Gender;
 import com.bekrenovr.ecommerce.catalog.util.ImageUtils;
-import com.bekrenovr.ecommerce.catalog.util.request.RequestUtils;
 import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -16,8 +15,6 @@ import org.springframework.beans.factory.annotation.Value;
 public abstract class CategoryMapper {
     @Autowired
     protected ImageUtils imageUtils;
-    @Autowired
-    protected RequestUtils requestUtils;
 
     @Value("${custom.category.img-path-prefix.men}")
     private String IMG_PREFIX_MEN;

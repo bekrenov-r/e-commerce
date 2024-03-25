@@ -14,7 +14,6 @@ public record ItemDetailedResponse(
         List<Size> sizes,
         List<Size> availableSizes,
         Color color,
-        List<byte[]> images,
         String itemCode,
         List<ReviewResponse> reviews,
         List<ItemResponse> similarItems,

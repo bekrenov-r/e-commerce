@@ -2,7 +2,6 @@ package com.bekrenovr.ecommerce.catalog.dto.response;
 
 import com.bekrenovr.ecommerce.catalog.model.Color;
 
-import java.util.List;
 import java.util.UUID;
 
 public record ItemResponse(
@@ -11,7 +10,6 @@ public record ItemResponse(
         Double price,
         Double discount,
         Double priceAfterDiscount,
-        List<byte[]> images,
         String brand,
         Double rating,
         Color color,

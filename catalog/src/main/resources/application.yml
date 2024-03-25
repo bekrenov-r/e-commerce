@@ -1,4 +1,3 @@
-#spring.datasource.url=jdbc:postgresql://172.17.0.6:5433/items_data
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/items_data
@@ -7,7 +6,6 @@ spring:
     driver-class-name: org.postgresql.Driver
   config:
     import: 'optional:configserver:http://localhost:8888'
-#    import: 'optional:configserver:http://cloud-config:8888'
   application:
     name: catalog
 server:
@@ -18,7 +16,9 @@ custom:
       main: 20
       landing-page: 12
   strategy:
-    popular-items-limit-in-scope: 10
+    popularity:
+      item-is-considered-popular-at-orders-count:
+        25
   category:
     img-path-prefix:
       men: catalog/src/main/resources/images/category/men/
@@ -27,15 +27,8 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka
-#      defaultZone: http://naming-server:8761/eureka
 springdoc:
   api-docs:
     path: /items/docs # these urls will be used to load the api docs of this service by the api gateway
   swagger-ui:
     enabled: false
-
-#logging.level.org.springframework.web.client.RestTemplate=DEBUG
-#logging.level.root=OFF
-#spring.jpa.show-sql=true
-#logging.level.org.hibernate.SQL=debug
-#logging.level.org.hibernate.type.descriptor.sql=trace
