@@ -1,7 +1,7 @@
 package com.bekrenovr.ecommerce.catalog.sort;
 
 import com.bekrenovr.ecommerce.catalog.CatalogApplication;
-import com.bekrenovr.ecommerce.catalog.model.Item;
+import com.bekrenovr.ecommerce.catalog.model.entity.Item;
 import com.bekrenovr.ecommerce.catalog.service.sort.ItemSortComparators;
 import com.bekrenovr.ecommerce.catalog.service.sort.SortOption;
 import com.bekrenovr.ecommerce.catalog.util.dev.ItemGenerator;

@@ -1,6 +1,6 @@
 package com.bekrenovr.ecommerce.catalog.service.sort;
 
-import com.bekrenovr.ecommerce.catalog.model.Item;
+import com.bekrenovr.ecommerce.catalog.model.entity.Item;
 
 import java.util.Comparator;
 

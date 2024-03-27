@@ -1,20 +1,17 @@
 package com.bekrenovr.ecommerce.catalog.dto.mapper;
 
 import com.bekrenovr.ecommerce.catalog.dto.response.CategoryResponse;
-import com.bekrenovr.ecommerce.catalog.model.Category;
-import com.bekrenovr.ecommerce.catalog.model.Gender;
+import com.bekrenovr.ecommerce.catalog.model.entity.Category;
+import com.bekrenovr.ecommerce.catalog.model.enums.Gender;
 import com.bekrenovr.ecommerce.catalog.util.ImageUtils;
 import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
 @Mapper(componentModel = "spring")
 public abstract class CategoryMapper {
-    @Autowired
-    protected ImageUtils imageUtils;
 
     @Value("${custom.category.img-path-prefix.men}")
     private String IMG_PREFIX_MEN;
@@ -30,6 +27,6 @@ public abstract class CategoryMapper {
             case MEN -> IMG_PREFIX_MEN;
             case WOMEN -> IMG_PREFIX_WOMEN;
         };
-        return imageUtils.imagePathToByteArray(imgPathPrefix + imageName);
+        return ImageUtils.imageToByteArray(imgPathPrefix + imageName);
     }
 }

@@ -1,6 +1,7 @@
 package com.bekrenovr.ecommerce.catalog.util.dev;
 
-import com.bekrenovr.ecommerce.catalog.model.*;
+import com.bekrenovr.ecommerce.catalog.model.entity.*;
+import com.bekrenovr.ecommerce.catalog.model.enums.*;
 import com.bekrenovr.ecommerce.catalog.repository.BrandRepository;
 import com.bekrenovr.ecommerce.catalog.repository.CategoryRepository;
 import jakarta.annotation.PostConstruct;

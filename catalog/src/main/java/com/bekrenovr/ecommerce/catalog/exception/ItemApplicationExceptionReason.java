@@ -12,6 +12,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 public enum ItemApplicationExceptionReason {
     CATEGORY_NOT_FOUND("No category found for id: %s", NOT_FOUND),
     SUBCATEGORY_NOT_FOUND("No subcategory with id: [%s] found in category with id: [%s]", NOT_FOUND),
+    ITEM_NOT_FOUND("Item with id [%s] not found", NOT_FOUND),
     CANNOT_ADD_ITEMS_TO_LANDING_PAGE("Cannot add items to landing page: either all selected items are already placed on landing page or list is empty", BAD_REQUEST);
 
     private final String message;

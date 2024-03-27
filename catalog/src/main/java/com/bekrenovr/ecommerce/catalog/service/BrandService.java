@@ -1,6 +1,6 @@
 package com.bekrenovr.ecommerce.catalog.service;
 
-import com.bekrenovr.ecommerce.catalog.model.Brand;
+import com.bekrenovr.ecommerce.catalog.model.entity.Brand;
 import com.bekrenovr.ecommerce.catalog.repository.BrandRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

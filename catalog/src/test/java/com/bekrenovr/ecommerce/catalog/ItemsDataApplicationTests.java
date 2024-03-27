@@ -1,7 +1,7 @@
 package com.bekrenovr.ecommerce.catalog;
 
 import com.bekrenovr.ecommerce.catalog.controller.ItemController;
-import com.bekrenovr.ecommerce.catalog.model.Item;
+import com.bekrenovr.ecommerce.catalog.model.entity.Item;
 import com.bekrenovr.ecommerce.catalog.service.ItemService;
 import com.bekrenovr.ecommerce.catalog.util.dev.ItemGenerator;
 import org.apache.commons.lang.math.DoubleRange;

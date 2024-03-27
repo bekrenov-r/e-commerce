@@ -1,6 +1,10 @@
 package com.bekrenovr.ecommerce.catalog.service.filter;
 
-import com.bekrenovr.ecommerce.catalog.model.*;
+import com.bekrenovr.ecommerce.catalog.model.entity.Item;
+import com.bekrenovr.ecommerce.catalog.model.entity.UniqueItem;
+import com.bekrenovr.ecommerce.catalog.model.enums.Color;
+import com.bekrenovr.ecommerce.catalog.model.enums.Material;
+import com.bekrenovr.ecommerce.catalog.model.enums.Season;
 import org.apache.commons.lang.math.DoubleRange;
 
 import java.util.List;

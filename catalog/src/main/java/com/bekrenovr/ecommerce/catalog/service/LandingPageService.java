@@ -3,7 +3,7 @@ package com.bekrenovr.ecommerce.catalog.service;
 import com.bekrenovr.ecommerce.catalog.dto.mapper.ItemToDtoMapper;
 import com.bekrenovr.ecommerce.catalog.dto.response.ItemResponse;
 import com.bekrenovr.ecommerce.catalog.exception.ItemApplicationException;
-import com.bekrenovr.ecommerce.catalog.model.Item;
+import com.bekrenovr.ecommerce.catalog.model.entity.Item;
 import com.bekrenovr.ecommerce.catalog.repository.ItemRepository;
 import com.bekrenovr.ecommerce.catalog.repository.LandingPageRepository;
 import com.bekrenovr.ecommerce.catalog.util.PageUtil;

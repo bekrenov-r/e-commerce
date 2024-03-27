@@ -1,9 +1,8 @@
 package com.bekrenovr.ecommerce.catalog.dto.mapper;
 
 import com.bekrenovr.ecommerce.catalog.dto.response.ItemResponse;
-import com.bekrenovr.ecommerce.catalog.model.Item;
+import com.bekrenovr.ecommerce.catalog.model.entity.Item;
 import com.bekrenovr.ecommerce.catalog.proxy.CustomerServiceProxy;
-import com.bekrenovr.ecommerce.catalog.util.ImageUtils;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -15,8 +14,6 @@ import java.util.UUID;
 
 @Mapper(componentModel = "spring")
 public abstract class ItemToDtoMapper {
-    @Autowired
-    protected ImageUtils imageUtils;
     @Autowired
     protected CustomerServiceProxy customerServiceProxy;
 

@@ -1,6 +1,6 @@
 package com.bekrenovr.ecommerce.catalog.controller;
 
-import com.bekrenovr.ecommerce.catalog.model.Brand;
+import com.bekrenovr.ecommerce.catalog.model.entity.Brand;
 import com.bekrenovr.ecommerce.catalog.service.BrandService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

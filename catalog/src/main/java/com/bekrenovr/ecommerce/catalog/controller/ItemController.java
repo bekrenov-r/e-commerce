@@ -1,10 +1,11 @@
 package com.bekrenovr.ecommerce.catalog.controller;
 
 import com.bekrenovr.ecommerce.catalog.dto.request.FilterOptionsModel;
+import com.bekrenovr.ecommerce.catalog.dto.response.ItemImageResponse;
 import com.bekrenovr.ecommerce.catalog.dto.response.ItemResponse;
-import com.bekrenovr.ecommerce.catalog.model.Gender;
-import com.bekrenovr.ecommerce.catalog.model.Item;
-import com.bekrenovr.ecommerce.catalog.model.Season;
+import com.bekrenovr.ecommerce.catalog.model.entity.Item;
+import com.bekrenovr.ecommerce.catalog.model.enums.Gender;
+import com.bekrenovr.ecommerce.catalog.service.ItemImageService;
 import com.bekrenovr.ecommerce.catalog.service.ItemService;
 import com.bekrenovr.ecommerce.catalog.service.sort.SortOption;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -20,6 +22,7 @@ import java.util.UUID;
 public class ItemController {
 
     private final ItemService itemService;
+    private final ItemImageService itemImageService;
 
     // temp
     @GetMapping("/{id}")
@@ -54,32 +57,9 @@ public class ItemController {
                 ));
     }
 
-    @GetMapping("/by-season/{season}")
-    public ResponseEntity<Page<ItemResponse>> getAllItemsBySeason(
-            @PathVariable Season season,
-            @RequestParam(name = "sort", required = false) String sort,
-            @RequestParam(name = "priceRange", required = false) String priceRange,
-            @RequestParam(name = "size", required = false) String sizes,
-            @RequestParam(name = "color", required = false) String colors,
-            @RequestParam(name = "brand", required = false) String brands,
-            @RequestParam(name = "materials", required = false) String materials,
-            @RequestParam(name = "minRating", required = false) Double rating
-    ){
-        return null;
-    }
-
-    @GetMapping("/by-collection/{collection}")
-    public ResponseEntity<Page<ItemResponse>> getAllItemsByCollection(
-            @PathVariable String collection,
-            @RequestParam(name = "sort", required = false) String sort,
-            @RequestParam(name = "priceRange", required = false) String priceRange,
-            @RequestParam(name = "size", required = false) String sizes,
-            @RequestParam(name = "color", required = false) String colors,
-            @RequestParam(name = "brand", required = false) String brands,
-            @RequestParam(name = "materials", required = false) String materials,
-            @RequestParam(name = "minRating", required = false) Double rating
-    ){
-        return null;
+    @GetMapping("/{itemId}/images")
+    public ResponseEntity<List<ItemImageResponse>> getAllImagesForItem(@PathVariable UUID itemId){
+        return ResponseEntity.ok(itemImageService.getAllImagesForItem(itemId));
     }
 
     @PostMapping

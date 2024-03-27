@@ -2,7 +2,11 @@ package com.bekrenovr.ecommerce.catalog.filter;
 
 import com.bekrenovr.ecommerce.catalog.CatalogApplication;
 import com.bekrenovr.ecommerce.catalog.dto.request.FilterOptionsModel;
-import com.bekrenovr.ecommerce.catalog.model.*;
+import com.bekrenovr.ecommerce.catalog.model.entity.Item;
+import com.bekrenovr.ecommerce.catalog.model.entity.UniqueItem;
+import com.bekrenovr.ecommerce.catalog.model.enums.Color;
+import com.bekrenovr.ecommerce.catalog.model.enums.Material;
+import com.bekrenovr.ecommerce.catalog.model.enums.Season;
 import com.bekrenovr.ecommerce.catalog.service.filter.ItemFilter;
 import com.bekrenovr.ecommerce.catalog.util.dev.ItemGenerator;
 import org.apache.commons.lang.math.DoubleRange;
@@ -18,9 +22,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 
-import static com.bekrenovr.ecommerce.catalog.model.Color.*;
-import static com.bekrenovr.ecommerce.catalog.model.Material.*;
-import static com.bekrenovr.ecommerce.catalog.model.Season.MULTISEASON;
+import static com.bekrenovr.ecommerce.catalog.model.enums.Color.*;
+import static com.bekrenovr.ecommerce.catalog.model.enums.Material.*;
+import static com.bekrenovr.ecommerce.catalog.model.enums.Season.MULTISEASON;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(classes = {CatalogApplication.class})

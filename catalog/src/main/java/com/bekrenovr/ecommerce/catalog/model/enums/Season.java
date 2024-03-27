@@ -1,4 +1,4 @@
-package com.bekrenovr.ecommerce.catalog.model;
+package com.bekrenovr.ecommerce.catalog.model.enums;
 
 public enum Season {
 

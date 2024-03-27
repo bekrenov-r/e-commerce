@@ -2,7 +2,7 @@ package com.bekrenovr.ecommerce.catalog.controller;
 
 import com.bekrenovr.ecommerce.catalog.dto.response.CategoryResponse;
 import com.bekrenovr.ecommerce.catalog.dto.response.SubcategoryResponse;
-import com.bekrenovr.ecommerce.catalog.model.Gender;
+import com.bekrenovr.ecommerce.catalog.model.enums.Gender;
 import com.bekrenovr.ecommerce.catalog.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package com.bekrenovr.ecommerce.catalog.model;
+package com.bekrenovr.ecommerce.catalog.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;

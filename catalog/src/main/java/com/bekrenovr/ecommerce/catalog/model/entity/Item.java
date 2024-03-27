@@ -1,5 +1,9 @@
-package com.bekrenovr.ecommerce.catalog.model;
+package com.bekrenovr.ecommerce.catalog.model.entity;
 
+import com.bekrenovr.ecommerce.catalog.model.enums.Color;
+import com.bekrenovr.ecommerce.catalog.model.enums.Gender;
+import com.bekrenovr.ecommerce.catalog.model.enums.Material;
+import com.bekrenovr.ecommerce.catalog.model.enums.Season;
 import jakarta.persistence.*;
 import lombok.*;
 

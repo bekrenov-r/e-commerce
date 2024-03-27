@@ -1,7 +1,7 @@
 package com.bekrenovr.ecommerce.catalog.dto.mapper;
 
 import com.bekrenovr.ecommerce.catalog.dto.response.SubcategoryResponse;
-import com.bekrenovr.ecommerce.catalog.model.Subcategory;
+import com.bekrenovr.ecommerce.catalog.model.entity.Subcategory;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

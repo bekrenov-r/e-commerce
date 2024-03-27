@@ -1,9 +1,9 @@
 package com.bekrenovr.ecommerce.catalog.config;
 
-import com.bekrenovr.ecommerce.catalog.model.Color;
-import com.bekrenovr.ecommerce.catalog.model.Gender;
-import com.bekrenovr.ecommerce.catalog.model.Material;
-import com.bekrenovr.ecommerce.catalog.model.Season;
+import com.bekrenovr.ecommerce.catalog.model.enums.Color;
+import com.bekrenovr.ecommerce.catalog.model.enums.Gender;
+import com.bekrenovr.ecommerce.catalog.model.enums.Material;
+import com.bekrenovr.ecommerce.catalog.model.enums.Season;
 import com.bekrenovr.ecommerce.catalog.service.sort.SortOption;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;

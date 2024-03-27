@@ -1,4 +1,4 @@
-package com.bekrenovr.ecommerce.catalog.model;
+package com.bekrenovr.ecommerce.catalog.model.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,21 +9,22 @@ import lombok.Setter;
 import java.util.UUID;
 
 @Entity
-@Table(name = "subcategory")
+@Table(name = "image")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Subcategory {
+public class ItemImage {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "path")
+    private String path;
 
     @ManyToOne
-    @JoinColumn(name = "category_id", referencedColumnName = "id")
-    private Category category;
+    @JoinColumn(name = "item_id")
+    private Item item;
 
 }

@@ -1,7 +1,7 @@
 package com.bekrenovr.ecommerce.catalog.service.filter;
 
 import com.bekrenovr.ecommerce.catalog.dto.request.FilterOptionsModel;
-import com.bekrenovr.ecommerce.catalog.model.Item;
+import com.bekrenovr.ecommerce.catalog.model.entity.Item;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang.math.DoubleRange;
 import org.springframework.stereotype.Component;

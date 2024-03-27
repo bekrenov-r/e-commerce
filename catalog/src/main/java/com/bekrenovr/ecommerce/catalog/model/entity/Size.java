@@ -1,5 +1,6 @@
-package com.bekrenovr.ecommerce.catalog.model;
+package com.bekrenovr.ecommerce.catalog.model.entity;
 
+import com.bekrenovr.ecommerce.catalog.model.enums.SizeType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,7 +1,7 @@
 package com.bekrenovr.ecommerce.catalog.repository;
 
-import com.bekrenovr.ecommerce.catalog.model.Category;
-import com.bekrenovr.ecommerce.catalog.model.Subcategory;
+import com.bekrenovr.ecommerce.catalog.model.entity.Category;
+import com.bekrenovr.ecommerce.catalog.model.entity.Subcategory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

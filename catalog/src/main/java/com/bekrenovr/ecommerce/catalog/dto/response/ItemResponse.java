@@ -1,6 +1,6 @@
 package com.bekrenovr.ecommerce.catalog.dto.response;
 
-import com.bekrenovr.ecommerce.catalog.model.Color;
+import com.bekrenovr.ecommerce.catalog.model.enums.Color;
 
 import java.util.UUID;
 

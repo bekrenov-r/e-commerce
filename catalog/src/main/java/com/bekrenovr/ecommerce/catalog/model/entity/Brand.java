@@ -1,4 +1,4 @@
-package com.bekrenovr.ecommerce.catalog.model;
+package com.bekrenovr.ecommerce.catalog.model.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -8,23 +8,18 @@ import lombok.Setter;
 
 import java.util.UUID;
 
-@Entity
-@Table(name = "image")
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class ItemImage {
-
+@NoArgsConstructor
+@Entity
+@Table(name = "brand")
+public class Brand {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id")
     private UUID id;
 
-    @Column(name = "path")
-    private String path;
-
-    @ManyToOne
-    @JoinColumn(name = "item_id")
-    private Item item;
-
+    @Column(name = "name")
+    private String name;
 }
