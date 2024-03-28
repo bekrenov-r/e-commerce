@@ -1,6 +1,6 @@
 package com.bekrenovr.ecommerce.catalog.controller;
 
-import com.bekrenovr.ecommerce.catalog.dto.request.FilterOptionsModel;
+import com.bekrenovr.ecommerce.catalog.dto.request.FilterOptions;
 import com.bekrenovr.ecommerce.catalog.dto.response.ItemImageResponse;
 import com.bekrenovr.ecommerce.catalog.dto.response.ItemResponse;
 import com.bekrenovr.ecommerce.catalog.model.entity.Item;
@@ -36,7 +36,7 @@ public class ItemController {
             @PathVariable("categoryId") UUID categoryId,
             @RequestParam(name = "sort", required = false) SortOption sort,
             @RequestParam(name = "page", defaultValue = "0") Integer page,
-            @ModelAttribute FilterOptionsModel filters
+            @ModelAttribute FilterOptions filters
     ){
         return ResponseEntity
                 .ok(itemService.getAllItemsByGenderAndCategory(gender, categoryId, sort, page, filters));
@@ -49,7 +49,7 @@ public class ItemController {
             @PathVariable("subcategoryId") UUID subcategoryId,
             @RequestParam(name = "sort", required = false) SortOption sort,
             @RequestParam(name = "page", defaultValue = "0") Integer page,
-            @ModelAttribute FilterOptionsModel filters
+            @ModelAttribute FilterOptions filters
     ) {
         return ResponseEntity
                 .ok(itemService.getAllItemsByGenderCategoryAndSubcategory(

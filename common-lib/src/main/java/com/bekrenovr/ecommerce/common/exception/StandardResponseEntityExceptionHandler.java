@@ -20,7 +20,7 @@ public class StandardResponseEntityExceptionHandler extends ResponseEntityExcept
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorDetail> handleAllExceptions(Exception ex, WebRequest webRequest){
-        this.logException(ex);
+        logException(ex);
         ErrorDetail errorDetail = new ErrorDetail(
                 LocalDateTime.now(),
                 HttpStatus.INTERNAL_SERVER_ERROR,
@@ -31,6 +31,7 @@ public class StandardResponseEntityExceptionHandler extends ResponseEntityExcept
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ErrorDetail> handleItemNotFound(EntityNotFoundException ex, WebRequest webRequest){
+        logException(ex);
         ErrorDetail errorDetail = new ErrorDetail(
                 LocalDateTime.now(),
                 HttpStatus.NOT_FOUND,
@@ -42,6 +43,7 @@ public class StandardResponseEntityExceptionHandler extends ResponseEntityExcept
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorDetail> handleIllegalArgument(IllegalArgumentException ex, WebRequest webRequest){
+        logException(ex);
         ErrorDetail errorDetail = new ErrorDetail(
                 LocalDateTime.now(),
                 HttpStatus.BAD_REQUEST,
@@ -53,8 +55,7 @@ public class StandardResponseEntityExceptionHandler extends ResponseEntityExcept
 
     @Override
     public ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request){
-
-
+        logException(ex);
         ErrorDetail errorDetail = new ErrorDetail(
                 LocalDateTime.now(),
                 status,
@@ -66,6 +67,7 @@ public class StandardResponseEntityExceptionHandler extends ResponseEntityExcept
 
     @Override
     public ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request){
+        logException(ex);
         StringBuilder message = new StringBuilder("Errors:");
         for(FieldError error : ex.getFieldErrors()){
             message

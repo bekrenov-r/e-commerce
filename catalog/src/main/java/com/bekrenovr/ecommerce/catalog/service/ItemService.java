@@ -1,10 +1,9 @@
 package com.bekrenovr.ecommerce.catalog.service;
 
 import com.bekrenovr.ecommerce.catalog.dto.mapper.ItemToDtoMapper;
-import com.bekrenovr.ecommerce.catalog.dto.request.FilterOptionsModel;
+import com.bekrenovr.ecommerce.catalog.dto.request.FilterOptions;
 import com.bekrenovr.ecommerce.catalog.dto.response.ItemResponse;
 import com.bekrenovr.ecommerce.catalog.exception.ItemApplicationException;
-import com.bekrenovr.ecommerce.catalog.exception.ItemApplicationExceptionReason;
 import com.bekrenovr.ecommerce.catalog.model.entity.Category;
 import com.bekrenovr.ecommerce.catalog.model.entity.Item;
 import com.bekrenovr.ecommerce.catalog.model.entity.Subcategory;
@@ -12,16 +11,14 @@ import com.bekrenovr.ecommerce.catalog.model.enums.Gender;
 import com.bekrenovr.ecommerce.catalog.repository.CategoryRepository;
 import com.bekrenovr.ecommerce.catalog.repository.ItemDetailsRepository;
 import com.bekrenovr.ecommerce.catalog.repository.ItemRepository;
-import com.bekrenovr.ecommerce.catalog.service.filter.ItemFilter;
 import com.bekrenovr.ecommerce.catalog.service.sort.ItemSortComparators;
 import com.bekrenovr.ecommerce.catalog.service.sort.SortOption;
+import com.bekrenovr.ecommerce.catalog.util.PageUtil;
 import com.bekrenovr.ecommerce.catalog.util.dev.ItemGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -29,6 +26,10 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 import java.util.UUID;
+
+import static com.bekrenovr.ecommerce.catalog.exception.ItemApplicationExceptionReason.CATEGORY_NOT_FOUND;
+import static com.bekrenovr.ecommerce.catalog.exception.ItemApplicationExceptionReason.SUBCATEGORY_NOT_FOUND;
+import static com.bekrenovr.ecommerce.catalog.repository.ItemSpecification.*;
 
 @Service
 @RequiredArgsConstructor
@@ -49,12 +50,19 @@ public class ItemService {
             UUID categoryId,
             SortOption sort,
             Integer page,
-            FilterOptionsModel filters
+            FilterOptions filters
     ) {
         Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new ItemApplicationException(ItemApplicationExceptionReason.CATEGORY_NOT_FOUND, categoryId));
-        var items = itemRepository.findAllByGenderAndCategory(gender, category);
-        return this.processItems(items, filters, page, sort);
+                .orElseThrow(() -> new ItemApplicationException(CATEGORY_NOT_FOUND, categoryId));
+        Specification<Item> specification = Specification.allOf(
+                hasGender(gender), hasCategory(category), fromFilterOptions(filters)
+        );
+        List<Item> items = itemRepository.findAll(specification)
+                .stream()
+                .sorted(ItemSortComparators.forOption(sort))
+                .toList();
+        return PageUtil.paginateList(items, page, pageSizeMain)
+                .map(itemToDtoMapper::itemToResponse);
     }
 
     public Page<ItemResponse> getAllItemsByGenderCategoryAndSubcategory(
@@ -63,16 +71,23 @@ public class ItemService {
             UUID subcategoryId,
             SortOption sort,
             Integer page,
-            FilterOptionsModel filters
+            FilterOptions filters
     ) {
         Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new ItemApplicationException(ItemApplicationExceptionReason.CATEGORY_NOT_FOUND, categoryId));
+                .orElseThrow(() -> new ItemApplicationException(CATEGORY_NOT_FOUND, categoryId));
         Subcategory subcategory = category.getSubcategories().stream()
                 .filter(sub -> sub.getId().equals(subcategoryId))
                 .findFirst()
-                .orElseThrow(() -> new ItemApplicationException(ItemApplicationExceptionReason.SUBCATEGORY_NOT_FOUND, subcategoryId, categoryId));
-        var items = itemRepository.findAllByGenderAndCategoryAndSubcategory(gender, category, subcategory);
-        return this.processItems(items, filters, page, sort);
+                .orElseThrow(() -> new ItemApplicationException(SUBCATEGORY_NOT_FOUND, subcategoryId, categoryId));
+        Specification<Item> specification = Specification.allOf(
+                hasGender(gender), hasCategoryAndSubcategory(category, subcategory), fromFilterOptions(filters)
+        );
+        List<Item> items = itemRepository.findAll(specification)
+                .stream()
+                .sorted(ItemSortComparators.forOption(sort))
+                .toList();
+        return PageUtil.paginateList(items, page, pageSizeMain)
+                .map(itemToDtoMapper::itemToResponse);
     }
 
     public Item getItemById(UUID id) {
@@ -94,30 +109,6 @@ public class ItemService {
                 .buildAndExpand(savedItem.getId())
                 .toUri();
         return ResponseEntity.created(location).body(null);
-    }
-
-    private Page<ItemResponse> processItems(List<Item> items, FilterOptionsModel filters, Integer page, SortOption sort){
-        var filteredItems = this.filterItems(items, filters);
-        var sortedItems = filteredItems.stream()
-                .sorted(ItemSortComparators.forOption(sort))
-                .toList();
-        Pageable pageRequest = PageRequest.of(page, this.pageSizeMain);
-        List<Item> pageContent = this.getSublistForPageRequest(sortedItems, pageRequest);
-        var itemResponses = pageContent.stream()
-                .map(itemToDtoMapper::itemToResponse)
-                .toList();
-        return new PageImpl<>(itemResponses, pageRequest, items.size());
-    }
-
-    private List<Item> filterItems(List<Item> items, FilterOptionsModel filters) {
-        ItemFilter processor = new ItemFilter(items);
-        return processor.filter(filters);
-    }
-
-    private List<Item> getSublistForPageRequest(List<Item> items, Pageable pageRequest){
-        int start = (int) pageRequest.getOffset();
-        int end = Math.min((start + pageRequest.getPageSize()), items.size());
-        return items.subList(start, end);
     }
 
     // method for dev purpose
