@@ -4,7 +4,6 @@ import com.bekrenovr.ecommerce.catalog.model.entity.*;
 import com.bekrenovr.ecommerce.catalog.model.enums.*;
 import com.bekrenovr.ecommerce.catalog.repository.BrandRepository;
 import com.bekrenovr.ecommerce.catalog.repository.CategoryRepository;
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -14,9 +13,14 @@ import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static com.bekrenovr.ecommerce.catalog.util.RandomUtils.getRandomElement;
 
 @Component
 @RequiredArgsConstructor
@@ -24,9 +28,6 @@ public class ItemGenerator {
 
     private final CategoryRepository categoryRepository;
     private final BrandRepository brandRepository;
-
-    private List<Category> categories;
-    private List<Brand> brands;
     private final List<Size> allSizesClothes = Arrays.asList(
             new Size(UUID.randomUUID(), "XS", SizeType.CLOTHES),
             new Size(UUID.randomUUID(), "S", SizeType.CLOTHES),
@@ -50,25 +51,17 @@ public class ItemGenerator {
             new Size(UUID.randomUUID(), "44", SizeType.SHOES),
             new Size(UUID.randomUUID(), "45", SizeType.SHOES)
     );
-    private final List<Color> allColors = Arrays.stream(Color.values()).toList();
-    private final List<Material> materials = Arrays.stream(Material.values()).toList();
-
-    @PostConstruct
-    void postConstruct(){
-        categories = categoryRepository.findAll();
-        brands = brandRepository.findAll();
-    }
 
     public Item generateItem(){
         Random rand = new Random();
 
-        Category category = categories.get(rand.nextInt(categories.size()));
+        Category category = getRandomElement(categoryRepository.findAll());
         List<Subcategory> subcategories = category.getSubcategories();
         Subcategory subcategory = !subcategories.isEmpty()
-                ? subcategories.get(rand.nextInt(subcategories.size()))
+                ? getRandomElement(subcategories)
                 : null;
         List<ItemImage> images = Arrays.asList(new ItemImage(null, "catalog/src/main/resources/images/iStock-1280562095_63a051a70dbff.jpg", null));
-        Color color = allColors.get(rand.nextInt(allColors.size()));
+        Color color = getRandomElement(Color.values());
         String itemName = capitalize(category.getName()) + " " + (rand.nextInt(100) + 1);
         String description = "Description";
         Double price = rand.nextInt(90) + 10 - 0.01;
@@ -76,11 +69,11 @@ public class ItemGenerator {
                 .setScale(2, RoundingMode.HALF_UP)
                 .doubleValue();
         Double priceAfterDiscount = this.calculatePriceAfterDiscount(price, discount);
-        Gender gender = Gender.values()[rand.nextInt(Gender.values().length)];
+        Gender gender = getRandomElement(Gender.values());
         String collection = "Collection";
-        Brand brand = brands.get(rand.nextInt(brands.size()));
-        Material material = materials.get(rand.nextInt(materials.size()));
-        Season season = Season.values()[rand.nextInt(Season.values().length)];
+        Brand brand = getRandomElement(brandRepository.findAll());
+        Material material = getRandomElement(Material.values());
+        Season season = getRandomElement(Season.values());
         Double rating = BigDecimal.valueOf(rand.nextDouble(3.0) + 2).round(new MathContext(2)).doubleValue();
         String itemCode = generateItemCode();
         Item result = Item.builder()
@@ -185,16 +178,6 @@ public class ItemGenerator {
                 .collect(Collectors.joining());
     }
 
-    private List<Size> randomNumberOfSizes(List<Size> sizes){
-        Random rand = new Random();
-        Collections.shuffle(sizes);
-        List<Size> res = new ArrayList<>();
-        for(int i = 0; i < rand.nextInt(1,sizes.size() + 1); i++){
-            res.add(sizes.get(i));
-        }
-        return res;
-    }
-
     public Double calculatePriceAfterDiscount(Double price, Double discount){
         BigDecimal priceBD = BigDecimal.valueOf(price);
         BigDecimal discountBD = BigDecimal.valueOf(discount);
@@ -202,5 +185,4 @@ public class ItemGenerator {
                 priceBD.subtract(priceBD.multiply(discountBD)).setScale(2, RoundingMode.HALF_UP);
         return priceAfterDiscount.doubleValue();
     }
-
 }

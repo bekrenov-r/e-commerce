@@ -2,10 +2,7 @@ package com.bekrenovr.ecommerce.catalog.model.entity;
 
 import com.bekrenovr.ecommerce.catalog.model.enums.CategoryEnum;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -16,6 +13,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
 public class Category {
 
     @Id
@@ -35,6 +33,6 @@ public class Category {
     @OneToMany(mappedBy = "category",
             cascade = CascadeType.ALL,
             fetch = FetchType.EAGER)
+    @EqualsAndHashCode.Exclude
     private List<Subcategory> subcategories;
-
 }

@@ -76,10 +76,7 @@ public class ItemSpecification {
     public static Specification<Item> fromFilterOptions(FilterOptions filterOptions){
         Collection<Specification<Item>> specifications = new HashSet<>();
         if(filterOptions.priceRange() != null){
-            DoubleRange priceRange = new DoubleRange(
-                    filterOptions.priceRange().get(0), filterOptions.priceRange().get(1)
-            );
-            specifications.add(hasPriceWithinRange(priceRange));
+            specifications.add(hasPriceWithinRange(filterOptions.priceRange()));
         }
         if(filterOptions.sizes() != null){
             specifications.add(hasSizeIn(filterOptions.sizes()));

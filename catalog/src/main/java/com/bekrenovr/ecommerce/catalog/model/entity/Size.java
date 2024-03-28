@@ -21,7 +21,7 @@ public class Size {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(name = "value")
+    @Column(name = "size_value")
     private String value;
 
     @Column(name = "type")

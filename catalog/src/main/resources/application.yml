@@ -1,15 +1,10 @@
 spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5432/items_data
-    username: postgres
-    password: postgres
-    driver-class-name: org.postgresql.Driver
   config:
-    import: 'optional:configserver:http://localhost:8888'
+    activate:
+      on-profile: dev, test
+    import: "optional:configserver:http://localhost:8888"
   application:
     name: catalog
-server:
-  port: 8000
 custom:
   page:
     size:
@@ -32,3 +27,35 @@ springdoc:
     path: /items/docs # these urls will be used to load the api docs of this service by the api gateway
   swagger-ui:
     enabled: false
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    url: jdbc:postgresql://localhost:5432/items_data
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+server:
+  port: 8000
+---
+spring:
+  config:
+    activate:
+      on-profile: test
+  h2:
+    console:
+      settings:
+        trace: true
+      enabled: true
+  datasource:
+    url: jdbc:h2:mem:testdb;NON_KEYWORDS=USER;
+  data:
+    jpa:
+      repositories:
+        bootstrap-mode: default
+  jpa:
+    defer-datasource-initialization: true
+server:
+  port: 8001

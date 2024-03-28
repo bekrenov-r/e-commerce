@@ -18,7 +18,7 @@ create table subcategory (
 );
 
 create table size (
-    value text,
+    size_value text,
     type text,
     id uuid primary key
 );
@@ -111,23 +111,8 @@ insert into size values  ('XS', 'CLOTHES', gen_random_uuid()), ('S', 'CLOTHES', 
                        ('36', 'SHOES', gen_random_uuid()), ('37', 'SHOES', gen_random_uuid()), ('38', 'SHOES', gen_random_uuid()), ('39', 'SHOES', gen_random_uuid()), ('40', 'SHOES', gen_random_uuid()), ('41', 'SHOES', gen_random_uuid()), ('42', 'SHOES', gen_random_uuid()), ('43', 'SHOES', gen_random_uuid()), ('44', 'SHOES', gen_random_uuid()), ('45', 'SHOES', gen_random_uuid());
 
 insert into brand values
-    ('Louis Vuitton', gen_random_uuid()),
-    ('Gucci', gen_random_uuid()),
-    ('Balenciaga', gen_random_uuid()),
-    ('Dior Homme', gen_random_uuid()),
-    ('Prada', gen_random_uuid()),
-    ('Salvatore Ferragamo', gen_random_uuid()),
-    ('Chanel', gen_random_uuid()),
-    ('Armani', gen_random_uuid()),
-    ('Yves Saint Laurent', gen_random_uuid()),
-    ('Burberry', gen_random_uuid()),
-    ('Hermès', gen_random_uuid()),
-    ('Lululemon', gen_random_uuid()),
-    ('Zara', gen_random_uuid()),
-    ('UNIQLO', gen_random_uuid()),
-    ('H&M', gen_random_uuid()),
-    ('Cartier', gen_random_uuid()),
-    ('Tiffany & Co.', gen_random_uuid()),
-    ('Moncler', gen_random_uuid()),
-    ('Rolex', gen_random_uuid()),
-    ('Patek Philippe', gen_random_uuid());
+    ('SoleCraft Co.', gen_random_uuid()),
+    ('LegLoom', gen_random_uuid()),
+    ('CozyKnits', gen_random_uuid()),
+    ('Headline', gen_random_uuid()),
+    ('ArtistryThreads', gen_random_uuid());
