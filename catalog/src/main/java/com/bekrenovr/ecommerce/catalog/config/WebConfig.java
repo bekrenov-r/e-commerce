@@ -6,6 +6,7 @@ import com.bekrenovr.ecommerce.catalog.model.enums.Material;
 import com.bekrenovr.ecommerce.catalog.model.enums.Season;
 import com.bekrenovr.ecommerce.catalog.service.sort.SortOption;
 import com.bekrenovr.ecommerce.catalog.util.StringToBrandCollectionConverter;
+import com.bekrenovr.ecommerce.catalog.util.StringToDoubleRangeConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
@@ -25,6 +26,7 @@ public class WebConfig implements WebMvcConfigurer {
         formatterRegistry.addConverter(String.class, Material.class, Material::ofString);
         formatterRegistry.addConverter(String.class, Gender.class, Gender::ofString);
         formatterRegistry.addConverter(stringToBrandCollectionConverter);
+        formatterRegistry.addConverter(new StringToDoubleRangeConverter());
     }
 
 }
