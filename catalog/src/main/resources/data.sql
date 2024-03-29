@@ -20,9 +20,6 @@ INSERT INTO subcategory(name, category_id, id) VALUES
                             ('SNEAKERS', 'e09c3121-b2df-4f32-a87e-218b9127e00f', '3e19c2b2-12f9-42ab-b42e-278db421cef2'),
                             ('BOOTS', 'e09c3121-b2df-4f32-a87e-218b9127e00f', 'a12b34df-b8df-42ab-b9ba-2837b1432faf');
 
-insert into size(size_value, type, id) values  ('XS', 'CLOTHES', random_uuid()), ('S', 'CLOTHES', random_uuid()), ('M', 'CLOTHES', random_uuid()), ('L', 'CLOTHES', random_uuid()), ('XL', 'CLOTHES', random_uuid()), ('2XL', 'CLOTHES', random_uuid()), ('3XL', 'CLOTHES', random_uuid()), ('4XL', 'CLOTHES', random_uuid()),
-                         ('36', 'SHOES', random_uuid()), ('37', 'SHOES', random_uuid()), ('38', 'SHOES', random_uuid()), ('39', 'SHOES', random_uuid()), ('40', 'SHOES', random_uuid()), ('41', 'SHOES', random_uuid()), ('42', 'SHOES', random_uuid()), ('43', 'SHOES', random_uuid()), ('44', 'SHOES', random_uuid()), ('45', 'SHOES', random_uuid());
-
 insert into brand(name, id) values
                       ('SoleCraft Co.', random_uuid()),
                       ('LegLoom', random_uuid()),

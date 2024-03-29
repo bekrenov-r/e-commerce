@@ -1,14 +1,13 @@
 package com.bekrenovr.ecommerce.catalog.filter;
 
 import com.bekrenovr.ecommerce.catalog.dto.request.FilterOptions;
+import com.bekrenovr.ecommerce.catalog.model.Size;
+import com.bekrenovr.ecommerce.catalog.model.SizeFactory;
 import com.bekrenovr.ecommerce.catalog.model.entity.Brand;
 import com.bekrenovr.ecommerce.catalog.model.entity.Category;
 import com.bekrenovr.ecommerce.catalog.model.entity.Item;
 import com.bekrenovr.ecommerce.catalog.model.entity.Subcategory;
-import com.bekrenovr.ecommerce.catalog.model.enums.Color;
-import com.bekrenovr.ecommerce.catalog.model.enums.Gender;
-import com.bekrenovr.ecommerce.catalog.model.enums.Material;
-import com.bekrenovr.ecommerce.catalog.model.enums.Season;
+import com.bekrenovr.ecommerce.catalog.model.enums.*;
 import com.bekrenovr.ecommerce.catalog.repository.BrandRepository;
 import com.bekrenovr.ecommerce.catalog.repository.CategoryRepository;
 import com.bekrenovr.ecommerce.catalog.repository.ItemRepository;
@@ -45,9 +44,10 @@ public class ItemSpecificationTest {
     private BrandRepository brandRepository;
     @Autowired
     private ItemGenerator itemGenerator;
+    @Autowired
+    private SizeFactory sizeFactory;
 
     private static final DoubleRange PRICE_RANGE = new DoubleRange(10.0, 50.0);
-    private static final List<String> SAMPLE_SIZES = Arrays.asList("XS", "S", "M", "L", "38", "39", "40");
 
     @BeforeEach
     void init(){
@@ -98,11 +98,12 @@ public class ItemSpecificationTest {
     @Test
     @Transactional
     public void testHasSizeIn() {
-        Specification<Item> spec = ItemSpecification.hasSizeIn(SAMPLE_SIZES);
+        Collection<Size> sizes = Arrays.asList(ClothesSize.values());
+        Specification<Item> spec = ItemSpecification.hasSizeIn(sizes);
 
         List<Item> items = itemRepository.findAll(spec);
 
-        assertTrue(allItemsHaveSizeIn(items, SAMPLE_SIZES));
+        assertTrue(allItemsHaveSizeIn(items, sizes));
     }
 
     @Test
@@ -163,11 +164,13 @@ public class ItemSpecificationTest {
         var gender = RandomUtils.getRandomElement(Gender.values());
         var category = getCategoryWithSubcategories();
         var subcategory = RandomUtils.getRandomElement(category.getSubcategories());
-        var sizeValues = RandomUtils.getRandomSeries(SAMPLE_SIZES, 4);
         var colors = RandomUtils.getRandomSeries(Color.values(), 3);
         var brands = RandomUtils.getRandomSeries(brandRepository.findAll(), 2);
         var materials = RandomUtils.getRandomSeries(Material.values(), 3);
         var season = RandomUtils.getRandomElement(Season.values());
+        Collection<Size> sizeValues = category.getEnumValue().equals(CategoryEnum.SHOES)
+                ? getRandomShoesSizes(5)
+                : Arrays.asList(ClothesSize.values());
         Short rating = 3;
         FilterOptions filterOptions = new FilterOptions(PRICE_RANGE, sizeValues, colors, brands, materials, season, rating);
         Specification<Item> compositeSpecification = Specification.allOf(
@@ -211,7 +214,10 @@ public class ItemSpecificationTest {
                 .allMatch(i -> priceRange.containsDouble(i.getPriceAfterDiscount()));
     }
 
-    private boolean allItemsHaveSizeIn(List<Item> items, Collection<String> sizeValues){
+    private boolean allItemsHaveSizeIn(List<Item> items, Collection<Size> sizes){
+        Collection<String> sizeValues = sizes.stream()
+                .map(Size::getSizeValue)
+                .toList();
         Predicate<Item> hasSize = item ->
                 item.getUniqueItems()
                         .stream()
@@ -244,6 +250,11 @@ public class ItemSpecificationTest {
                 .filter(c -> !c.getSubcategories().isEmpty())
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("At least one subcategory is required"));
+    }
+
+    private List<Size> getRandomShoesSizes(int numberOfSizes){
+        List<Size> allShoesSizes = sizeFactory.getAllShoesSizes();
+        return RandomUtils.getRandomSeries(allShoesSizes, numberOfSizes);
     }
 }
 

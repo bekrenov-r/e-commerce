@@ -31,8 +31,9 @@ public class RandomUtils {
         if(seriesLength > list.size())
             throw new IllegalArgumentException("Series length cannot be greater than list size");
 
-        Collections.shuffle(list);
-        return list.subList(0, seriesLength);
+        List<T> duplicate = new ArrayList<>(list);
+        Collections.shuffle(duplicate);
+        return duplicate.subList(0, seriesLength);
     }
 
     public static <T> List<T> getRandomSeries(T[] array, int seriesLength){

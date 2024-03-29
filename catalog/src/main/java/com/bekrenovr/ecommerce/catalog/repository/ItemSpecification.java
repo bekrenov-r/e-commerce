@@ -1,6 +1,7 @@
 package com.bekrenovr.ecommerce.catalog.repository;
 
 import com.bekrenovr.ecommerce.catalog.dto.request.FilterOptions;
+import com.bekrenovr.ecommerce.catalog.model.Size;
 import com.bekrenovr.ecommerce.catalog.model.entity.*;
 import com.bekrenovr.ecommerce.catalog.model.enums.Color;
 import com.bekrenovr.ecommerce.catalog.model.enums.Gender;
@@ -40,7 +41,10 @@ public class ItemSpecification {
                 );
     }
 
-    public static Specification<Item> hasSizeIn(Collection<String> sizeValues){
+    public static Specification<Item> hasSizeIn(Collection<Size> sizes){
+        Collection<String> sizeValues = sizes.stream()
+                .map(Size::getSizeValue)
+                .toList();
         return (root, query, criteriaBuilder) -> {
             Subquery<UniqueItem> uniqueItemSubquery = query.subquery(UniqueItem.class);
             Root<UniqueItem> uniqueItemRoot = uniqueItemSubquery.from(UniqueItem.class);

@@ -1,10 +1,13 @@
 package com.bekrenovr.ecommerce.catalog.util.dev;
 
+import com.bekrenovr.ecommerce.catalog.model.ShoesSize;
+import com.bekrenovr.ecommerce.catalog.model.Size;
 import com.bekrenovr.ecommerce.catalog.model.entity.*;
 import com.bekrenovr.ecommerce.catalog.model.enums.*;
 import com.bekrenovr.ecommerce.catalog.repository.BrandRepository;
 import com.bekrenovr.ecommerce.catalog.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -21,6 +24,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.bekrenovr.ecommerce.catalog.util.RandomUtils.getRandomElement;
+import static com.bekrenovr.ecommerce.catalog.util.RandomUtils.getRandomSeries;
 
 @Component
 @RequiredArgsConstructor
@@ -28,29 +32,12 @@ public class ItemGenerator {
 
     private final CategoryRepository categoryRepository;
     private final BrandRepository brandRepository;
-    private final List<Size> allSizesClothes = Arrays.asList(
-            new Size(UUID.randomUUID(), "XS", SizeType.CLOTHES),
-            new Size(UUID.randomUUID(), "S", SizeType.CLOTHES),
-            new Size(UUID.randomUUID(), "M", SizeType.CLOTHES),
-            new Size(UUID.randomUUID(), "L", SizeType.CLOTHES),
-            new Size(UUID.randomUUID(), "XL", SizeType.CLOTHES),
-            new Size(UUID.randomUUID(), "2XL", SizeType.CLOTHES),
-            new Size(UUID.randomUUID(), "3XL", SizeType.CLOTHES),
-            new Size(UUID.randomUUID(), "4XL", SizeType.CLOTHES)
 
-    );
-    private final List<Size> allSizesShoes = Arrays.asList(
-            new Size(UUID.randomUUID(), "36", SizeType.SHOES),
-            new Size(UUID.randomUUID(), "37", SizeType.SHOES),
-            new Size(UUID.randomUUID(), "38", SizeType.SHOES),
-            new Size(UUID.randomUUID(), "39", SizeType.SHOES),
-            new Size(UUID.randomUUID(), "40", SizeType.SHOES),
-            new Size(UUID.randomUUID(), "41", SizeType.SHOES),
-            new Size(UUID.randomUUID(), "42", SizeType.SHOES),
-            new Size(UUID.randomUUID(), "43", SizeType.SHOES),
-            new Size(UUID.randomUUID(), "44", SizeType.SHOES),
-            new Size(UUID.randomUUID(), "45", SizeType.SHOES)
-    );
+    @Value("${custom.strategy.shoes-size.min}")
+    private int shoesSizeMin;
+
+    @Value("${custom.strategy.shoes-size.max}")
+    private int shoesSizeMax;
 
     public Item generateItem(){
         Random rand = new Random();
@@ -117,8 +104,8 @@ public class ItemGenerator {
     }
 
     private List<UniqueItem> generateUniqueItems(Item item){
-        List<Size> sizes = item.getCategory().getEnumValue().equals(CategoryEnum.SHOES)
-                ? allSizesShoes : allSizesClothes;
+        SizeType type = item.getCategory().getEnumValue().equals(CategoryEnum.SHOES) ? SizeType.SHOES : SizeType.CLOTHES;
+        List<Size> sizes = type.equals(SizeType.SHOES) ? getRandomShoesSizes() : Arrays.asList(ClothesSize.values());
         return sizes.stream()
                 .map(s -> generateUniqueItem(item, s))
                 .toList();
@@ -129,7 +116,7 @@ public class ItemGenerator {
         BigDecimal weightKg = BigDecimal.valueOf(rand.nextDouble());
         return new UniqueItem(
                 null,
-                size.getValue(),
+                size.getSizeValue(),
                 weightKg,
                 generateBarcode(),
                 rand.nextInt(21),
@@ -184,5 +171,19 @@ public class ItemGenerator {
         BigDecimal priceAfterDiscount =
                 priceBD.subtract(priceBD.multiply(discountBD)).setScale(2, RoundingMode.HALF_UP);
         return priceAfterDiscount.doubleValue();
+    }
+
+    private List<Size> getRandomShoesSizes(){
+        List<Integer> allShoesSizes = Stream.iterate(
+                shoesSizeMin,
+                i -> i <= shoesSizeMax,
+                i -> i + 1
+        ).toList();
+        Random random = new Random();
+        int numberOfSizes = random.nextInt(allShoesSizes.size()) + 1;
+        return getRandomSeries(allShoesSizes, numberOfSizes)
+                .stream()
+                .map(i -> (Size) new ShoesSize(i))
+                .toList();
     }
 }

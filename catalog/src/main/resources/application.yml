@@ -14,6 +14,9 @@ custom:
     popularity:
       item-is-considered-popular-at-orders-count:
         25
+    shoes-size:
+      min: 30
+      max: 46
   category:
     img-path-prefix:
       men: catalog/src/main/resources/images/category/men/

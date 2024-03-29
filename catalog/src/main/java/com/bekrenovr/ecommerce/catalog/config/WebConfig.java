@@ -5,8 +5,9 @@ import com.bekrenovr.ecommerce.catalog.model.enums.Gender;
 import com.bekrenovr.ecommerce.catalog.model.enums.Material;
 import com.bekrenovr.ecommerce.catalog.model.enums.Season;
 import com.bekrenovr.ecommerce.catalog.service.sort.SortOption;
-import com.bekrenovr.ecommerce.catalog.util.StringToBrandCollectionConverter;
-import com.bekrenovr.ecommerce.catalog.util.StringToDoubleRangeConverter;
+import com.bekrenovr.ecommerce.catalog.util.convert.StringToBrandCollectionConverter;
+import com.bekrenovr.ecommerce.catalog.util.convert.StringToDoubleRangeConverter;
+import com.bekrenovr.ecommerce.catalog.util.convert.StringToSizeCollectionConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
     private final StringToBrandCollectionConverter stringToBrandCollectionConverter;
+    private final StringToSizeCollectionConverter stringToSizeCollectionConverter;
 
     // todo: try ConverterFactory<String, Enum>
     @Override
@@ -26,6 +28,7 @@ public class WebConfig implements WebMvcConfigurer {
         formatterRegistry.addConverter(String.class, Material.class, Material::ofString);
         formatterRegistry.addConverter(String.class, Gender.class, Gender::ofString);
         formatterRegistry.addConverter(stringToBrandCollectionConverter);
+        formatterRegistry.addConverter(stringToSizeCollectionConverter);
         formatterRegistry.addConverter(new StringToDoubleRangeConverter());
     }
 

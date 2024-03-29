@@ -1,4 +1,4 @@
-package com.bekrenovr.ecommerce.catalog.util;
+package com.bekrenovr.ecommerce.catalog.util.convert;
 
 import com.bekrenovr.ecommerce.catalog.model.entity.Brand;
 import com.bekrenovr.ecommerce.catalog.repository.BrandRepository;

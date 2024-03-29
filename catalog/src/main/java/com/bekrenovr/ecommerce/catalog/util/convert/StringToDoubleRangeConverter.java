@@ -1,4 +1,4 @@
-package com.bekrenovr.ecommerce.catalog.util;
+package com.bekrenovr.ecommerce.catalog.util.convert;
 
 import org.apache.commons.lang.math.DoubleRange;
 import org.springframework.core.convert.converter.Converter;
