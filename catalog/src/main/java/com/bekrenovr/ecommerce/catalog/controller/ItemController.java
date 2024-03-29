@@ -8,6 +8,7 @@ import com.bekrenovr.ecommerce.catalog.model.enums.Gender;
 import com.bekrenovr.ecommerce.catalog.service.ItemImageService;
 import com.bekrenovr.ecommerce.catalog.service.ItemService;
 import com.bekrenovr.ecommerce.catalog.service.sort.SortOption;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +37,7 @@ public class ItemController {
             @PathVariable("categoryId") UUID categoryId,
             @RequestParam(name = "sort", required = false) SortOption sort,
             @RequestParam(name = "page", defaultValue = "0") Integer page,
-            @ModelAttribute FilterOptions filters
+            @ModelAttribute @Valid FilterOptions filters
     ){
         return ResponseEntity
                 .ok(itemService.getAllItemsByGenderAndCategory(gender, categoryId, sort, page, filters));

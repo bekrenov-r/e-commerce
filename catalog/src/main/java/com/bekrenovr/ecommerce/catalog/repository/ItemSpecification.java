@@ -77,6 +77,14 @@ public class ItemSpecification {
         return (root, query, criteriaBuilder) -> criteriaBuilder.gt(root.get("rating"), rating);
     }
 
+    public static Specification<Item> matchesSearchPattern(String searchPattern){
+        return (root, query, criteriaBuilder) ->
+                criteriaBuilder.like(
+                        criteriaBuilder.lower(root.get("name")),
+                        '%' + searchPattern.toLowerCase() + '%'
+                );
+    }
+
     public static Specification<Item> fromFilterOptions(FilterOptions filterOptions){
         Collection<Specification<Item>> specifications = new HashSet<>();
         if(filterOptions.priceRange() != null){
@@ -99,6 +107,9 @@ public class ItemSpecification {
         }
         if(filterOptions.rating() != null){
             specifications.add(hasRatingGreaterThan(filterOptions.rating()));
+        }
+        if(filterOptions.searchPattern() != null){
+            specifications.add(matchesSearchPattern(filterOptions.searchPattern()));
         }
         return Specification.allOf(specifications);
     }

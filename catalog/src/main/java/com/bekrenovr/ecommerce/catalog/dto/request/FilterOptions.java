@@ -16,5 +16,7 @@ public record FilterOptions(
         Collection<Brand> brands,
         Collection<Material> materials,
         Season season,
-        Short rating
+        Short rating,
+        @jakarta.validation.constraints.Size(min = 3)
+        String searchPattern
 ) {}

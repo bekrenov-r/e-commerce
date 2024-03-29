@@ -15,6 +15,7 @@ import com.bekrenovr.ecommerce.catalog.repository.ItemSpecification;
 import com.bekrenovr.ecommerce.catalog.util.RandomUtils;
 import com.bekrenovr.ecommerce.catalog.util.dev.ItemGenerator;
 import jakarta.transaction.Transactional;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.DoubleRange;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -158,6 +159,16 @@ public class ItemSpecificationTest {
     }
 
     @Test
+    public void testMatchesSearchPattern() {
+        String searchPattern = "trousers";
+        Specification<Item> spec = ItemSpecification.matchesSearchPattern(searchPattern);
+
+        List<Item> items = itemRepository.findAll(spec);
+
+        assertTrue(allItemsMatchSearchPattern(items, searchPattern));
+    }
+
+    @Test
     @Transactional
     public void testSpecificationComposition(){
         itemRepository.saveAll(itemGenerator.generateMultiple(100));
@@ -168,11 +179,12 @@ public class ItemSpecificationTest {
         var brands = RandomUtils.getRandomSeries(brandRepository.findAll(), 2);
         var materials = RandomUtils.getRandomSeries(Material.values(), 3);
         var season = RandomUtils.getRandomElement(Season.values());
+        var searchPattern = category.getName().substring(0, 4);
         Collection<Size> sizeValues = category.getEnumValue().equals(CategoryEnum.SHOES)
                 ? getRandomShoesSizes(5)
                 : Arrays.asList(ClothesSize.values());
         Short rating = 3;
-        FilterOptions filterOptions = new FilterOptions(PRICE_RANGE, sizeValues, colors, brands, materials, season, rating);
+        FilterOptions filterOptions = new FilterOptions(PRICE_RANGE, sizeValues, colors, brands, materials, season, rating, searchPattern);
         Specification<Item> compositeSpecification = Specification.allOf(
                 ItemSpecification.hasGender(gender),
                 ItemSpecification.hasCategoryAndSubcategory(category, subcategory),
@@ -243,6 +255,11 @@ public class ItemSpecificationTest {
 
     private boolean allItemsHaveRatingGreaterThan(List<Item> items, Short rating){
         return items.stream().allMatch(i -> i.getRating() > rating);
+    }
+
+    private boolean allItemsMatchSearchPattern(List<Item> items, String searchPattern){
+        return items.stream()
+                .allMatch(i -> StringUtils.containsIgnoreCase(i.getName(), searchPattern));
     }
 
     private Category getCategoryWithSubcategories(){
