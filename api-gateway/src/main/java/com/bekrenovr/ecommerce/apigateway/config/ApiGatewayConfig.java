@@ -18,7 +18,7 @@ public class ApiGatewayConfig {
         return builder.routes()
                 .route("orders", p -> p.path("/orders/**") // if request comes to the path /orders/**
                         .uri("lb://orders")) // redirect it to load-balanced server named orders-data
-                .route("catalog", p -> p.path("/items/**")
+                .route("catalog", p -> p.path("/catalog/**")
                         .uri("lb://catalog"))
                 .build();
     }
