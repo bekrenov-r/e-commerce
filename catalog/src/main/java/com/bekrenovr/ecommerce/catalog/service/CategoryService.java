@@ -13,7 +13,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static com.bekrenovr.ecommerce.catalog.exception.ItemApplicationExceptionReason.CATEGORY_NOT_FOUND;
 
@@ -25,9 +27,9 @@ public class CategoryService {
     private final CategoryMapper categoryMapper;
     private final SubcategoryMapper subcategoryMapper;
 
-    public List<CategoryResponse> getAllCategories(Gender gender) {
+    public List<CategoryResponse> getAllCategories() {
         return categoryRepository.findAll().stream()
-                .map(category -> categoryMapper.categoryToResponse(category, gender))
+                .map(categoryMapper::categoryToResponse)
                 .toList();
     }
 
@@ -38,5 +40,14 @@ public class CategoryService {
                 .stream()
                 .map(subcategoryMapper::subcategoryToResponse)
                 .toList();
+    }
+
+    public Map<UUID, byte[]> getAllCategoryImages(Gender gender) {
+        return categoryRepository.findAll()
+                .stream()
+                .collect(Collectors.toMap(
+                        Category::getId,
+                        c -> categoryMapper.mapCategoryImage(c.getImageName(), gender)
+                ));
     }
 }

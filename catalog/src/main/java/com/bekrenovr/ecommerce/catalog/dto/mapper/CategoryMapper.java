@@ -4,28 +4,25 @@ import com.bekrenovr.ecommerce.catalog.dto.response.CategoryResponse;
 import com.bekrenovr.ecommerce.catalog.model.entity.Category;
 import com.bekrenovr.ecommerce.catalog.model.enums.Gender;
 import com.bekrenovr.ecommerce.catalog.util.ImageUtils;
-import org.mapstruct.Context;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Named;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
-@Mapper(componentModel = "spring")
-public abstract class CategoryMapper {
+@Component
+public class CategoryMapper {
 
     @Value("${custom.category.img-path-prefix.men}")
-    private String IMG_PREFIX_MEN;
+    private String imgPrefixMen;
     @Value("${custom.category.img-path-prefix.women}")
-    private String IMG_PREFIX_WOMEN;
+    private String imgPrefixWomen;
 
-    @Mapping(target = "image", source = "imageName", qualifiedByName = "mapImage")
-    public abstract CategoryResponse categoryToResponse(Category category, @Context Gender gender);
+    public CategoryResponse categoryToResponse(Category category){
+        return new CategoryResponse(category.getId(), category.getName());
+    };
 
-    @Named("mapImage")
-    public byte[] mapImage(String imageName, @Context Gender gender){
+    public byte[] mapCategoryImage(String imageName, Gender gender){
         String imgPathPrefix = switch(gender){
-            case MEN -> IMG_PREFIX_MEN;
-            case WOMEN -> IMG_PREFIX_WOMEN;
+            case MEN -> imgPrefixMen;
+            case WOMEN -> imgPrefixWomen;
         };
         return ImageUtils.imageToByteArray(imgPathPrefix + imageName);
     }

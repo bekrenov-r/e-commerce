@@ -1,6 +1,6 @@
 package com.bekrenovr.ecommerce.catalog.service;
 
-import com.bekrenovr.ecommerce.catalog.dto.mapper.ItemToDtoMapper;
+import com.bekrenovr.ecommerce.catalog.dto.mapper.ItemMapper;
 import com.bekrenovr.ecommerce.catalog.dto.request.FilterOptions;
 import com.bekrenovr.ecommerce.catalog.dto.response.ItemResponse;
 import com.bekrenovr.ecommerce.catalog.jpa.repository.ItemRepository;
@@ -27,7 +27,7 @@ public class ItemService {
     private final ItemRepository itemRepository;
     private final ItemSpecificationBuilder itemSpecificationBuilder;
     private final ItemGenerator itemGenerator;
-    private final ItemToDtoMapper itemToDtoMapper;
+    private final ItemMapper itemMapper;
 
     public Page<ItemResponse> getItemsByCriteria(
             SortOption sort, Integer pageNumber, Integer pageSize, FilterOptions filters
@@ -38,7 +38,7 @@ public class ItemService {
                 .sorted(ItemSortComparators.forOption(sort))
                 .toList();
         return PageUtil.paginateList(items, pageNumber, pageSize)
-                .map(itemToDtoMapper::itemToResponse);
+                .map(itemMapper::itemToResponse);
     }
 
     public Item getItemById(UUID id) {
@@ -48,7 +48,7 @@ public class ItemService {
     public ResponseEntity<Void> createItem(Item item) {
         item.setId(null);
         Item savedItem = itemRepository.save(item);
-//        ItemResponse itemDTO = itemToDtoMapper.itemToResponse(savedItem);
+//        ItemResponse itemDTO = itemMapper.itemToResponse(savedItem);
 
         /*// todo: get creatingEmployeeId from security context
         ItemDetails itemDetails = new ItemDetails(0, 0, LocalDateTime.now(), 0L);

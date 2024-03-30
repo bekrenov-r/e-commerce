@@ -1,6 +1,6 @@
 package com.bekrenovr.ecommerce.catalog.service;
 
-import com.bekrenovr.ecommerce.catalog.dto.mapper.ItemToDtoMapper;
+import com.bekrenovr.ecommerce.catalog.dto.mapper.ItemMapper;
 import com.bekrenovr.ecommerce.catalog.dto.response.ItemResponse;
 import com.bekrenovr.ecommerce.catalog.exception.ItemApplicationException;
 import com.bekrenovr.ecommerce.catalog.jpa.repository.ItemRepository;
@@ -22,14 +22,14 @@ import static java.util.function.Predicate.not;
 @RequiredArgsConstructor
 public class LandingPageService {
     private final LandingPageRepository landingPageRepository;
-    private final ItemToDtoMapper itemToDtoMapper;
+    private final ItemMapper itemMapper;
     private final ItemRepository itemRepository;
 
 
     public Page<ItemResponse> getLandingPageItems(Integer pageNumber, Integer pageSize) {
         List<Item> items = landingPageRepository.getLandingPageItems();
         return PageUtil.paginateList(items, pageNumber, pageSize)
-                .map(itemToDtoMapper::itemToResponse);
+                .map(itemMapper::itemToResponse);
     }
 
     public void addLandingPageItems(List<UUID> itemsIds){

@@ -13,7 +13,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Mapper(componentModel = "spring")
-public abstract class ItemToDtoMapper {
+public abstract class ItemMapper {
     @Autowired
     protected CustomerServiceProxy customerServiceProxy;
 
