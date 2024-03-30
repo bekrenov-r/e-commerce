@@ -1,11 +1,11 @@
 package com.bekrenovr.ecommerce.catalog.util.dev;
 
+import com.bekrenovr.ecommerce.catalog.jpa.repository.BrandRepository;
+import com.bekrenovr.ecommerce.catalog.jpa.repository.CategoryRepository;
 import com.bekrenovr.ecommerce.catalog.model.ShoesSize;
 import com.bekrenovr.ecommerce.catalog.model.Size;
 import com.bekrenovr.ecommerce.catalog.model.entity.*;
 import com.bekrenovr.ecommerce.catalog.model.enums.*;
-import com.bekrenovr.ecommerce.catalog.repository.BrandRepository;
-import com.bekrenovr.ecommerce.catalog.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

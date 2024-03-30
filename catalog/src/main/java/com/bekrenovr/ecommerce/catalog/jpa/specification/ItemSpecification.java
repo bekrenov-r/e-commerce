@@ -1,6 +1,5 @@
-package com.bekrenovr.ecommerce.catalog.repository;
+package com.bekrenovr.ecommerce.catalog.jpa.specification;
 
-import com.bekrenovr.ecommerce.catalog.dto.request.FilterOptions;
 import com.bekrenovr.ecommerce.catalog.model.Size;
 import com.bekrenovr.ecommerce.catalog.model.entity.*;
 import com.bekrenovr.ecommerce.catalog.model.enums.Color;
@@ -13,7 +12,6 @@ import org.apache.commons.lang.math.DoubleRange;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.Collection;
-import java.util.HashSet;
 
 public class ItemSpecification {
     public static Specification<Item> hasGender(Gender gender){
@@ -83,34 +81,5 @@ public class ItemSpecification {
                         criteriaBuilder.lower(root.get("name")),
                         '%' + searchPattern.toLowerCase() + '%'
                 );
-    }
-
-    public static Specification<Item> fromFilterOptions(FilterOptions filterOptions){
-        Collection<Specification<Item>> specifications = new HashSet<>();
-        if(filterOptions.priceRange() != null){
-            specifications.add(hasPriceWithinRange(filterOptions.priceRange()));
-        }
-        if(filterOptions.sizes() != null){
-            specifications.add(hasSizeIn(filterOptions.sizes()));
-        }
-        if(filterOptions.colors() != null){
-            specifications.add(hasColorIn(filterOptions.colors()));
-        }
-        if(filterOptions.brands() != null){
-            specifications.add(hasBrandIn(filterOptions.brands()));
-        }
-        if(filterOptions.materials() != null){
-            specifications.add(hasMaterialIn(filterOptions.materials()));
-        }
-        if(filterOptions.season() != null){
-            specifications.add(hasSeason(filterOptions.season()));
-        }
-        if(filterOptions.rating() != null){
-            specifications.add(hasRatingGreaterThan(filterOptions.rating()));
-        }
-        if(filterOptions.searchPattern() != null){
-            specifications.add(matchesSearchPattern(filterOptions.searchPattern()));
-        }
-        return Specification.allOf(specifications);
     }
 }

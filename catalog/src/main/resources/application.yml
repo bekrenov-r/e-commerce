@@ -7,9 +7,7 @@ spring:
     name: catalog
 custom:
   page:
-    size:
-      main: 20
-      landing-page: 12
+    default-size: 10
   strategy:
     popularity:
       item-is-considered-popular-at-orders-count:
@@ -27,9 +25,12 @@ eureka:
       defaultZone: http://localhost:8761/eureka
 springdoc:
   api-docs:
-    path: /items/docs # these urls will be used to load the api docs of this service by the api gateway
+    path: /docs # these urls will be used to load the api docs of this service by the api gateway
   swagger-ui:
     enabled: false
+server:
+  servlet:
+    context-path: /catalog
 ---
 spring:
   config:

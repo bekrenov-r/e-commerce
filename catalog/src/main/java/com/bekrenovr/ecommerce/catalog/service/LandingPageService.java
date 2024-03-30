@@ -3,12 +3,11 @@ package com.bekrenovr.ecommerce.catalog.service;
 import com.bekrenovr.ecommerce.catalog.dto.mapper.ItemToDtoMapper;
 import com.bekrenovr.ecommerce.catalog.dto.response.ItemResponse;
 import com.bekrenovr.ecommerce.catalog.exception.ItemApplicationException;
+import com.bekrenovr.ecommerce.catalog.jpa.repository.ItemRepository;
+import com.bekrenovr.ecommerce.catalog.jpa.repository.LandingPageRepository;
 import com.bekrenovr.ecommerce.catalog.model.entity.Item;
-import com.bekrenovr.ecommerce.catalog.repository.ItemRepository;
-import com.bekrenovr.ecommerce.catalog.repository.LandingPageRepository;
 import com.bekrenovr.ecommerce.catalog.util.PageUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
@@ -26,12 +25,10 @@ public class LandingPageService {
     private final ItemToDtoMapper itemToDtoMapper;
     private final ItemRepository itemRepository;
 
-    @Value("${custom.page.size.landing-page}")
-    private Integer pageSizeForLandingPage;
 
-    public Page<ItemResponse> getLandingPageItems(Integer page) {
+    public Page<ItemResponse> getLandingPageItems(Integer pageNumber, Integer pageSize) {
         List<Item> items = landingPageRepository.getLandingPageItems();
-        return PageUtil.paginateList(items, page, pageSizeForLandingPage)
+        return PageUtil.paginateList(items, pageNumber, pageSize)
                 .map(itemToDtoMapper::itemToResponse);
     }
 

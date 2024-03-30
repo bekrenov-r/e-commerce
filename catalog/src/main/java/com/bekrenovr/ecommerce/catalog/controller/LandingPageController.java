@@ -17,9 +17,10 @@ public class LandingPageController {
     private final LandingPageService landingPageService;
     @GetMapping
     public ResponseEntity<Page<ItemResponse>> getLandingPageItems(
-            @RequestParam(name = "page", defaultValue = "0") Integer page
+            @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = "${custom.page.default-size}") Integer pageSize
     ){
-        return ResponseEntity.ok(landingPageService.getLandingPageItems(page));
+        return ResponseEntity.ok(landingPageService.getLandingPageItems(pageNumber, pageSize));
     }
 
     @PostMapping

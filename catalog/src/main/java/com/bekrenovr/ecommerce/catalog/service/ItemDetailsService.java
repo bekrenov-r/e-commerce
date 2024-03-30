@@ -1,6 +1,6 @@
 package com.bekrenovr.ecommerce.catalog.service;
 
-import com.bekrenovr.ecommerce.catalog.repository.ItemDetailsRepository;
+import com.bekrenovr.ecommerce.catalog.jpa.repository.ItemDetailsRepository;
 import org.springframework.stereotype.Service;
 
 @Service

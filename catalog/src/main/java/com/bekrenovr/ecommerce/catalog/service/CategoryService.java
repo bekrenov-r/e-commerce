@@ -5,10 +5,10 @@ import com.bekrenovr.ecommerce.catalog.dto.mapper.SubcategoryMapper;
 import com.bekrenovr.ecommerce.catalog.dto.response.CategoryResponse;
 import com.bekrenovr.ecommerce.catalog.dto.response.SubcategoryResponse;
 import com.bekrenovr.ecommerce.catalog.exception.ItemApplicationException;
+import com.bekrenovr.ecommerce.catalog.jpa.repository.CategoryRepository;
+import com.bekrenovr.ecommerce.catalog.jpa.repository.SubcategoryRepository;
 import com.bekrenovr.ecommerce.catalog.model.entity.Category;
 import com.bekrenovr.ecommerce.catalog.model.enums.Gender;
-import com.bekrenovr.ecommerce.catalog.repository.CategoryRepository;
-import com.bekrenovr.ecommerce.catalog.repository.SubcategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

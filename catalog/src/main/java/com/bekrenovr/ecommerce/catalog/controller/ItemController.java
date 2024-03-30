@@ -4,7 +4,6 @@ import com.bekrenovr.ecommerce.catalog.dto.request.FilterOptions;
 import com.bekrenovr.ecommerce.catalog.dto.response.ItemImageResponse;
 import com.bekrenovr.ecommerce.catalog.dto.response.ItemResponse;
 import com.bekrenovr.ecommerce.catalog.model.entity.Item;
-import com.bekrenovr.ecommerce.catalog.model.enums.Gender;
 import com.bekrenovr.ecommerce.catalog.service.ItemImageService;
 import com.bekrenovr.ecommerce.catalog.service.ItemService;
 import com.bekrenovr.ecommerce.catalog.service.sort.SortOption;
@@ -31,31 +30,14 @@ public class ItemController {
         return ResponseEntity.ok(itemService.getItemById(id));
     }
 
-    @GetMapping("/gender/{gender}/category/{categoryId}")
-    public ResponseEntity<Page<ItemResponse>> getAllItemsByGenderAndCategory(
-            @PathVariable("gender") Gender gender,
-            @PathVariable("categoryId") UUID categoryId,
+    @GetMapping
+    public ResponseEntity<Page<ItemResponse>> getItemsByCriteria(
             @RequestParam(name = "sort", required = false) SortOption sort,
-            @RequestParam(name = "page", defaultValue = "0") Integer page,
+            @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = "${custom.page.default-size}") Integer pageSize,
             @ModelAttribute @Valid FilterOptions filters
     ){
-        return ResponseEntity
-                .ok(itemService.getAllItemsByGenderAndCategory(gender, categoryId, sort, page, filters));
-    }
-
-    @GetMapping("/gender/{gender}/category/{categoryId}/subcategory/{subcategoryId}")
-    public ResponseEntity<Page<ItemResponse>> getAllItemsByGenderCategoryAndSubcategory(
-            @PathVariable("gender") Gender gender,
-            @PathVariable("categoryId") UUID categoryId,
-            @PathVariable("subcategoryId") UUID subcategoryId,
-            @RequestParam(name = "sort", required = false) SortOption sort,
-            @RequestParam(name = "page", defaultValue = "0") Integer page,
-            @ModelAttribute FilterOptions filters
-    ) {
-        return ResponseEntity
-                .ok(itemService.getAllItemsByGenderCategoryAndSubcategory(
-                        gender, categoryId, subcategoryId, sort, page, filters
-                ));
+        return ResponseEntity.ok(itemService.getItemsByCriteria(sort, pageNumber, pageSize, filters));
     }
 
     @GetMapping("/{itemId}/images")

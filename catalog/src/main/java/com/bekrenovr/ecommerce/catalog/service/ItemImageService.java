@@ -3,8 +3,8 @@ package com.bekrenovr.ecommerce.catalog.service;
 import com.bekrenovr.ecommerce.catalog.dto.mapper.ItemImageMapper;
 import com.bekrenovr.ecommerce.catalog.dto.response.ItemImageResponse;
 import com.bekrenovr.ecommerce.catalog.exception.ItemApplicationException;
+import com.bekrenovr.ecommerce.catalog.jpa.repository.ItemRepository;
 import com.bekrenovr.ecommerce.catalog.model.entity.ItemImage;
-import com.bekrenovr.ecommerce.catalog.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

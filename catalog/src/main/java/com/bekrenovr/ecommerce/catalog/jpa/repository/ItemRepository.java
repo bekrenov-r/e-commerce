@@ -1,4 +1,4 @@
-package com.bekrenovr.ecommerce.catalog.repository;
+package com.bekrenovr.ecommerce.catalog.jpa.repository;
 
 import com.bekrenovr.ecommerce.catalog.model.entity.Item;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,6 +1,11 @@
 package com.bekrenovr.ecommerce.catalog.filter;
 
 import com.bekrenovr.ecommerce.catalog.dto.request.FilterOptions;
+import com.bekrenovr.ecommerce.catalog.jpa.repository.BrandRepository;
+import com.bekrenovr.ecommerce.catalog.jpa.repository.CategoryRepository;
+import com.bekrenovr.ecommerce.catalog.jpa.repository.ItemRepository;
+import com.bekrenovr.ecommerce.catalog.jpa.specification.ItemSpecification;
+import com.bekrenovr.ecommerce.catalog.jpa.specification.ItemSpecificationBuilder;
 import com.bekrenovr.ecommerce.catalog.model.Size;
 import com.bekrenovr.ecommerce.catalog.model.SizeFactory;
 import com.bekrenovr.ecommerce.catalog.model.entity.Brand;
@@ -8,10 +13,6 @@ import com.bekrenovr.ecommerce.catalog.model.entity.Category;
 import com.bekrenovr.ecommerce.catalog.model.entity.Item;
 import com.bekrenovr.ecommerce.catalog.model.entity.Subcategory;
 import com.bekrenovr.ecommerce.catalog.model.enums.*;
-import com.bekrenovr.ecommerce.catalog.repository.BrandRepository;
-import com.bekrenovr.ecommerce.catalog.repository.CategoryRepository;
-import com.bekrenovr.ecommerce.catalog.repository.ItemRepository;
-import com.bekrenovr.ecommerce.catalog.repository.ItemSpecification;
 import com.bekrenovr.ecommerce.catalog.util.RandomUtils;
 import com.bekrenovr.ecommerce.catalog.util.dev.ItemGenerator;
 import jakarta.transaction.Transactional;
@@ -47,6 +48,8 @@ public class ItemSpecificationTest {
     private ItemGenerator itemGenerator;
     @Autowired
     private SizeFactory sizeFactory;
+    @Autowired
+    private ItemSpecificationBuilder itemSpecificationBuilder;
 
     private static final DoubleRange PRICE_RANGE = new DoubleRange(10.0, 50.0);
 
@@ -177,6 +180,7 @@ public class ItemSpecificationTest {
         var subcategory = RandomUtils.getRandomElement(category.getSubcategories());
         var colors = RandomUtils.getRandomSeries(Color.values(), 3);
         var brands = RandomUtils.getRandomSeries(brandRepository.findAll(), 2);
+        var brandsIds = brands.stream().map(Brand::getId).toList();
         var materials = RandomUtils.getRandomSeries(Material.values(), 3);
         var season = RandomUtils.getRandomElement(Season.values());
         var searchPattern = category.getName().substring(0, 4);
@@ -184,12 +188,8 @@ public class ItemSpecificationTest {
                 ? getRandomShoesSizes(5)
                 : Arrays.asList(ClothesSize.values());
         Short rating = 3;
-        FilterOptions filterOptions = new FilterOptions(PRICE_RANGE, sizeValues, colors, brands, materials, season, rating, searchPattern);
-        Specification<Item> compositeSpecification = Specification.allOf(
-                ItemSpecification.hasGender(gender),
-                ItemSpecification.hasCategoryAndSubcategory(category, subcategory),
-                ItemSpecification.fromFilterOptions(filterOptions)
-        );
+        FilterOptions filterOptions = new FilterOptions(gender, category.getId(), subcategory.getId(), PRICE_RANGE, sizeValues, colors, brandsIds, materials, season, rating, searchPattern);
+        Specification<Item> compositeSpecification = itemSpecificationBuilder.buildFromFilterOptions(filterOptions);
 
         List<Item> items = itemRepository.findAll(compositeSpecification);
 
