@@ -11,8 +11,8 @@ public class StringToDoubleRangeConverter implements Converter<String, DoubleRan
             throw new IllegalArgumentException();
 
         return new DoubleRange(
-                Integer.parseInt(values[0]),
-                Integer.parseInt(values[1])
+                Integer.parseInt(values[0].trim()),
+                Integer.parseInt(values[1].trim())
         );
     }
 }

@@ -17,7 +17,9 @@ public class StringToSizeCollectionConverter implements Converter<String, Collec
 
     @Override
     public Collection<Size> convert(String source) {
-        List<String> sizeValues = Arrays.asList(source.split(","));
+        List<String> sizeValues = Arrays.stream(source.split(","))
+                .map(String::trim)
+                .toList();
         return sizeValues.stream()
                 .map(sizeFactory::getSize)
                 .toList();

@@ -79,7 +79,7 @@ public class ItemSpecification {
         return (root, query, criteriaBuilder) ->
                 criteriaBuilder.like(
                         criteriaBuilder.lower(root.get("name")),
-                        '%' + searchPattern.toLowerCase() + '%'
+                        '%' + searchPattern.trim().toLowerCase() + '%'
                 );
     }
 }
