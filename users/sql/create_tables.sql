@@ -1,13 +1,24 @@
 drop schema public cascade;
 create schema public;
 
+CREATE TABLE address
+(
+    country_code    text,
+    city            text,
+    street          text,
+    building_number text,
+    flat_number     text,
+    zip_code     text,
+    id              text primary key
+);
+
 CREATE TABLE customer (
   first_name text,
   last_name text,
   email text,
   phone_number text,
   is_registered boolean,
-  created_at timestamp NOT NULL,
+  created_at timestamp,
   id text NOT NULL PRIMARY KEY,
   UNIQUE (email)
 );

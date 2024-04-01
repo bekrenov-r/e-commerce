@@ -8,6 +8,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "customer")
 @Data
@@ -26,6 +28,12 @@ public class Customer extends AbstractEntity {
 
     @Column(name = "phone_number")
     private String phoneNumber;
+
+    @Column(name = "is_registered")
+    private boolean isRegistered;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     @JoinColumn(name = "address_id")

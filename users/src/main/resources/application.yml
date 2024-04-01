@@ -4,6 +4,17 @@ spring:
     username: postgres
     password: xurM5M4HBt
     driver-class-name: org.postgresql.Driver
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username:
+    password:
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
   config:
     import: optional:configserver:http://localhost:8888
   application:

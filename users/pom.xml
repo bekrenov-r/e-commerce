@@ -65,6 +65,11 @@
 			<artifactId>spring-aop</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct</artifactId>
+			<version>${org.mapstruct.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>com.ecommerce</groupId>
 			<artifactId>common-lib</artifactId>
 			<version>${project.version}</version>

@@ -15,9 +15,8 @@ import lombok.NoArgsConstructor;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class Address extends AbstractEntity {
-
-    @Column(name = "country")
-    private String country;
+    @Column(name = "country_code")
+    private String countryCode;
 
     @Column(name = "city")
     private String city;
@@ -31,6 +30,6 @@ public class Address extends AbstractEntity {
     @Column(name = "flat_number")
     private String flatNumber;
 
-    @Column(name = "postal_code")
-    private String postalCode;
+    @Column(name = "zip_code")
+    private String zipCode;
 }

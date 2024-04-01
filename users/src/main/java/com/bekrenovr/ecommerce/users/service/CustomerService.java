@@ -1,62 +1,36 @@
 package com.bekrenovr.ecommerce.users.service;
 
-import com.bekrenovr.ecommerce.common.ResponseSource;
 import com.bekrenovr.ecommerce.users.dto.CustomerDTO;
-import com.bekrenovr.ecommerce.users.dto.CustomerToDtoMapper;
+import com.bekrenovr.ecommerce.users.dto.mapper.CustomerMapper;
+import com.bekrenovr.ecommerce.users.dto.request.CustomerRequest;
 import com.bekrenovr.ecommerce.users.entity.Customer;
 import com.bekrenovr.ecommerce.users.repository.CustomerRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.util.List;
+import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class CustomerService {
-
     private final CustomerRepository customerRepository;
-    private final ResponseSource responseSource;
+    private final CustomerMapper customerMapper;
 
-    public CustomerService(CustomerRepository customerRepository, ResponseSource responseSource) {
-        this.customerRepository = customerRepository;
-        this.responseSource = responseSource;
-    }
-
-    public ResponseEntity<List<CustomerDTO>> findAll(){
-        List<CustomerDTO> customers =
-                customerRepository.findAll().stream().map(CustomerToDtoMapper::customerToDto).toList();
-        return ResponseEntity
-                .ok()
-                .header("Response Source", responseSource.toString())
-                .body(customers);
-    }
-
-    public ResponseEntity<CustomerDTO> findById(int id){
+    public ResponseEntity<CustomerDTO> getCustomerById(UUID id){
         Customer customer = customerRepository
                 .findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("No customer found for id: " + id));
-
-        CustomerDTO customerDTO = CustomerToDtoMapper.customerToDto(customer);
-        return ResponseEntity
-                .ok()
-                .header("Response Source", responseSource.toString())
-                .body(customerDTO);
+        return ResponseEntity.ok(customerMapper.customerToDto(customer));
     }
 
-    public ResponseEntity<Customer> create(Customer customer){
-        customer.setId(0);
-        customer.getAddress().setId(0);
+    @Transactional
+    public Customer createCustomer(CustomerRequest request, boolean withUser){
+        Customer customer = customerMapper.requestToEntity(request);
         Customer savedCustomer = customerRepository.save(customer);
-        return ResponseEntity
-                .created(
-                        ServletUriComponentsBuilder.fromCurrentRequest()
-                                .path("/{id}")
-                                .buildAndExpand(savedCustomer.getId())
-                                .toUri()
-                )
-                .header("Response Source", responseSource.toString())
-                .body(savedCustomer);
+        return savedCustomer;
     }
 
     public ResponseEntity<Customer> update(Customer customer){
@@ -64,7 +38,6 @@ public class CustomerService {
             Customer updatedCustomer = customerRepository.save(customer);
             return ResponseEntity
                     .ok()
-                    .header("Response Source", responseSource.toString())
                     .body(updatedCustomer);
 
         } else {
@@ -72,13 +45,12 @@ public class CustomerService {
         }
     }
 
-    public ResponseEntity<Void> delete(int id){
+    public ResponseEntity<Void> delete(UUID id){
         Customer customer = customerRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("No customer found for id: " + id));
         customerRepository.delete(customer);
         return ResponseEntity
                 .ok()
-                .header("Response Source", responseSource.toString())
                 .build();
     }
 }

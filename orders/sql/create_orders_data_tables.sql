@@ -13,17 +13,6 @@ CREATE TABLE "order" (
   id text PRIMARY KEY
 );
 
-CREATE TABLE address (
-  country text not null,
-  country_code text not null,
-  city text not null,
-  street text not null,
-  building_number text not null,
-  flat_number text,
-  postal_code text not null,
-  id text primary key
-);
-
 CREATE TABLE delivery (
   method text not null,
   order_id text not null,
@@ -36,8 +25,7 @@ CREATE TABLE delivery (
   status text not null,
   number text not null,
   id text PRIMARY KEY,
-  FOREIGN KEY (order_id) REFERENCES "order"(id),
-  FOREIGN KEY (address_id) REFERENCES address (id)
+  FOREIGN KEY (order_id) REFERENCES "order"(id)
 );
 
 CREATE TABLE order_details (
