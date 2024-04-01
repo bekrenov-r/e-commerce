@@ -1,7 +1,7 @@
 package com.bekrenovr.ecommerce.catalog.jpa.specification;
 
 import com.bekrenovr.ecommerce.catalog.dto.request.FilterOptions;
-import com.bekrenovr.ecommerce.catalog.exception.ItemApplicationException;
+import com.bekrenovr.ecommerce.catalog.exception.CatalogApplicationException;
 import com.bekrenovr.ecommerce.catalog.jpa.repository.BrandRepository;
 import com.bekrenovr.ecommerce.catalog.jpa.repository.CategoryRepository;
 import com.bekrenovr.ecommerce.catalog.model.entity.Brand;
@@ -16,8 +16,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.UUID;
 
-import static com.bekrenovr.ecommerce.catalog.exception.ItemApplicationExceptionReason.CATEGORY_NOT_FOUND;
-import static com.bekrenovr.ecommerce.catalog.exception.ItemApplicationExceptionReason.SUBCATEGORY_NOT_FOUND;
+import static com.bekrenovr.ecommerce.catalog.exception.CatalogApplicationExceptionReason.CATEGORY_NOT_FOUND;
+import static com.bekrenovr.ecommerce.catalog.exception.CatalogApplicationExceptionReason.SUBCATEGORY_NOT_FOUND;
 import static com.bekrenovr.ecommerce.catalog.jpa.specification.ItemSpecification.*;
 
 @Component
@@ -67,12 +67,12 @@ public class ItemSpecificationBuilder {
     private Specification<Item> resolveFromCategoryAndSubcategory(UUID categoryId, UUID subcategoryId){
         if(categoryId != null){
             Category category = categoryRepository.findById(categoryId)
-                    .orElseThrow(() -> new ItemApplicationException(CATEGORY_NOT_FOUND, categoryId));
+                    .orElseThrow(() -> new CatalogApplicationException(CATEGORY_NOT_FOUND, categoryId));
             if(subcategoryId != null){
                 Subcategory subcategory = category.getSubcategories().stream()
                         .filter(sub -> sub.getId().equals(subcategoryId))
                         .findFirst()
-                        .orElseThrow(() -> new ItemApplicationException(SUBCATEGORY_NOT_FOUND, categoryId, subcategoryId));
+                        .orElseThrow(() -> new CatalogApplicationException(SUBCATEGORY_NOT_FOUND, categoryId, subcategoryId));
                 return hasCategoryAndSubcategory(category, subcategory);
             } else {
                 return hasCategory(category);

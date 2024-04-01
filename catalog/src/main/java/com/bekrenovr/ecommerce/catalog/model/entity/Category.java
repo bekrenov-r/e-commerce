@@ -1,25 +1,22 @@
 package com.bekrenovr.ecommerce.catalog.model.entity;
 
 import com.bekrenovr.ecommerce.catalog.model.enums.CategoryEnum;
+import com.bekrenovr.ecommerce.common.entity.AbstractEntity;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Table(name = "category")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
-public class Category {
-
-    @Id
-    @Column(name = "id")
-    private UUID id;
-
+@EqualsAndHashCode(callSuper = true)
+public class Category extends AbstractEntity {
     @Column(name = "name")
     private String name;
 

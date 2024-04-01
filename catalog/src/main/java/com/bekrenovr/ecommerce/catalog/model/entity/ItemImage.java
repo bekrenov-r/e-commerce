@@ -1,30 +1,23 @@
 package com.bekrenovr.ecommerce.catalog.model.entity;
 
+import com.bekrenovr.ecommerce.common.entity.AbstractEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-import java.util.UUID;
 
 @Entity
 @Table(name = "image")
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ItemImage {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
-
+@Data
+@EqualsAndHashCode(callSuper = true)
+public class ItemImage extends AbstractEntity {
     @Column(name = "path")
     private String path;
 
     @ManyToOne
     @JoinColumn(name = "item_id")
     private Item item;
-
 }

@@ -47,7 +47,7 @@ public class ItemGenerator {
         Subcategory subcategory = !subcategories.isEmpty()
                 ? getRandomElement(subcategories)
                 : null;
-        List<ItemImage> images = Arrays.asList(new ItemImage(null, "catalog/src/main/resources/images/iStock-1280562095_63a051a70dbff.jpg", null));
+        List<ItemImage> images = Arrays.asList(new ItemImage("catalog/src/main/resources/images/iStock-1280562095_63a051a70dbff.jpg", null));
         Color color = getRandomElement(Color.values());
         String itemName = capitalize(category.getName()) + " " + (rand.nextInt(100) + 1);
         String description = "Description";
@@ -115,7 +115,6 @@ public class ItemGenerator {
         Random rand = new Random();
         BigDecimal weightKg = BigDecimal.valueOf(rand.nextDouble());
         return new UniqueItem(
-                null,
                 size.getSizeValue(),
                 weightKg,
                 generateBarcode(),

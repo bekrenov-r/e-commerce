@@ -1,25 +1,21 @@
 package com.bekrenovr.ecommerce.catalog.model.entity;
 
-import jakarta.persistence.*;
+import com.bekrenovr.ecommerce.common.entity.AbstractEntity;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-import java.util.UUID;
-
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Table(name = "brand")
-public class Brand {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id")
-    private UUID id;
-
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+@EqualsAndHashCode(callSuper = true)
+public class Brand extends AbstractEntity {
     @Column(name = "name")
     private String name;
 }

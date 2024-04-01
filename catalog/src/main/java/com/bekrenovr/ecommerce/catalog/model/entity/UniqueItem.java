@@ -1,26 +1,21 @@
 package com.bekrenovr.ecommerce.catalog.model.entity;
 
+import com.bekrenovr.ecommerce.common.entity.AbstractEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.util.UUID;
 
 @Entity
 @Table(name = "unique_item")
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UniqueItem {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
-
+@Data
+@EqualsAndHashCode(callSuper = true)
+public class UniqueItem extends AbstractEntity {
     @Column(name = "size")
     private String size;
 
@@ -42,5 +37,4 @@ public class UniqueItem {
     @ManyToOne
     @JoinColumn(name = "item_id")
     private Item item;
-
 }

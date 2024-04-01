@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import java.time.LocalDateTime;
 
 @ControllerAdvice
-public class ItemResponseEntityExceptionHandler extends StandardResponseEntityExceptionHandler {
+public class CatalogResponseEntityExceptionHandler extends StandardResponseEntityExceptionHandler {
 
-    @ExceptionHandler(ItemApplicationException.class)
-    public ResponseEntity<ErrorDetail> handleItemApplicationException(ItemApplicationException ex){
+    @ExceptionHandler(CatalogApplicationException.class)
+    public ResponseEntity<ErrorDetail> handleItemApplicationException(CatalogApplicationException ex){
         super.logException(ex);
         ErrorDetail errorDetail = new ErrorDetail(
                 LocalDateTime.now(),

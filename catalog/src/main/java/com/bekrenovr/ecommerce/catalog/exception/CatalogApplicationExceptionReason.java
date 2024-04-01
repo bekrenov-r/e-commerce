@@ -9,7 +9,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @AllArgsConstructor
 @Getter
-public enum ItemApplicationExceptionReason {
+public enum CatalogApplicationExceptionReason {
     CATEGORY_NOT_FOUND("No category found for id: %s", NOT_FOUND),
     SUBCATEGORY_NOT_FOUND("No subcategory with id: [%s] found in category with id: [%s]", NOT_FOUND),
     ITEM_NOT_FOUND("Item with id [%s] not found", NOT_FOUND),

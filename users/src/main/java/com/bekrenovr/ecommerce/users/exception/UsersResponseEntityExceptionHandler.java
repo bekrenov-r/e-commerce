@@ -4,5 +4,5 @@ import com.bekrenovr.ecommerce.common.exception.StandardResponseEntityExceptionH
 import org.springframework.web.bind.annotation.ControllerAdvice;
 
 @ControllerAdvice
-public class CustomerResponseEntityExceptionHandler extends StandardResponseEntityExceptionHandler {
+public class UsersResponseEntityExceptionHandler extends StandardResponseEntityExceptionHandler {
 }

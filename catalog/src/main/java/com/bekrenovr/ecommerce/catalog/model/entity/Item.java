@@ -4,6 +4,7 @@ import com.bekrenovr.ecommerce.catalog.model.enums.Color;
 import com.bekrenovr.ecommerce.catalog.model.enums.Gender;
 import com.bekrenovr.ecommerce.catalog.model.enums.Material;
 import com.bekrenovr.ecommerce.catalog.model.enums.Season;
+import com.bekrenovr.ecommerce.common.entity.AbstractEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -14,17 +15,12 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "item")
-@Getter
-@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Item {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
-
+@Data
+@EqualsAndHashCode(callSuper = true)
+public class Item extends AbstractEntity {
     @Column(name = "name")
     private String name;
 
@@ -94,7 +90,7 @@ public class Item {
     private List<UniqueItem> uniqueItems;
 
     public Item(UUID id, String name, String description, Double price, Double discount, Category category, Subcategory subcategory, List<ItemImage> images, Gender gender, String collection, Brand brand, Material material, Season season, Double rating, String itemCode, List<UniqueItem> uniqueItems, ItemDetails itemDetails) {
-        this.id = id;
+        super(id);
         this.name = name;
         this.description = description;
         this.price = price;
@@ -125,18 +121,5 @@ public class Item {
         BigDecimal priceAfterDiscount =
                 priceBD.subtract(priceBD.multiply(discountBD)).setScale(2, RoundingMode.HALF_UP);
         return priceAfterDiscount.doubleValue();
-    }
-
-    @Override
-    public String toString() {
-        return "Item{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", price=" + price +
-                ", discount=" + discount +
-                ", priceAfterDiscount=" + priceAfterDiscount +
-                ", category=" + category +
-                ", gender=" + gender +
-                '}';
     }
 }

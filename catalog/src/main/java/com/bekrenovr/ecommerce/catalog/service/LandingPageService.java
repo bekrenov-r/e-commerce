@@ -2,7 +2,7 @@ package com.bekrenovr.ecommerce.catalog.service;
 
 import com.bekrenovr.ecommerce.catalog.dto.mapper.ItemMapper;
 import com.bekrenovr.ecommerce.catalog.dto.response.ItemResponse;
-import com.bekrenovr.ecommerce.catalog.exception.ItemApplicationException;
+import com.bekrenovr.ecommerce.catalog.exception.CatalogApplicationException;
 import com.bekrenovr.ecommerce.catalog.jpa.repository.ItemRepository;
 import com.bekrenovr.ecommerce.catalog.jpa.repository.LandingPageRepository;
 import com.bekrenovr.ecommerce.catalog.model.entity.Item;
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.function.Predicate;
 
-import static com.bekrenovr.ecommerce.catalog.exception.ItemApplicationExceptionReason.CANNOT_ADD_ITEMS_TO_LANDING_PAGE;
+import static com.bekrenovr.ecommerce.catalog.exception.CatalogApplicationExceptionReason.CANNOT_ADD_ITEMS_TO_LANDING_PAGE;
 import static java.util.function.Predicate.not;
 
 @Service
@@ -38,7 +38,7 @@ public class LandingPageService {
                 .stream()
                 .filter(not(isOnLandingPage))
                 .toList();
-        if(itemsToAdd.isEmpty()) throw new ItemApplicationException(CANNOT_ADD_ITEMS_TO_LANDING_PAGE);
+        if(itemsToAdd.isEmpty()) throw new CatalogApplicationException(CANNOT_ADD_ITEMS_TO_LANDING_PAGE);
         landingPageRepository.addLandingPageItems(itemsToAdd);
     }
 

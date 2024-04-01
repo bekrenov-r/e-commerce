@@ -73,6 +73,8 @@ REQ {
     send emails to customer with info about status of order
     item is considered popular when its order count last month is greater than certain value (e.g. 100)
     consider different types of sizes (eg s/m/l for shirts, but 30-45 for boots)
+    registration is not required to create order. If customer chooses to order without registration, Customer entity is created anyway, but without User.
+        If the same customer then wants to register, system finds entity by phone number OR email address and updates data; phone number has higher priority then email address in this case
 }
 
 
