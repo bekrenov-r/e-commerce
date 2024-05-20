@@ -32,6 +32,7 @@ public class LandingPageRepository {
                 .map(Item::getId)
                 .toList();
         String sql = composeSqlForAddingItems(idsToAdd);
+        System.out.println(sql);
         Query query = entityManager.createNativeQuery(sql);
         query.executeUpdate();
     }
@@ -51,21 +52,21 @@ public class LandingPageRepository {
         for(int i = 0; i < idsToAdd.size(); i++){
             boolean isLast = i == idsToAdd.size() - 1;
             sqlBuilder
-                    .append('(')
+                    .append("('")
                     .append(idsToAdd.get(i))
-                    .append(")")
+                    .append("')")
                     .append(isLast ? "" : ", ");
         }
         return sqlBuilder.toString();
     }
 
     private String composeSqlForRemovingItems(List<UUID> idsToRemove){
-        StringBuilder sqlBuilder = new StringBuilder("delete from landing_page_item where landing_page_item.item_id in (");
+        StringBuilder sqlBuilder = new StringBuilder("delete from landing_page_item where landing_page_item.item_id in ('");
         for(int i = 0; i < idsToRemove.size(); i++){
             boolean isLast = i == idsToRemove.size() - 1;
             sqlBuilder
                     .append(idsToRemove.get(i))
-                    .append(isLast ? ")" : ", ");
+                    .append(isLast ? "')" : ", ");
         }
         return sqlBuilder.toString();
     }
