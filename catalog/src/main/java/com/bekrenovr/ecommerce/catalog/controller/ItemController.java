@@ -1,6 +1,7 @@
 package com.bekrenovr.ecommerce.catalog.controller;
 
 import com.bekrenovr.ecommerce.catalog.dto.request.FilterOptions;
+import com.bekrenovr.ecommerce.catalog.dto.response.ItemDetailedResponse;
 import com.bekrenovr.ecommerce.catalog.dto.response.ItemImageResponse;
 import com.bekrenovr.ecommerce.catalog.dto.response.ItemResponse;
 import com.bekrenovr.ecommerce.catalog.model.entity.Item;
@@ -24,9 +25,8 @@ public class ItemController {
     private final ItemService itemService;
     private final ItemImageService itemImageService;
 
-    // temp
     @GetMapping("/{id}")
-    public ResponseEntity<Item> getItemById(@PathVariable UUID id){
+    public ResponseEntity<ItemDetailedResponse> getItemById(@PathVariable UUID id){
         return ResponseEntity.ok(itemService.getItemById(id));
     }
 

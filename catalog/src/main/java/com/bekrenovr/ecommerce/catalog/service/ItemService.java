@@ -2,6 +2,7 @@ package com.bekrenovr.ecommerce.catalog.service;
 
 import com.bekrenovr.ecommerce.catalog.dto.mapper.ItemMapper;
 import com.bekrenovr.ecommerce.catalog.dto.request.FilterOptions;
+import com.bekrenovr.ecommerce.catalog.dto.response.ItemDetailedResponse;
 import com.bekrenovr.ecommerce.catalog.dto.response.ItemResponse;
 import com.bekrenovr.ecommerce.catalog.jpa.repository.ItemRepository;
 import com.bekrenovr.ecommerce.catalog.jpa.specification.ItemSpecificationBuilder;
@@ -41,8 +42,9 @@ public class ItemService {
                 .map(itemMapper::itemToResponse);
     }
 
-    public Item getItemById(UUID id) {
-        return itemRepository.findById(id).orElse(null);
+    public ItemDetailedResponse getItemById(UUID id) {
+        Item item = itemRepository.findByIdOrThrowDefault(id);
+        return itemMapper.itemToDetailedResponse(item);
     }
 
     public ResponseEntity<Void> createItem(Item item) {
