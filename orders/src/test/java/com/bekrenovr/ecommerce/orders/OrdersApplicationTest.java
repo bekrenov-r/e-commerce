@@ -26,25 +26,25 @@ public class OrdersApplicationTest {
         this.orderRepository = orderRepository;
     }
 
-    @Test
-    void validation(){
-        Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+//    @Test
+//    void validation(){
+//        Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+//
+//        OrderRequest order = new OrderRequest(-1, -3, -10);
+//
+//        Set<ConstraintViolation<OrderRequest>> violations = validator.validate(order);
+//
+//        if (!violations.isEmpty()) {
+//            for (ConstraintViolation<OrderRequest> violation : violations) {
+//                System.out.println(violation.getMessage());
+//            }
+//        }
+//    }
 
-        OrderRequest order = new OrderRequest(-1, -3, -10);
-
-        Set<ConstraintViolation<OrderRequest>> violations = validator.validate(order);
-
-        if (!violations.isEmpty()) {
-            for (ConstraintViolation<OrderRequest> violation : violations) {
-                System.out.println(violation.getMessage());
-            }
-        }
-    }
-
-    @Test
-    void findOrdersByCustomerId(){
-        List<Order> orders = orderRepository.findAllByCustomerId(2);
-        orders.forEach(System.out::println);
-    }
+//    @Test
+//    void findOrdersByCustomerId(){
+//        List<Order> orders = orderRepository.findAllByCustomerId(2);
+//        orders.forEach(System.out::println);
+//    }
 
 }

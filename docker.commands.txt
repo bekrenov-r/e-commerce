@@ -1,0 +1,6 @@
+docker compose build
+docker compose up
+* If catalog haven't started - restart it.
+    - docker compose up catalog
+* Delete dbs:
+    - docker compose down --volumes
