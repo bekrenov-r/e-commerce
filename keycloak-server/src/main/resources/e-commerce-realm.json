@@ -305,7 +305,7 @@
       "id" : "024b62f1-3af0-49fc-a15f-e843b72e00df",
       "type" : "password",
       "createdDate" : 1574174719522,
-      "secretData" : "{\"value\":\"tfHk9estQfa27osLCY2QelpkL6Sm6rPS+iQ33ytPSD4p10Fk7ophI7ChERAnzDjVSmvdsZAttsg2Yr+8F4Gzfw==\",\"salt\":\"goh99WgI7T1ZuGdrKzNAeQ==\"}",
+      "secretData" : "{\"value\":\"RyKk2ICDJMkosrsHnXCUEg==\",\"salt\":\"goh99WgI7T1ZuGdrKzNAeQ==\"}",
       "credentialData" : "{\"hashIterations\":27500,\"algorithm\":\"pbkdf2-sha256\"}"
     } ],
     "disableableCredentialTypes" : [ ],

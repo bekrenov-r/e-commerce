@@ -5,6 +5,12 @@ spring:
     web-application-type: reactive
   application:
     name: api-gateway
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8400/auth/realms/e-commerce
+          jwk-set-uri: http://localhost:8400/auth/realms/e-commerce/protocol/openid-connect/certs
 eureka:
   client:
     serviceUrl:
