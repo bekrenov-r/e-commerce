@@ -1,5 +1,6 @@
 package com.bekrenovr.ecommerce.keycloakserver.config;
 
+import com.bekrenovr.ecommerce.keycloakserver.providers.RegularJsonConfigProviderFactory;
 import org.keycloak.Config;
 import org.keycloak.exportimport.ExportImportManager;
 import org.keycloak.models.KeycloakSession;

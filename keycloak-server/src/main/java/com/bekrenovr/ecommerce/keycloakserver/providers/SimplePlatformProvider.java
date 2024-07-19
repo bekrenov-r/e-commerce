@@ -1,4 +1,4 @@
-package com.bekrenovr.ecommerce.keycloakserver.config;
+package com.bekrenovr.ecommerce.keycloakserver.providers;
 
 import org.keycloak.Config.Scope;
 import org.keycloak.common.Profile;

@@ -1,1 +1,1 @@
-com.bekrenovr.ecommerce.keycloakserver.config.RegularJsonConfigProviderFactory
+com.bekrenovr.ecommerce.keycloakserver.providers.RegularJsonConfigProviderFactory

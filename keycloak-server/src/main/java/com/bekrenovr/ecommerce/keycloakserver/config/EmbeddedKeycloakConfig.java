@@ -1,5 +1,6 @@
 package com.bekrenovr.ecommerce.keycloakserver.config;
 
+import com.bekrenovr.ecommerce.keycloakserver.providers.SimplePlatformProvider;
 import org.jboss.resteasy.plugins.server.servlet.HttpServlet30Dispatcher;
 import org.jboss.resteasy.plugins.server.servlet.ResteasyContextParameters;
 import org.keycloak.platform.Platform;

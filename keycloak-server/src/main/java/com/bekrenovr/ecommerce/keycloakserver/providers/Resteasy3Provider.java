@@ -1,4 +1,4 @@
-package com.bekrenovr.ecommerce.keycloakserver.config;
+package com.bekrenovr.ecommerce.keycloakserver.providers;
 
 import org.jboss.resteasy.core.ResteasyContext;
 import org.jboss.resteasy.spi.Dispatcher;

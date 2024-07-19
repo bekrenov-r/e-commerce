@@ -1,1 +1,1 @@
-com.bekrenovr.ecommerce.keycloakserver.config.Resteasy3Provider
+com.bekrenovr.ecommerce.keycloakserver.providers.Resteasy3Provider

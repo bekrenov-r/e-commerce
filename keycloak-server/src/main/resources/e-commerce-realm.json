@@ -294,51 +294,6 @@
   "webAuthnPolicyCreateTimeout" : 0,
   "webAuthnPolicyAvoidSameAuthenticatorRegister" : false,
   "webAuthnPolicyAcceptableAaguids" : [ ],
-  "users" : [ {
-    "id" : "a5461470-33eb-4b2d-82d4-b0484e96ad7f",
-    "createdTimestamp" : 1574174706812,
-    "username" : "john@test.com",
-    "enabled" : true,
-    "totp" : false,
-    "emailVerified" : false,
-    "credentials" : [ {
-      "id" : "024b62f1-3af0-49fc-a15f-e843b72e00df",
-      "type" : "password",
-      "createdDate" : 1574174719522,
-      "secretData" : "{\"value\":\"RyKk2ICDJMkosrsHnXCUEg==\",\"salt\":\"goh99WgI7T1ZuGdrKzNAeQ==\"}",
-      "credentialData" : "{\"hashIterations\":27500,\"algorithm\":\"pbkdf2-sha256\"}"
-    } ],
-    "disableableCredentialTypes" : [ ],
-    "requiredActions" : [ ],
-    "realmRoles" : [ "offline_access", "uma_authorization" ],
-    "clientRoles" : {
-      "account" : [ "manage-account", "view-profile" ]
-    },
-    "notBefore" : 0,
-    "groups" : [ ]
-  }, {
-    "id" : "22a4d9fe-194c-4c6e-841a-8a55b402459f",
-    "createdTimestamp" : 1580237252522,
-    "username" : "mike@other.com",
-    "enabled" : true,
-    "totp" : false,
-    "emailVerified" : false,
-    "credentials" : [ {
-      "id" : "73c8d1ca-d548-4e1a-a82d-2c1d0d3ee017",
-      "type" : "password",
-      "createdDate" : 1580237291489,
-      "secretData" : "{\"value\":\"fea4QiAzqmOctQGtJrKvoPRIUKLdQ5UKFIEPEQ7PYjTjxvucDZVk8yzXNfsDHvgpZ2rWiwsACgvsymdHnmru9w==\",\"salt\":\"nu5yJh98jz8cGLnLx36uvg==\"}",
-      "credentialData" : "{\"hashIterations\":27500,\"algorithm\":\"pbkdf2-sha256\"}"
-    } ],
-    "disableableCredentialTypes" : [ ],
-    "requiredActions" : [ ],
-    "realmRoles" : [ "offline_access", "uma_authorization" ],
-    "clientRoles" : {
-      "account" : [ "manage-account", "view-profile" ]
-    },
-    "notBefore" : 0,
-    "groups" : [ ]
-  } ],
   "scopeMappings" : [ {
     "clientScope" : "offline_access",
     "roles" : [ "offline_access" ]
@@ -1082,6 +1037,40 @@
         "allowed-protocol-mapper-types" : [ "oidc-usermodel-property-mapper", "saml-user-property-mapper", "oidc-address-mapper", "saml-role-list-mapper", "oidc-usermodel-attribute-mapper", "saml-user-attribute-mapper", "oidc-sha256-pairwise-sub-mapper", "oidc-full-name-mapper" ]
       }
     } ],
+    "org.keycloak.storage.UserStorageProvider": [
+      {
+        "id": "105762f9-a8eb-4a2b-a8b1-648b97b67194",
+        "name": "ecommerce-user-provider",
+        "providerId": "ecommerce-user-provider",
+        "subComponents": {},
+        "config": {
+          "jdbcDriver": [
+            "org.postgresql.Driver"
+          ],
+          "validationQuery": [
+            "select 1"
+          ],
+          "jdbcUrl": [
+            "jdbc:postgresql://localhost:5432/keycloak"
+          ],
+          "cachePolicy": [
+            "DEFAULT"
+          ],
+          "priority": [
+            "0"
+          ],
+          "enabled": [
+            "true"
+          ],
+          "username": [
+            "postgres"
+          ],
+          "password": [
+            "postgres"
+          ]
+        }
+      }
+    ],
     "org.keycloak.keys.KeyProvider" : [ {
       "id" : "d67a940a-52e4-44a5-9f69-6ffdd67a188f",
       "name" : "rsa-generated",

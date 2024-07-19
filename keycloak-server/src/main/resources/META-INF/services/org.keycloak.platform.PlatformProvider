@@ -1,1 +1,1 @@
-com.bekrenovr.ecommerce.keycloakserver.config.SimplePlatformProvider
+com.bekrenovr.ecommerce.keycloakserver.providers.SimplePlatformProvider
