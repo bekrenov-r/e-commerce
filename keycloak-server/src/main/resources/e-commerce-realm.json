@@ -60,9 +60,36 @@
       "clientRole" : false,
       "containerId" : "e-commerce",
       "attributes" : { }
-    } ],
+    },
+      {
+        "id" : "19e48a78-3809-43da-9cdb-7605589b6587",
+        "name" : "CUSTOMER",
+        "description" : "",
+        "composite" : false,
+        "clientRole" : false,
+        "containerId" : "e-commerce",
+        "attributes" : { }
+      },
+      {
+        "id" : "c1a72dff-82eb-4dcf-9a94-d0a993169df5",
+        "name" : "ADMIN",
+        "description" : "",
+        "composite" : false,
+        "clientRole" : false,
+        "containerId" : "e-commerce",
+        "attributes" : { }
+      },
+      {
+        "id" : "9bba9e0c-cc9b-47d3-98b4-d0c76c626cf9",
+        "name" : "EMPLOYEE",
+        "description" : "",
+        "composite" : false,
+        "clientRole" : false,
+        "containerId" : "e-commerce",
+        "attributes" : { }
+      }],
     "client" : {
-      "newClient" : [ ],
+      "ecommerce-api" : [],
       "realm-management" : [ {
         "id" : "5d00243f-ceec-4b0c-995e-d86d5b8a0ae6",
         "name" : "view-clients",
@@ -381,11 +408,11 @@
     "optionalClientScopes" : [ "address", "phone", "offline_access", "microprofile-jwt" ]
   }, {
     "id" : "b88ce206-63d6-43b6-87c9-ea09d8c02f32",
-    "clientId" : "newClient",
+    "clientId" : "ecommerce-api",
     "surrogateAuthRequired" : false,
     "enabled" : true,
     "clientAuthenticatorType" : "client-secret",
-    "secret" : "newClientSecret",
+    "secret" : "ecommerce-api-secret",
     "redirectUris" : [ "http://localhost:8082/new-client/login/oauth2/code/custom",
     "http://localhost:8089/",
     "http://localhost:8089/auth/redirect/",

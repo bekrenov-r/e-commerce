@@ -15,5 +15,6 @@ insert into users values
                       ('jane.doe@example.com', '$2a$12$YmIpJldQP6XHAxV5IBsI..oPu95XQaKEImM0OO89rroc.5rMBtGY.');
 
 insert into roles values
-                            ('john.doe@example.com', 'CLIENT'),
-                            ('jane.doe@example.com', 'CLIENT');
+                            ('john.doe@example.com', 'CUSTOMER'),
+                            ('john.doe@example.com', 'ADMIN'),
+                            ('jane.doe@example.com', 'CUSTOMER');

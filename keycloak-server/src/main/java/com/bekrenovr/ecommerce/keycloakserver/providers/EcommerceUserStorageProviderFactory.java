@@ -8,13 +8,11 @@ import org.keycloak.provider.ProviderConfigProperty;
 import org.keycloak.provider.ProviderConfigurationBuilder;
 import org.keycloak.storage.UserStorageProviderFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 import static com.bekrenovr.ecommerce.keycloakserver.providers.EcommerceUserStorageProviderConstants.*;
 
-@Component
 @Slf4j
 public class EcommerceUserStorageProviderFactory
         implements UserStorageProviderFactory<EcommerceUserStorageProvider> {
