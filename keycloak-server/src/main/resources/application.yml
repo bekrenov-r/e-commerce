@@ -11,7 +11,3 @@ keycloak:
       username:
       password:
     realmImportFile: e-commerce-realm.json
-logging:
-  level:
-    org:
-      keycloak: debug
