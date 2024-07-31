@@ -1,6 +1,7 @@
 package com.bekrenovr.ecommerce.keycloakserver;
 
 import com.bekrenovr.ecommerce.keycloakserver.config.KeycloakServerProperties;
+import com.bekrenovr.ecommerce.keycloakserver.config.SecondaryDatasourceConfigProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -13,7 +14,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication(exclude = LiquibaseAutoConfiguration.class)
-@EnableConfigurationProperties({ KeycloakServerProperties.class })
+@EnableConfigurationProperties({ KeycloakServerProperties.class, SecondaryDatasourceConfigProperties.class })
 public class KeycloakServerApplication {
 	private static final Logger LOG = LoggerFactory.getLogger(KeycloakServerApplication.class);
 	public static void main(String[] args) {
