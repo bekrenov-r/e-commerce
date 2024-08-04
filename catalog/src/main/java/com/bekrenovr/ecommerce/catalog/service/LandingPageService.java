@@ -2,11 +2,11 @@ package com.bekrenovr.ecommerce.catalog.service;
 
 import com.bekrenovr.ecommerce.catalog.dto.mapper.ItemMapper;
 import com.bekrenovr.ecommerce.catalog.dto.response.ItemResponse;
-import com.bekrenovr.ecommerce.catalog.exception.CatalogApplicationException;
 import com.bekrenovr.ecommerce.catalog.jpa.repository.ItemRepository;
 import com.bekrenovr.ecommerce.catalog.jpa.repository.LandingPageRepository;
 import com.bekrenovr.ecommerce.catalog.model.entity.Item;
 import com.bekrenovr.ecommerce.catalog.util.PageUtil;
+import com.bekrenovr.ecommerce.common.exception.EcommerceApplicationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -38,7 +38,7 @@ public class LandingPageService {
                 .stream()
                 .filter(not(isOnLandingPage))
                 .toList();
-        if(itemsToAdd.isEmpty()) throw new CatalogApplicationException(CANNOT_ADD_ITEMS_TO_LANDING_PAGE);
+        if(itemsToAdd.isEmpty()) throw new EcommerceApplicationException(CANNOT_ADD_ITEMS_TO_LANDING_PAGE);
         landingPageRepository.addLandingPageItems(itemsToAdd);
     }
 

@@ -2,9 +2,9 @@ package com.bekrenovr.ecommerce.catalog.service;
 
 import com.bekrenovr.ecommerce.catalog.dto.mapper.ItemImageMapper;
 import com.bekrenovr.ecommerce.catalog.dto.response.ItemImageResponse;
-import com.bekrenovr.ecommerce.catalog.exception.CatalogApplicationException;
 import com.bekrenovr.ecommerce.catalog.jpa.repository.ItemRepository;
 import com.bekrenovr.ecommerce.catalog.model.entity.ItemImage;
+import com.bekrenovr.ecommerce.common.exception.EcommerceApplicationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +21,7 @@ public class ItemImageService {
 
     public List<ItemImageResponse> getAllImagesForItem(UUID itemId){
         List<ItemImage> itemImages = itemRepository.findById(itemId)
-                .orElseThrow(() -> new CatalogApplicationException(ITEM_NOT_FOUND, itemId))
+                .orElseThrow(() -> new EcommerceApplicationException(ITEM_NOT_FOUND, itemId))
                 .getImages();
         return itemImages.stream()
                 .map(itemImageMapper::entityToResponse)

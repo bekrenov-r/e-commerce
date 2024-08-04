@@ -1,10 +1,10 @@
 package com.bekrenovr.ecommerce.users.service;
 
+import com.bekrenovr.ecommerce.common.exception.EcommerceApplicationException;
 import com.bekrenovr.ecommerce.users.dto.CustomerDTO;
 import com.bekrenovr.ecommerce.users.dto.mapper.CustomerMapper;
 import com.bekrenovr.ecommerce.users.dto.request.CustomerRequest;
 import com.bekrenovr.ecommerce.users.entity.Customer;
-import com.bekrenovr.ecommerce.users.exception.UsersApplicationException;
 import com.bekrenovr.ecommerce.users.repository.CustomerRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -33,7 +33,7 @@ public class CustomerService {
     @Transactional
     public void createCustomer(CustomerRequest request, boolean isRegistered){
         if(customerRepository.existsByEmail(request.getEmail()))
-            throw new UsersApplicationException(EMAIL_ALREADY_EXISTS, request.getEmail());
+            throw new EcommerceApplicationException(EMAIL_ALREADY_EXISTS, request.getEmail());
         Customer customer = customerMapper.requestToEntity(request);
         customer.setRegistered(isRegistered);
         customer.setCreatedAt(LocalDateTime.now());

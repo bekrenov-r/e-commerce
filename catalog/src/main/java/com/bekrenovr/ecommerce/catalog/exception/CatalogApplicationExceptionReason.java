@@ -1,5 +1,6 @@
 package com.bekrenovr.ecommerce.catalog.exception;
 
+import com.bekrenovr.ecommerce.common.exception.EcommerceApplicationExceptionReason;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
@@ -9,7 +10,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @AllArgsConstructor
 @Getter
-public enum CatalogApplicationExceptionReason {
+public enum CatalogApplicationExceptionReason implements EcommerceApplicationExceptionReason {
     CATEGORY_NOT_FOUND("No category found for id: %s", NOT_FOUND),
     SUBCATEGORY_NOT_FOUND("No subcategory with id: [%s] found in category with id: [%s]", NOT_FOUND),
     ITEM_NOT_FOUND("Item with id [%s] not found", NOT_FOUND),

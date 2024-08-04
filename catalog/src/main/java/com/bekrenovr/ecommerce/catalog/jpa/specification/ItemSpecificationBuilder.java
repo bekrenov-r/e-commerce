@@ -1,13 +1,13 @@
 package com.bekrenovr.ecommerce.catalog.jpa.specification;
 
 import com.bekrenovr.ecommerce.catalog.dto.request.FilterOptions;
-import com.bekrenovr.ecommerce.catalog.exception.CatalogApplicationException;
 import com.bekrenovr.ecommerce.catalog.jpa.repository.BrandRepository;
 import com.bekrenovr.ecommerce.catalog.jpa.repository.CategoryRepository;
 import com.bekrenovr.ecommerce.catalog.model.entity.Brand;
 import com.bekrenovr.ecommerce.catalog.model.entity.Category;
 import com.bekrenovr.ecommerce.catalog.model.entity.Item;
 import com.bekrenovr.ecommerce.catalog.model.entity.Subcategory;
+import com.bekrenovr.ecommerce.common.exception.EcommerceApplicationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
@@ -67,12 +67,12 @@ public class ItemSpecificationBuilder {
     private Specification<Item> resolveFromCategoryAndSubcategory(UUID categoryId, UUID subcategoryId){
         if(categoryId != null){
             Category category = categoryRepository.findById(categoryId)
-                    .orElseThrow(() -> new CatalogApplicationException(CATEGORY_NOT_FOUND, categoryId));
+                    .orElseThrow(() -> new EcommerceApplicationException(CATEGORY_NOT_FOUND, categoryId));
             if(subcategoryId != null){
                 Subcategory subcategory = category.getSubcategories().stream()
                         .filter(sub -> sub.getId().equals(subcategoryId))
                         .findFirst()
-                        .orElseThrow(() -> new CatalogApplicationException(SUBCATEGORY_NOT_FOUND, categoryId, subcategoryId));
+                        .orElseThrow(() -> new EcommerceApplicationException(SUBCATEGORY_NOT_FOUND, categoryId, subcategoryId));
                 return hasCategoryAndSubcategory(category, subcategory);
             } else {
                 return hasCategory(category);

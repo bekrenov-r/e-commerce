@@ -4,11 +4,11 @@ import com.bekrenovr.ecommerce.catalog.dto.mapper.CategoryMapper;
 import com.bekrenovr.ecommerce.catalog.dto.mapper.SubcategoryMapper;
 import com.bekrenovr.ecommerce.catalog.dto.response.CategoryResponse;
 import com.bekrenovr.ecommerce.catalog.dto.response.SubcategoryResponse;
-import com.bekrenovr.ecommerce.catalog.exception.CatalogApplicationException;
 import com.bekrenovr.ecommerce.catalog.jpa.repository.CategoryRepository;
 import com.bekrenovr.ecommerce.catalog.jpa.repository.SubcategoryRepository;
 import com.bekrenovr.ecommerce.catalog.model.entity.Category;
 import com.bekrenovr.ecommerce.catalog.model.enums.Gender;
+import com.bekrenovr.ecommerce.common.exception.EcommerceApplicationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +35,7 @@ public class CategoryService {
 
     public List<SubcategoryResponse> getAllSubcategoriesInCategory(UUID categoryId) {
         Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new CatalogApplicationException(CATEGORY_NOT_FOUND, categoryId));
+                .orElseThrow(() -> new EcommerceApplicationException(CATEGORY_NOT_FOUND, categoryId));
         return subcategoryRepository.findAllByCategory(category)
                 .stream()
                 .map(subcategoryMapper::subcategoryToResponse)

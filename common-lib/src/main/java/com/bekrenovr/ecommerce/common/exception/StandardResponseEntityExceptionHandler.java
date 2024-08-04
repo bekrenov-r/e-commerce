@@ -31,7 +31,7 @@ public class StandardResponseEntityExceptionHandler extends ResponseEntityExcept
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<ErrorDetail> handleItemNotFound(EntityNotFoundException ex, WebRequest webRequest){
+    public ResponseEntity<ErrorDetail> handleEntityNotFound(EntityNotFoundException ex, WebRequest webRequest){
         logException(ex);
         ErrorDetail errorDetail = new ErrorDetail(
                 LocalDateTime.now(),
@@ -63,6 +63,17 @@ public class StandardResponseEntityExceptionHandler extends ResponseEntityExcept
                 ex.getMessage()
         );
         return new ResponseEntity<>(errorDetail, ex.getStatusCode());
+    }
+
+    @ExceptionHandler(EcommerceApplicationException.class)
+    public ResponseEntity<ErrorDetail> handleEcommerceApplicationException(EcommerceApplicationException ex) {
+        logException(ex);
+        ErrorDetail errorDetail = new ErrorDetail(
+                LocalDateTime.now(),
+                ex.getReason().getStatus(),
+                ex.getMessage()
+        );
+        return new ResponseEntity<>(errorDetail, ex.getReason().getStatus());
     }
 
     @Override

@@ -24,6 +24,7 @@ public class SecurityConfig {
                 .authorizeExchange(auth -> auth
                         .pathMatchers(HttpMethod.GET, "/catalog/**").permitAll()
                         .pathMatchers(HttpMethod.POST, "/catalog/**").hasAuthority("EMPLOYEE")
+                        .pathMatchers(HttpMethod.DELETE, "/catalog/**").hasAuthority("EMPLOYEE")
                         .pathMatchers(HttpMethod.POST, "/users/registration/customer").permitAll()
                         .anyExchange().authenticated())
                 .oauth2ResourceServer(oauth -> oauth
