@@ -38,6 +38,11 @@ public class EcommerceUserAdapter extends AbstractUserAdapter {
     }
 
     @Override
+    public boolean isEnabled() {
+        return user.isEnabled();
+    }
+
+    @Override
     public SubjectCredentialManager credentialManager() {
         return new LegacyUserCredentialManager(session, realm, this);
     }

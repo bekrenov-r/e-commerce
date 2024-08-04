@@ -8,10 +8,18 @@ spring:
     username:
     password:
     url: jdbc:postgresql://localhost:5432/keycloak
+  application:
+    name: keycloak
 keycloak:
   server:
-    contextPath: /keycloak
     adminUser:
       username:
       password:
+    adminClient:
+      clientId: admin-cli
+      clientSecret: "**********"
     realmImportFile: e-commerce-realm.json
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka

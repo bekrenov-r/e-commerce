@@ -3,12 +3,9 @@ package com.bekrenovr.ecommerce.keycloakserver.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.util.Set;
-
 @Data
 @AllArgsConstructor
-public class EcommerceUser {
+public class ActivationToken {
     private String username;
-    private Set<Role> roles;
-    private boolean enabled;
+    private String token;
 }

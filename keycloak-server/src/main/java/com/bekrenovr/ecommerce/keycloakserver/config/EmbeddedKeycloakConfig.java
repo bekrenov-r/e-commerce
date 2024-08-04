@@ -2,6 +2,7 @@ package com.bekrenovr.ecommerce.keycloakserver.config;
 
 import com.bekrenovr.ecommerce.keycloakserver.providers.SimplePlatformProvider;
 import com.bekrenovr.ecommerce.keycloakserver.service.UserService;
+import com.bekrenovr.ecommerce.keycloakserver.util.KeycloakCacheCleaner;
 import org.jboss.resteasy.plugins.server.servlet.HttpServlet30Dispatcher;
 import org.jboss.resteasy.plugins.server.servlet.ResteasyContextParameters;
 import org.keycloak.platform.Platform;
@@ -31,7 +32,7 @@ public class EmbeddedKeycloakConfig {
                 EmbeddedKeycloakApplication.class.getName());
         servlet.addInitParameter(ResteasyContextParameters.RESTEASY_USE_CONTAINER_FORM_PARAMS,
                 "true");
-        servlet.addUrlMappings(keycloakServerProperties.getContextPath() + "/realms/*");
+        servlet.addUrlMappings(keycloakServerProperties.getContextPath() + "/realms/*", keycloakServerProperties.getContextPath() + "/admin/*");
         servlet.setLoadOnStartup(1);
         servlet.setAsyncSupported(true);
         return servlet;
@@ -44,7 +45,7 @@ public class EmbeddedKeycloakConfig {
         FilterRegistrationBean<EmbeddedKeycloakRequestFilter> filter = new FilterRegistrationBean<>();
         filter.setName("Keycloak Session Management");
         filter.setFilter(new EmbeddedKeycloakRequestFilter());
-        filter.addUrlPatterns(keycloakServerProperties.getContextPath() + "/realms/*");
+        filter.addUrlPatterns(keycloakServerProperties.getContextPath() + "/realms/*", keycloakServerProperties.getContextPath() + "/admin/*");
         return filter;
     }
 
@@ -89,7 +90,8 @@ public class EmbeddedKeycloakConfig {
     }
 
     @Bean
-    public UserService userService(SecondaryDatasourceConfigProperties secondaryDatasourceConfigProperties) {
-        return new UserService(secondaryDatasourceConfigProperties);
+    public UserService userService(SecondaryDatasourceConfigProperties secondaryDatasourceConfigProperties,
+                                   KeycloakCacheCleaner cacheCleaner) {
+        return new UserService(secondaryDatasourceConfigProperties, cacheCleaner);
     }
 }

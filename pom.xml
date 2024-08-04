@@ -10,6 +10,7 @@
         <module>config-server</module>
         <module>orders</module>
         <module>users</module>
+        <module>keycloak-server</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

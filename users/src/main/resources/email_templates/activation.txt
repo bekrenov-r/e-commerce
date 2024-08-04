@@ -1,0 +1,8 @@
+Dear %s!
+
+Thank you for choosing SpaceFincher.
+
+To activate your account, please follow this link: %s
+
+Best regards,
+SpaceFincher Team.

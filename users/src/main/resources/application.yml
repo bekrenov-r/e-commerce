@@ -7,7 +7,7 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username:
+    username: spacefincher@gmail.com
     password:
     properties:
       mail:
@@ -27,3 +27,4 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka
+frontend-base-url: http://localhost:4200
