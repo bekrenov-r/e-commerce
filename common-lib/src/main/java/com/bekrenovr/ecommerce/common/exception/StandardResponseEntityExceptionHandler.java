@@ -10,6 +10,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -53,6 +54,17 @@ public class StandardResponseEntityExceptionHandler extends ResponseEntityExcept
         return new ResponseEntity<>(errorDetail, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(RestClientResponseException.class)
+    public ResponseEntity<ErrorDetail> handleRestClientResponseException(RestClientResponseException ex) {
+        logException(ex);
+        ErrorDetail errorDetail = new ErrorDetail(
+                LocalDateTime.now(),
+                ex.getStatusCode(),
+                ex.getMessage()
+        );
+        return new ResponseEntity<>(errorDetail, ex.getStatusCode());
+    }
+
     @Override
     public ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request){
         logException(ex);
@@ -61,7 +73,6 @@ public class StandardResponseEntityExceptionHandler extends ResponseEntityExcept
                 status,
                 ex.getMessage()
         );
-
         return new ResponseEntity<>(errorDetail, status);
     }
 

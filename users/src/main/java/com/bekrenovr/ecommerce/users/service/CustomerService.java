@@ -4,6 +4,7 @@ import com.bekrenovr.ecommerce.users.dto.CustomerDTO;
 import com.bekrenovr.ecommerce.users.dto.mapper.CustomerMapper;
 import com.bekrenovr.ecommerce.users.dto.request.CustomerRequest;
 import com.bekrenovr.ecommerce.users.entity.Customer;
+import com.bekrenovr.ecommerce.users.exception.UsersApplicationException;
 import com.bekrenovr.ecommerce.users.repository.CustomerRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -11,7 +12,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
+
+import static com.bekrenovr.ecommerce.users.exception.UsersApplicationExceptionReason.EMAIL_ALREADY_EXISTS;
 
 @Service
 @RequiredArgsConstructor
@@ -27,10 +31,13 @@ public class CustomerService {
     }
 
     @Transactional
-    public Customer createCustomer(CustomerRequest request, boolean withUser){
+    public void createCustomer(CustomerRequest request, boolean isRegistered){
+        if(customerRepository.existsByEmail(request.getEmail()))
+            throw new UsersApplicationException(EMAIL_ALREADY_EXISTS, request.getEmail());
         Customer customer = customerMapper.requestToEntity(request);
-        Customer savedCustomer = customerRepository.save(customer);
-        return savedCustomer;
+        customer.setRegistered(isRegistered);
+        customer.setCreatedAt(LocalDateTime.now());
+        customerRepository.save(customer);
     }
 
     public ResponseEntity<Customer> update(Customer customer){

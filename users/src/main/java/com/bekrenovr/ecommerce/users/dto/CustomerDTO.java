@@ -1,4 +1,6 @@
 package com.bekrenovr.ecommerce.users.dto;
 
-public record CustomerDTO(Integer id, String firstName, String lastName) {
+import java.util.UUID;
+
+public record CustomerDTO(UUID id, String firstName, String lastName) {
 }

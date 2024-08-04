@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/user_data
+    url: jdbc:postgresql://localhost:5432/users_data
     username: postgres
     password: xurM5M4HBt
     driver-class-name: org.postgresql.Driver
@@ -21,6 +21,8 @@ spring:
     name: users
 server:
   port: 8100
+  servlet:
+    context-path: /users
 eureka:
   client:
     serviceUrl:

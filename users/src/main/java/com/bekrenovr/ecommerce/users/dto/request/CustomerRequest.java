@@ -1,9 +1,10 @@
 package com.bekrenovr.ecommerce.users.dto.request;
 
-public record CustomerRequest(
-        String firstName,
-        String lastName,
-        String email,
-        String phoneNumber,
-        AddressRequest addressRequest
-) { }
+import lombok.Data;
+
+@Data
+public class CustomerRequest {
+    private String firstName;
+    private String lastName;
+    private String email;
+}

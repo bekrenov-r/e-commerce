@@ -1,8 +1,9 @@
 package com.bekrenovr.ecommerce.users.entity;
 
 import com.bekrenovr.ecommerce.common.entity.AbstractEntity;
-import com.bekrenovr.ecommerce.common.entity.Address;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -26,16 +27,9 @@ public class Customer extends AbstractEntity {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "phone_number")
-    private String phoneNumber;
-
     @Column(name = "is_registered")
     private boolean isRegistered;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
-
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
-    @JoinColumn(name = "address_id")
-    private Address address;
 }
