@@ -1,0 +1,52 @@
+name: e-commerce
+services:
+  eureka:
+    container_name: eureka
+    hostname: eureka
+    build: eureka-server
+    networks:
+      - e-commerce-net
+    ports:
+      - "8761:8761"
+    command: java -jar app.jar
+  catalog-db:
+    hostname: catalog-db
+    container_name: catalog-db
+    build: catalog/sql
+    networks:
+      - e-commerce-net
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres-passwd
+  catalog:
+    container_name: catalog
+    hostname: catalog
+    profiles:
+      - dev
+    build: catalog
+    networks:
+      - e-commerce-net
+    ports:
+      - "8000:8000"
+    environment:
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: PASSWORD
+      SPRING_PROFILES_ACTIVE: dev
+    command: java -jar app.jar
+  api-gateway:
+    container_name: api-gateway
+    hostname: api-gateway
+    build: api-gateway
+    networks:
+      - e-commerce-net
+    ports:
+      - "8765:8765"
+    command: java -jar app.jar
+networks:
+  e-commerce-net:
+    driver: bridge
+
+#secrets:
+#  postgres-passwd:
+#    external: true

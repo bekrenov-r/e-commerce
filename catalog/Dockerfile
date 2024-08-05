@@ -1,4 +1,4 @@
-FROM openjdk:17-jdk-alpine
-ARG JAR_FILE=target/*.jar
-COPY ./target/items-data-0.0.1.jar items-data.jar
-ENTRYPOINT ["java", "-jar", "/items-data.jar"]
+FROM openjdk:24-oraclelinux8
+COPY /sql/postgres-passwd /run/secrets/postgres-passwd
+COPY ./target/*.jar app.jar
+EXPOSE 8000

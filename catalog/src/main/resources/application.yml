@@ -22,7 +22,7 @@ custom:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: http://eureka:8761/eureka
 springdoc:
   api-docs:
     path: /docs # these urls will be used to load the api docs of this service by the api gateway
@@ -37,9 +37,10 @@ spring:
     activate:
       on-profile: dev
   datasource:
-    url: jdbc:postgresql://localhost:5432/items_data
-    username: postgres
-    password: postgres
+    url: jdbc:postgresql://catalog-db:5432/items_data
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+#   password: ${SPRING_DATASOURCE_PASSWORD:#{T(java.nio.file.Files).readString(T(java.nio.file.Paths).get('${SPRING_DATASOURCE_PASSWORD_FILE}'))}}
     driver-class-name: org.postgresql.Driver
 server:
   port: 8000
