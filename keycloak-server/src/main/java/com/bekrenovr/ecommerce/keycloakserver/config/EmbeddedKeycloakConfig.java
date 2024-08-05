@@ -30,9 +30,11 @@ public class EmbeddedKeycloakConfig {
                 new HttpServlet30Dispatcher());
         servlet.addInitParameter("jakarta.ws.rs.Application",
                 EmbeddedKeycloakApplication.class.getName());
+        servlet.addInitParameter(ResteasyContextParameters.RESTEASY_SERVLET_MAPPING_PREFIX,
+                keycloakServerProperties.getContextPath());
         servlet.addInitParameter(ResteasyContextParameters.RESTEASY_USE_CONTAINER_FORM_PARAMS,
                 "true");
-        servlet.addUrlMappings(keycloakServerProperties.getContextPath() + "/realms/*", keycloakServerProperties.getContextPath() + "/admin/*");
+        servlet.addUrlMappings(keycloakServerProperties.getContextPath() + "/*");
         servlet.setLoadOnStartup(1);
         servlet.setAsyncSupported(true);
         return servlet;
@@ -45,7 +47,7 @@ public class EmbeddedKeycloakConfig {
         FilterRegistrationBean<EmbeddedKeycloakRequestFilter> filter = new FilterRegistrationBean<>();
         filter.setName("Keycloak Session Management");
         filter.setFilter(new EmbeddedKeycloakRequestFilter());
-        filter.addUrlPatterns(keycloakServerProperties.getContextPath() + "/realms/*", keycloakServerProperties.getContextPath() + "/admin/*");
+        filter.addUrlPatterns(keycloakServerProperties.getContextPath() + "/*");
         return filter;
     }
 

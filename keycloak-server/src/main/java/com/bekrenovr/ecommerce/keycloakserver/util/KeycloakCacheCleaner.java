@@ -12,7 +12,7 @@ import java.net.URI;
 @Component
 @RequiredArgsConstructor
 public class KeycloakCacheCleaner {
-    private static final String CLEAN_USERS_CACHE_REQUEST_PATH = "/admin/realms/master/clear-user-cache";
+    private static final String CLEAN_USERS_CACHE_REQUEST_PATH = "/embedded/admin/realms/master/clear-user-cache";
     private final InternalAuthenticator internalAuthenticator;
     public void cleanUsersCache() {
         RestTemplate restTemplate = new RestTemplate();

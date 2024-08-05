@@ -23,6 +23,8 @@ public class ApiGatewayConfig {
                         .uri("lb://catalog"))
                 .route("users", p -> p.path("/users/**")
                         .uri("lb://users"))
+                .route("keycloak", p -> p.path("/keycloak/**")
+                        .uri("lb://keycloak"))
                 .build();
     }
 

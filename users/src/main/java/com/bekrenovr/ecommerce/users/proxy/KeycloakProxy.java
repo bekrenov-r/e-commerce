@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient(name = "keycloak")
 public interface KeycloakProxy {
-    @PostMapping("/users")
+    @PostMapping("/keycloak/users")
     ResponseEntity<String> createKeycloakUser(@RequestParam("username") String username,
                                               @RequestParam("password") String password,
                                               @RequestParam("role") String role);

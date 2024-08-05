@@ -20,7 +20,7 @@ import java.net.URI;
 public class InternalAuthenticator {
     private final KeycloakServerProperties serverProperties;
 
-    private static final String ADMIN_AUTHENTICATION_PATH = "/realms/master/protocol/openid-connect/token";
+    private static final String ADMIN_AUTHENTICATION_PATH = "/embedded/realms/master/protocol/openid-connect/token";
 
     public String authenticateAsAdmin() {
         RestTemplate restTemplate = new RestTemplate();
