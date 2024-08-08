@@ -4,6 +4,7 @@ package com.bekrenovr.ecommerce.keycloakserver.providers.userstorage;
 import lombok.extern.slf4j.Slf4j;
 import org.keycloak.component.ComponentModel;
 import org.keycloak.models.KeycloakSession;
+import org.keycloak.models.utils.KeycloakModelUtils;
 import org.keycloak.models.utils.SHAPasswordEncoder;
 import org.keycloak.provider.ProviderConfigProperty;
 import org.keycloak.provider.ProviderConfigurationBuilder;
@@ -16,17 +17,26 @@ import static com.bekrenovr.ecommerce.keycloakserver.providers.userstorage.Ecomm
 @Slf4j
 public class EcommerceUserStorageProviderFactory
         implements UserStorageProviderFactory<EcommerceUserStorageProvider> {
-
+    public static final String COMPONENT_ID = "105762f9-a8eb-4a2b-a8b1-648b97b67194";
+    public static final String PROVIDER_ID = "ecommerce-user-provider";
     protected final List<ProviderConfigProperty> configMetadata;
 
     @Override
     public String getId() {
-        return "ecommerce-user-provider";
+        return PROVIDER_ID;
     }
 
     @Override
     public EcommerceUserStorageProvider create(KeycloakSession keycloakSession, ComponentModel model) {
         log.info("Creating EcommerceUserStorageProvider...");
+        return new EcommerceUserStorageProvider(keycloakSession, model, new SHAPasswordEncoder(256));
+    }
+
+    @Override
+    public EcommerceUserStorageProvider create(KeycloakSession keycloakSession) {
+        log.info("Creating EcommerceUserStorageProvider...");
+        ComponentModel model = KeycloakModelUtils.componentModelGetter("e-commerce", COMPONENT_ID)
+                .apply(keycloakSession.getKeycloakSessionFactory());
         return new EcommerceUserStorageProvider(keycloakSession, model, new SHAPasswordEncoder(256));
     }
 

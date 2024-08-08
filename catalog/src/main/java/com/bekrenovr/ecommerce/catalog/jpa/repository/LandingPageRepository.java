@@ -32,7 +32,6 @@ public class LandingPageRepository {
                 .map(Item::getId)
                 .toList();
         String sql = composeSqlForAddingItems(idsToAdd);
-        System.out.println(sql);
         Query query = entityManager.createNativeQuery(sql);
         query.executeUpdate();
     }

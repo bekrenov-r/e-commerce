@@ -1,8 +1,10 @@
 package com.bekrenovr.ecommerce.keycloakserver.providers.userstorage;
 
+import com.bekrenovr.ecommerce.common.exception.EcommerceApplicationException;
 import com.bekrenovr.ecommerce.keycloakserver.dao.EcommerceUserDao;
 import com.bekrenovr.ecommerce.keycloakserver.model.EcommerceUser;
 import com.bekrenovr.ecommerce.keycloakserver.model.EcommerceUserAdapter;
+import com.bekrenovr.ecommerce.keycloakserver.model.Role;
 import lombok.extern.slf4j.Slf4j;
 import org.keycloak.component.ComponentModel;
 import org.keycloak.credential.CredentialInput;
@@ -20,6 +22,9 @@ import org.keycloak.storage.user.UserQueryProvider;
 
 import java.util.Map;
 import java.util.stream.Stream;
+
+import static com.bekrenovr.ecommerce.keycloakserver.exception.KeycloakApplicationExceptionReason.USER_ALREADY_EXISTS;
+import static com.bekrenovr.ecommerce.keycloakserver.exception.KeycloakApplicationExceptionReason.USER_NOT_FOUND;
 
 @Slf4j
 public class EcommerceUserStorageProvider implements
@@ -98,6 +103,21 @@ public class EcommerceUserStorageProvider implements
     @Override
     public Stream<UserModel> searchForUserByUserAttributeStream(RealmModel realmModel, String s, String s1) {
         return null;
+    }
+
+    public void addUser(String username, String rawPassword, Role role) {
+        if(userDao.existsByUsername(username))
+            throw new EcommerceApplicationException(USER_ALREADY_EXISTS, username);
+        String encodedPassword = passwordEncoder.encode(rawPassword);
+        userDao.addUser(username, encodedPassword, role);
+    }
+
+    public UserModel enableUser(RealmModel realmModel, String username) {
+        if(!userDao.existsByUsername(username))
+            throw new EcommerceApplicationException(USER_NOT_FOUND, username);
+        userDao.enableUser(username);
+        EcommerceUser enabledUser = userDao.getUserByUsername(username);
+        return mapUser(realmModel, enabledUser);
     }
 
     private UserModel mapUser(RealmModel realm, EcommerceUser user) {

@@ -18,8 +18,8 @@ create table activation_token(
 );
 
 insert into users values
-                      ('john.doe@example.com', '$2a$12$YmIpJldQP6XHAxV5IBsI..oPu95XQaKEImM0OO89rroc.5rMBtGY.', true), --password
-                      ('jane.doe@example.com', '$2a$12$YmIpJldQP6XHAxV5IBsI..oPu95XQaKEImM0OO89rroc.5rMBtGY.', false);
+                      ('john.doe@example.com', 'XohImNooBHFR0OVvjcYpJ3NgPQ1qq73WKhHvch0VQtg=', true), --password
+                      ('jane.doe@example.com', 'XohImNooBHFR0OVvjcYpJ3NgPQ1qq73WKhHvch0VQtg=', true);
 
 insert into roles values
                             ('john.doe@example.com', 'EMPLOYEE'),
