@@ -1,6 +1,5 @@
 package com.bekrenovr.ecommerce.keycloakserver.dao;
 
-import com.bekrenovr.ecommerce.keycloakserver.config.SecondaryDatasourceConfigProperties;
 import com.bekrenovr.ecommerce.keycloakserver.model.ActivationToken;
 import com.bekrenovr.ecommerce.keycloakserver.util.DbUtil;
 
@@ -15,14 +14,8 @@ public class ActivationTokenDao {
     private static final String DELETE_ACTIVATION_TOKEN = "delete from activation_token where username = ?";
     private static final String TOKEN_EXISTS = "select exists (select 1 from activation_token where token = ?) as token_exists";
 
-    private final SecondaryDatasourceConfigProperties secondaryDatasourceConfigProperties;
-
-    public ActivationTokenDao(SecondaryDatasourceConfigProperties secondaryDatasourceConfigProperties) {
-        this.secondaryDatasourceConfigProperties = secondaryDatasourceConfigProperties;
-    }
-
     public ActivationToken findByToken(String token) {
-        try (Connection connection = DbUtil.getConnection(secondaryDatasourceConfigProperties)) {
+        try (Connection connection = DbUtil.getConnection()) {
             PreparedStatement ps = connection.prepareStatement(FIND_BY_TOKEN);
             ps.setString(1, token);
             ResultSet rs = ps.executeQuery();
@@ -38,7 +31,7 @@ public class ActivationTokenDao {
     }
 
     public void save(ActivationToken activationToken) {
-        try (Connection connection = DbUtil.getConnection(secondaryDatasourceConfigProperties)) {
+        try (Connection connection = DbUtil.getConnection()) {
             PreparedStatement ps = connection.prepareStatement(SAVE_ACTIVATION_TOKEN);
             ps.setString(1, activationToken.getUsername());
             ps.setString(2, activationToken.getToken());
@@ -50,7 +43,7 @@ public class ActivationTokenDao {
     }
 
     public void delete(String username) {
-        try (Connection connection = DbUtil.getConnection(secondaryDatasourceConfigProperties)) {
+        try (Connection connection = DbUtil.getConnection()) {
             PreparedStatement ps = connection.prepareStatement(DELETE_ACTIVATION_TOKEN);
             ps.setString(1, username);
             ps.executeUpdate();
@@ -61,7 +54,7 @@ public class ActivationTokenDao {
     }
 
     public boolean exists(String token) {
-        try (Connection connection = DbUtil.getConnection(secondaryDatasourceConfigProperties)) {
+        try (Connection connection = DbUtil.getConnection()) {
             PreparedStatement ps = connection.prepareStatement(TOKEN_EXISTS);
             ps.setString(1, token);
             ResultSet rs = ps.executeQuery();

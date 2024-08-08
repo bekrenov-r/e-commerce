@@ -1,4 +1,4 @@
-package com.bekrenovr.ecommerce.keycloakserver.providers;
+package com.bekrenovr.ecommerce.keycloakserver.providers.userstorage;
 
 public class EcommerceUserStorageProviderConstants {
     public static final String CONFIG_KEY_JDBC_DRIVER = "jdbcDriver";

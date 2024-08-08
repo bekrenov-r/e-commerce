@@ -1,4 +1,4 @@
-package com.bekrenovr.ecommerce.keycloakserver.providers;
+package com.bekrenovr.ecommerce.keycloakserver.providers.userstorage;
 
 import com.bekrenovr.ecommerce.keycloakserver.dao.EcommerceUserDao;
 import com.bekrenovr.ecommerce.keycloakserver.model.EcommerceUser;
@@ -12,28 +12,29 @@ import org.keycloak.models.KeycloakSession;
 import org.keycloak.models.RealmModel;
 import org.keycloak.models.UserModel;
 import org.keycloak.models.credential.PasswordCredentialModel;
+import org.keycloak.models.utils.SHAPasswordEncoder;
 import org.keycloak.storage.StorageId;
 import org.keycloak.storage.UserStorageProvider;
 import org.keycloak.storage.user.UserLookupProvider;
 import org.keycloak.storage.user.UserQueryProvider;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Map;
 import java.util.stream.Stream;
 
 @Slf4j
-public class EcommerceUserStorageProvider implements UserStorageProvider, UserLookupProvider, UserQueryProvider, CredentialInputValidator {
+public class EcommerceUserStorageProvider implements
+        UserStorageProvider, UserLookupProvider, UserQueryProvider, CredentialInputValidator {
 
     private KeycloakSession keycloakSession;
     private ComponentModel componentModel;
-    private PasswordEncoder passwordEncoder;
-    private EcommerceUserDao ecommerceUserDao;
+    private SHAPasswordEncoder passwordEncoder;
+    private EcommerceUserDao userDao;
 
-    public EcommerceUserStorageProvider(KeycloakSession keycloakSession, ComponentModel componentModel, PasswordEncoder passwordEncoder) {
+    public EcommerceUserStorageProvider(KeycloakSession keycloakSession, ComponentModel componentModel, SHAPasswordEncoder passwordEncoder) {
         this.keycloakSession = keycloakSession;
         this.componentModel = componentModel;
         this.passwordEncoder = passwordEncoder;
-        this.ecommerceUserDao = new EcommerceUserDao(componentModel);
+        this.userDao = new EcommerceUserDao(componentModel);
     }
 
     @Override
@@ -56,10 +57,10 @@ public class EcommerceUserStorageProvider implements UserStorageProvider, UserLo
     @Override
     public boolean isValid(RealmModel realmModel, UserModel userModel, CredentialInput credentialInput) {
         log.info("isValid()");
-        String encryptedPassword = ecommerceUserDao.getPasswordByUsername(userModel.getUsername());
+        String encryptedPassword = userDao.getPasswordByUsername(userModel.getUsername());
         if (encryptedPassword == null)
             return false;
-        return passwordEncoder.matches(credentialInput.getChallengeResponse(), encryptedPassword);
+        return passwordEncoder.verify(credentialInput.getChallengeResponse(), encryptedPassword);
     }
 
     @Override
@@ -72,7 +73,7 @@ public class EcommerceUserStorageProvider implements UserStorageProvider, UserLo
     @Override
     public UserModel getUserByUsername(RealmModel realmModel, String username) {
         log.info("getUserByUsername({})", username);
-        EcommerceUser user = ecommerceUserDao.getUserByUsername(username);
+        EcommerceUser user = userDao.getUserByUsername(username);
         return user != null ? mapUser(realmModel, user) : null;
     }
 
@@ -84,7 +85,7 @@ public class EcommerceUserStorageProvider implements UserStorageProvider, UserLo
 
     @Override
     public Stream<UserModel> searchForUserStream(RealmModel realmModel, Map<String, String> map, Integer integer, Integer integer1) {
-        return ecommerceUserDao.getAllUsers()
+        return userDao.getAllUsers()
                 .stream()
                 .map(user -> mapUser(realmModel, user));
     }

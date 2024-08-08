@@ -1,17 +1,17 @@
-package com.bekrenovr.ecommerce.keycloakserver.providers;
+package com.bekrenovr.ecommerce.keycloakserver.providers.userstorage;
 
 
 import lombok.extern.slf4j.Slf4j;
 import org.keycloak.component.ComponentModel;
 import org.keycloak.models.KeycloakSession;
+import org.keycloak.models.utils.SHAPasswordEncoder;
 import org.keycloak.provider.ProviderConfigProperty;
 import org.keycloak.provider.ProviderConfigurationBuilder;
 import org.keycloak.storage.UserStorageProviderFactory;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.List;
 
-import static com.bekrenovr.ecommerce.keycloakserver.providers.EcommerceUserStorageProviderConstants.*;
+import static com.bekrenovr.ecommerce.keycloakserver.providers.userstorage.EcommerceUserStorageProviderConstants.*;
 
 @Slf4j
 public class EcommerceUserStorageProviderFactory
@@ -27,7 +27,7 @@ public class EcommerceUserStorageProviderFactory
     @Override
     public EcommerceUserStorageProvider create(KeycloakSession keycloakSession, ComponentModel model) {
         log.info("Creating EcommerceUserStorageProvider...");
-        return new EcommerceUserStorageProvider(keycloakSession, model, new BCryptPasswordEncoder());
+        return new EcommerceUserStorageProvider(keycloakSession, model, new SHAPasswordEncoder(256));
     }
 
     public EcommerceUserStorageProviderFactory() {

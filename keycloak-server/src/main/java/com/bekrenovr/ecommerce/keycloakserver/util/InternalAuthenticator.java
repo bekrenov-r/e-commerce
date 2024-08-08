@@ -1,13 +1,12 @@
 package com.bekrenovr.ecommerce.keycloakserver.util;
 
-import com.bekrenovr.ecommerce.keycloakserver.config.KeycloakServerProperties;
+import com.bekrenovr.ecommerce.keycloakserver.config.properties.ApplicationPropertiesHolder;
+import com.bekrenovr.ecommerce.keycloakserver.config.properties.KeycloakServerProperties;
 import com.jayway.jsonpath.JsonPath;
 import jakarta.ws.rs.core.MediaType;
-import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpHeaders;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
@@ -15,17 +14,14 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 
-@Component
-@RequiredArgsConstructor
 public class InternalAuthenticator {
-    private final KeycloakServerProperties serverProperties;
-
-    private static final String ADMIN_AUTHENTICATION_PATH = "/embedded/realms/master/protocol/openid-connect/token";
+    private static final String ADMIN_AUTHENTICATION_PATH = "/realms/master/protocol/openid-connect/token";
 
     public String authenticateAsAdmin() {
+        KeycloakServerProperties serverProperties = ApplicationPropertiesHolder.getKeycloakServerProperties();
         RestTemplate restTemplate = new RestTemplate();
         URI uri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path(ADMIN_AUTHENTICATION_PATH)
+                .path(serverProperties.getContextPath() + ADMIN_AUTHENTICATION_PATH)
                 .build()
                 .toUri();
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();

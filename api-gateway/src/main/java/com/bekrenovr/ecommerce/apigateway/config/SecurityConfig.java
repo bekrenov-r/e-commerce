@@ -27,8 +27,8 @@ public class SecurityConfig {
                         .pathMatchers(HttpMethod.DELETE, "/catalog/**").hasAuthority("EMPLOYEE")
                         .pathMatchers(HttpMethod.POST,
                                 "/users/registration/customer",
-                                "/keycloak/embedded/realms/e-commerce/protocol/openid-connect/token",
-                                "/keycloak/users/activate").permitAll()
+                                "/keycloak/realms/e-commerce/protocol/openid-connect/token",
+                                "/keycloak/realms/e-commerce/users/enable").permitAll()
                         .anyExchange().authenticated())
                 .oauth2ResourceServer(oauth -> oauth
                         .jwt(spec -> spec.jwtAuthenticationConverter(new JwtGrantedAuthoritiesConverter()))

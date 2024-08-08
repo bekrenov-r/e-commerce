@@ -1,9 +1,9 @@
 package com.bekrenovr.ecommerce.keycloakserver.dao;
 
-import com.bekrenovr.ecommerce.keycloakserver.config.SecondaryDatasourceConfigProperties;
 import com.bekrenovr.ecommerce.keycloakserver.model.EcommerceUser;
 import com.bekrenovr.ecommerce.keycloakserver.model.Role;
 import com.bekrenovr.ecommerce.keycloakserver.util.DbUtil;
+import lombok.NoArgsConstructor;
 import org.keycloak.component.ComponentModel;
 
 import java.sql.*;
@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@NoArgsConstructor
 public class EcommerceUserDao {
     private static final String ALL_USERS_QUERY = "select * from users";
     private static final String ROLES_FOR_USER_QUERY = "select roles.role from roles join users on users.username = roles.username where users.username = ?";
@@ -22,14 +23,9 @@ public class EcommerceUserDao {
     private static final String ADD_ROLE = "insert into roles values (?, ?)";
     private static final String ENABLE_USER = "update users set enabled = true where username = ?";
     private ComponentModel componentModel;
-    private SecondaryDatasourceConfigProperties dbConfigProperties;
 
     public EcommerceUserDao(ComponentModel componentModel) {
         this.componentModel = componentModel;
-    }
-
-    public EcommerceUserDao(SecondaryDatasourceConfigProperties secondaryDatasourceConfigProperties) {
-        this.dbConfigProperties = secondaryDatasourceConfigProperties;
     }
 
     public List<EcommerceUser> getAllUsers() {
@@ -99,7 +95,7 @@ public class EcommerceUserDao {
     }
 
     public void addUser(String username, String password, Role role) {
-        try(Connection connection = DbUtil.getConnection(dbConfigProperties)) {
+        try(Connection connection = DbUtil.getConnection()) {
             PreparedStatement addUserStatement = connection.prepareStatement(ADD_USER);
             addUserStatement.setString(1, username);
             addUserStatement.setString(2, password);
@@ -117,7 +113,7 @@ public class EcommerceUserDao {
     }
 
     public boolean existsByUsername(String username) {
-        try(Connection connection = DbUtil.getConnection(dbConfigProperties)) {
+        try(Connection connection = DbUtil.getConnection()) {
             PreparedStatement ps = connection.prepareStatement(EXISTS_BY_USERNAME_QUERY);
             ps.setString(1, username);
             ResultSet rs = ps.executeQuery();
@@ -131,7 +127,7 @@ public class EcommerceUserDao {
     }
 
     public void enableUser(String username) {
-        try(Connection connection = DbUtil.getConnection(dbConfigProperties)) {
+        try(Connection connection = DbUtil.getConnection()) {
             PreparedStatement ps = connection.prepareStatement(ENABLE_USER);
             ps.setString(1, username);
             ps.executeUpdate();

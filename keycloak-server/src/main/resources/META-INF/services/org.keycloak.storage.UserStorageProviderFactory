@@ -1,1 +1,1 @@
-com.bekrenovr.ecommerce.keycloakserver.providers.EcommerceUserStorageProviderFactory
+com.bekrenovr.ecommerce.keycloakserver.providers.userstorage.EcommerceUserStorageProviderFactory

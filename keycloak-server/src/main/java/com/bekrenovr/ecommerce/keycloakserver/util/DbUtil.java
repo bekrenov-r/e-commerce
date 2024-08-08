@@ -1,13 +1,14 @@
 package com.bekrenovr.ecommerce.keycloakserver.util;
 
-import com.bekrenovr.ecommerce.keycloakserver.config.SecondaryDatasourceConfigProperties;
+import com.bekrenovr.ecommerce.keycloakserver.config.properties.ApplicationPropertiesHolder;
+import com.bekrenovr.ecommerce.keycloakserver.config.properties.SecondaryDatasourceConfigProperties;
 import org.keycloak.component.ComponentModel;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import static com.bekrenovr.ecommerce.keycloakserver.providers.EcommerceUserStorageProviderConstants.*;
+import static com.bekrenovr.ecommerce.keycloakserver.providers.userstorage.EcommerceUserStorageProviderConstants.*;
 
 public class DbUtil {
     public static Connection getConnection(ComponentModel config) {
@@ -22,7 +23,9 @@ public class DbUtil {
         }
     }
 
-    public static Connection getConnection(SecondaryDatasourceConfigProperties properties) {
+    public static Connection getConnection() {
+        SecondaryDatasourceConfigProperties properties =
+                ApplicationPropertiesHolder.getSecondaryDatasourceConfigProperties();
         try {
             return DriverManager.getConnection(
                     properties.getUrl(),

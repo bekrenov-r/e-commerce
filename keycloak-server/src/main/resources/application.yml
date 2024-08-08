@@ -14,7 +14,7 @@ spring:
     name: keycloak
 keycloak:
   server:
-    contextPath: /embedded
+    contextPath: /keycloak
     adminUser:
       username:
       password:

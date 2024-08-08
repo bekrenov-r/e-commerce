@@ -1,4 +1,4 @@
-package com.bekrenovr.ecommerce.keycloakserver.config;
+package com.bekrenovr.ecommerce.keycloakserver.config.properties;
 
 import lombok.Getter;
 import lombok.Setter;
