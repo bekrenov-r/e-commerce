@@ -1,18 +1,9 @@
 package com.bekrenovr.ecommerce.orders;
 
 import com.bekrenovr.ecommerce.orders.controller.OrderController;
-import com.bekrenovr.ecommerce.orders.dto.OrderRequest;
-import com.bekrenovr.ecommerce.orders.entity.Order;
 import com.bekrenovr.ecommerce.orders.repository.OrderRepository;
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.Validation;
-import jakarta.validation.Validator;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.List;
-import java.util.Set;
 
 @SpringBootTest
 public class OrdersApplicationTest {
