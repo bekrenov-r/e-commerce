@@ -1,30 +1,28 @@
 package com.bekrenovr.ecommerce.orders.controller;
 
-import com.bekrenovr.ecommerce.orders.dto.OrderRequest;
-import com.bekrenovr.ecommerce.orders.dto.OrderResponse;
+import com.bekrenovr.ecommerce.orders.dto.response.OrderDetailedResponse;
 import com.bekrenovr.ecommerce.orders.service.OrderService;
-import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import java.util.UUID;
 
 @RestController
-@RequestMapping("/orders")
+@RequestMapping
+@RequiredArgsConstructor
 public class OrderController {
-
     private final OrderService orderService;
 
-    public OrderController(OrderService orderService) {
-        this.orderService = orderService;
-    }
-
     @GetMapping("/{id}")
-    public ResponseEntity<OrderResponse> getById(@PathVariable("id") Integer id){
-        return orderService.getById(id);
+    public ResponseEntity<OrderDetailedResponse> getById(@PathVariable UUID id){
+        return ResponseEntity.ok(orderService.getById(id));
     }
 
-    @GetMapping("/by-customer/{id}")
+/*    @GetMapping("/by-customer/{id}")
     public ResponseEntity<List<OrderResponse>> getAllByCustomerId(@PathVariable("id") Integer customerId){
         return orderService.getAllByCustomerId(customerId);
     }
@@ -32,5 +30,5 @@ public class OrderController {
     @PostMapping
     public ResponseEntity<OrderResponse> create(@Valid @RequestBody OrderRequest orderRequest) {
         return orderService.createOrder(orderRequest);
-    }
+    }*/
 }

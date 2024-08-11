@@ -8,11 +8,11 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "orders")
+@Table(name = "\"order\"")
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
@@ -21,7 +21,7 @@ public class Order extends AbstractEntity {
     private UUID customerId;
 
     @OneToMany(mappedBy = "order")
-    private Set<ItemEntry> itemEntries;
+    private List<ItemEntry> itemEntries;
 
     @OneToOne
     @JoinColumn(name = "delivery_id")
