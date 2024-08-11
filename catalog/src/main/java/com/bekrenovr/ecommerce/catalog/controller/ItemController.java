@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @RestController
@@ -28,6 +29,11 @@ public class ItemController {
     @GetMapping("/{id}")
     public ResponseEntity<ItemDetailedResponse> getItemById(@PathVariable UUID id){
         return ResponseEntity.ok(itemService.getItemById(id));
+    }
+
+    @GetMapping("/list/{ids}")
+    public ResponseEntity<List<ItemResponse>> getItemsByIds(@PathVariable Set<UUID> ids){
+        return ResponseEntity.ok(itemService.getItemsByIds(ids));
     }
 
     @GetMapping

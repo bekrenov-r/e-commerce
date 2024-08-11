@@ -1,7 +1,7 @@
 spring:
   config:
     activate:
-      on-profile: dev, test
+      on-profile: dev, test, prod
     import: "optional:configserver:http://localhost:8888"
   application:
     name: catalog
@@ -19,10 +19,6 @@ custom:
     img-path-prefix:
       men: catalog/src/main/resources/images/category/men/
       women: catalog/src/main/resources/images/category/women/
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://eureka:8761/eureka
 springdoc:
   api-docs:
     path: /docs # these urls will be used to load the api docs of this service by the api gateway
@@ -37,11 +33,14 @@ spring:
     activate:
       on-profile: dev
   datasource:
-    url: jdbc:postgresql://catalog-db:5432/items_data
-    username: ${SPRING_DATASOURCE_USERNAME}
-    password: ${SPRING_DATASOURCE_PASSWORD}
-#   password: ${SPRING_DATASOURCE_PASSWORD:#{T(java.nio.file.Files).readString(T(java.nio.file.Paths).get('${SPRING_DATASOURCE_PASSWORD_FILE}'))}}
+    url: jdbc:postgresql://localhost:5432/items_data
+    username:
+    password:
     driver-class-name: org.postgresql.Driver
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
 server:
   port: 8000
 ---
@@ -64,3 +63,19 @@ spring:
     defer-datasource-initialization: true
 server:
   port: 8001
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    url: jdbc:postgresql://catalog-db:5432/items_data
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://eureka:8761/eureka
+server:
+  port: 8000

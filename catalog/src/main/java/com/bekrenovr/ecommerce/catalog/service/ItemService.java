@@ -20,6 +20,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -47,6 +48,13 @@ public class ItemService {
         return itemMapper.itemToDetailedResponse(item);
     }
 
+    public List<ItemResponse> getItemsByIds(Set<UUID> ids) {
+        List<Item> items = itemRepository.findAllById(ids);
+        return items.stream()
+                .map(itemMapper::itemToResponse)
+                .toList();
+    }
+
     public ResponseEntity<Void> createItem(Item item) {
         item.setId(null);
         Item savedItem = itemRepository.save(item);
@@ -63,8 +71,8 @@ public class ItemService {
                 .toUri();
         return ResponseEntity.created(location).body(null);
     }
-
     // method for dev purpose
+
     public void createSampleItems(int quantity) {
         for(int i = 0; i < quantity; i++){
             Item item = itemGenerator.generateItemWithDetails();
