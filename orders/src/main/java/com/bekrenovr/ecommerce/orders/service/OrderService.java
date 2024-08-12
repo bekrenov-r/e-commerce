@@ -1,14 +1,18 @@
 package com.bekrenovr.ecommerce.orders.service;
 
+import com.bekrenovr.ecommerce.common.util.PageUtil;
 import com.bekrenovr.ecommerce.orders.dto.mapper.OrderMapper;
 import com.bekrenovr.ecommerce.orders.dto.response.OrderDetailedResponse;
+import com.bekrenovr.ecommerce.orders.dto.response.OrderResponse;
 import com.bekrenovr.ecommerce.orders.model.entity.Order;
 import com.bekrenovr.ecommerce.orders.proxy.CustomerProxy;
 import com.bekrenovr.ecommerce.orders.proxy.ItemProxy;
 import com.bekrenovr.ecommerce.orders.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -24,26 +28,12 @@ public class OrderService {
         return orderMapper.entityToDetailedResponse(order);
     }
 
-    /*public ResponseEntity<List<OrderResponse>> getAllByCustomerId(Integer customerId) {
-        List<Order> orders = orderRepository.findAllByCustomerId(customerId);
-        CustomerDTO customerDTO = customerProxy.getById(customerId).getBody();
-
-        List<Integer> itemIds = orders.stream().map(Order::getItemId).toList();
-        List<ItemResponse> items = itemProxy.getItemsByIds(itemIds).getBody();
-
-        List<OrderResponse> orderResponses =
-                orders.stream()
-                        .map(order -> {
-                            int itemId = order.getItemId();
-                            for(ItemResponse item : items){
-                                if(item.id().equals(itemId)){
-                                    return OrderToDtoMapper.orderResponse(order, customerDTO, item);
-                                }
-                            }
-                            return null;
-                        })
-                        .toList();
-        return ResponseEntity.ok(orderResponses);
+    public Page<OrderResponse> getAllByCustomerId(UUID customerId, int pageNumber, int pageSize) {
+        List<OrderResponse> orders = orderRepository.findAllByCustomerId(customerId)
+                .stream()
+                .map(orderMapper::entityToResponse)
+                .toList();
+        return PageUtil.paginateList(orders, pageNumber, pageSize);
     }
 
     public ResponseEntity<OrderResponse> createOrder(OrderRequest orderRequest){

@@ -1,4 +1,4 @@
-package com.bekrenovr.ecommerce.catalog.util;
+package com.bekrenovr.ecommerce.common.util;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;

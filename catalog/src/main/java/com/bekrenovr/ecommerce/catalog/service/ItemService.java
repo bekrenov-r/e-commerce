@@ -9,8 +9,8 @@ import com.bekrenovr.ecommerce.catalog.jpa.specification.ItemSpecificationBuilde
 import com.bekrenovr.ecommerce.catalog.model.entity.Item;
 import com.bekrenovr.ecommerce.catalog.service.sort.ItemSortComparators;
 import com.bekrenovr.ecommerce.catalog.service.sort.SortOption;
-import com.bekrenovr.ecommerce.catalog.util.PageUtil;
 import com.bekrenovr.ecommerce.catalog.util.dev.ItemGenerator;
+import com.bekrenovr.ecommerce.common.util.PageUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;

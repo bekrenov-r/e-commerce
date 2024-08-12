@@ -16,3 +16,6 @@ server:
   port: 8200
   servlet:
     context-path: /orders
+custom:
+  page:
+    default-size: 10
