@@ -1,6 +1,7 @@
-server:
-  port: 8765
 spring:
+  config:
+    activate:
+      on-profile: dev, prod
   main:
     web-application-type: reactive
   application:
@@ -11,11 +12,6 @@ spring:
         jwt:
           issuer-uri: http://localhost:8400/keycloak/embedded/realms/e-commerce
           jwk-set-uri: http://localhost:8400/keycloak/embedded/realms/e-commerce/protocol/openid-connect/certs
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://eureka:8761/eureka/
-
 springdoc:
   enable-native-support: true
   api-docs:
@@ -26,3 +22,23 @@ springdoc:
     urls:
       - url: /catalog/docs
         name: Catalog Service
+server:
+  port: 8765
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://eureka:8761/eureka/
