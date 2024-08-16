@@ -27,6 +27,9 @@ public class ItemEntry {
     @Column(name = "item_name")
     private String itemName;
 
+    @Column(name = "item_size")
+    private String itemSize;
+
     @Column(name = "quantity")
     private int quantity;
 

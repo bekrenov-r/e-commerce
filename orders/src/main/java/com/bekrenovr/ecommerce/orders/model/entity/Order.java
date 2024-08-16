@@ -3,27 +3,26 @@ package com.bekrenovr.ecommerce.orders.model.entity;
 import com.bekrenovr.ecommerce.common.entity.AbstractEntity;
 import com.bekrenovr.ecommerce.orders.model.enums.OrderStatus;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Table(name = "\"order\"")
 @Data
+@Builder
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
+@AllArgsConstructor
 public class Order extends AbstractEntity {
-    @Column(name = "customer_id")
-    private UUID customerId;
+    @Column(name = "customer_email")
+    private String customerEmail;
 
     @OneToMany(mappedBy = "order")
     private List<ItemEntry> itemEntries;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "delivery_id")
     private Delivery delivery;
 

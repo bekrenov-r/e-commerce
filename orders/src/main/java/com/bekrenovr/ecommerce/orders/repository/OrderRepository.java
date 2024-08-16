@@ -12,7 +12,7 @@ import static com.bekrenovr.ecommerce.orders.exception.OrdersApplicationExceptio
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, UUID> {
-    List<Order> findAllByCustomerId(UUID id);
+    List<Order> findAllByCustomerEmail(String email);
 
     default Order findByIdOrThrowDefault(UUID id) {
         return findById(id)

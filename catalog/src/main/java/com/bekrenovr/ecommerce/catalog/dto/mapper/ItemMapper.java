@@ -17,7 +17,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = UniqueItemMapper.class)
 public abstract class ItemMapper {
     @Autowired
     protected CustomerServiceProxy customerServiceProxy;

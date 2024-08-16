@@ -2,20 +2,16 @@ package com.bekrenovr.ecommerce.catalog.model;
 
 import com.bekrenovr.ecommerce.catalog.model.enums.ClothesSize;
 import com.bekrenovr.ecommerce.catalog.model.enums.SizeType;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Stream;
 
-@Component
+@RequiredArgsConstructor
 public class SizeFactory {
-    @Value("${custom.strategy.shoes-size.min}")
-    private int shoesSizeMin;
-
-    @Value("${custom.strategy.shoes-size.max}")
-    private int shoesSizeMax;
+    private final int shoesSizeMin;
+    private final int shoesSizeMax;
 
     public Size getSize(SizeType type, String value){
         return type.equals(SizeType.CLOTHES) ? getClothesSize(value) : getShoesSize(value);
