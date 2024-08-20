@@ -1,4 +1,4 @@
-package com.bekrenovr.ecommerce.apigateway.util;
+package com.bekrenovr.ecommerce.apigateway.auth;
 
 import com.jayway.jsonpath.JsonPath;
 import org.springframework.core.convert.converter.Converter;

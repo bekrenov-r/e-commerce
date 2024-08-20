@@ -1,6 +1,8 @@
 package com.bekrenovr.ecommerce.orders.service;
 
 import com.bekrenovr.ecommerce.common.util.PageUtil;
+import com.bekrenovr.ecommerce.common.util.auth.AuthenticatedUser;
+import com.bekrenovr.ecommerce.common.util.auth.AuthenticationUtil;
 import com.bekrenovr.ecommerce.orders.dto.mapper.DeliveryMapper;
 import com.bekrenovr.ecommerce.orders.dto.mapper.OrderMapper;
 import com.bekrenovr.ecommerce.orders.dto.request.OrderRequest;
@@ -12,6 +14,7 @@ import com.bekrenovr.ecommerce.orders.model.entity.Order;
 import com.bekrenovr.ecommerce.orders.model.enums.OrderStatus;
 import com.bekrenovr.ecommerce.orders.proxy.CustomerProxy;
 import com.bekrenovr.ecommerce.orders.repository.OrderRepository;
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.data.domain.Page;
@@ -36,8 +39,9 @@ public class OrderService {
         return orderMapper.entityToDetailedResponse(order);
     }
 
-    public Page<OrderResponse> getAllByCustomerEmail(String customerEmail, int pageNumber, int pageSize) {
-        List<OrderResponse> orders = orderRepository.findAllByCustomerEmail(customerEmail)
+    public Page<OrderResponse> getAllForCustomer(int pageNumber, int pageSize) {
+        AuthenticatedUser user = AuthenticationUtil.getAuthenticatedUser();
+        List<OrderResponse> orders = orderRepository.findAllByCustomerEmail(user.getUsername())
                 .stream()
                 .map(orderMapper::entityToResponse)
                 .toList();
@@ -45,7 +49,7 @@ public class OrderService {
     }
 
     public OrderResponse createOrder(OrderRequest orderRequest) {
-        String customerEmail = null; // todo: get customer email from jwt
+        String customerEmail = resolveCustomer(orderRequest);
         List<ItemEntry> itemEntries = itemEntryService.createItemEntries(orderRequest.itemEntries());
         Delivery delivery = deliveryMapper.requestToEntity(orderRequest.delivery());
         Order order = Order.builder()
@@ -63,7 +67,17 @@ public class OrderService {
         return orderMapper.entityToResponse(orderRepository.save(order));
     }
 
-
+    private String resolveCustomer(OrderRequest request){
+        if(AuthenticationUtil.requestHasAuthentication()){
+            return AuthenticationUtil.getAuthenticatedUser().getUsername();
+        }
+        try {
+            customerProxy.createCustomer(request.customer());
+        } catch(FeignException.Conflict ex) {
+            // do nothing since 409 means that customer already exists and can be used
+        }
+        return request.customer().getEmail();
+    }
 
     private double calculateTotalPrice(List<ItemEntry> itemEntries) {
         return itemEntries.stream()

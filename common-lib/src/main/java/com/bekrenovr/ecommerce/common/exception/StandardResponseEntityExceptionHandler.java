@@ -94,6 +94,8 @@ public class StandardResponseEntityExceptionHandler extends ResponseEntityExcept
         for(FieldError error : ex.getFieldErrors()){
             message
                     .append(" [")
+                    .append(error.getField())
+                    .append(" ")
                     .append(error.getDefaultMessage())
                     .append(", rejected value: ")
                     .append(error.getRejectedValue())

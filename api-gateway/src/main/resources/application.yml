@@ -10,8 +10,8 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8400/keycloak/embedded/realms/e-commerce
-          jwk-set-uri: http://localhost:8400/keycloak/embedded/realms/e-commerce/protocol/openid-connect/certs
+          issuer-uri: http://192.168.0.59:8400/keycloak/realms/e-commerce
+          jwk-set-uri: http://192.168.0.59:8400/keycloak/realms/e-commerce/protocol/openid-connect/certs
 springdoc:
   enable-native-support: true
   api-docs:
