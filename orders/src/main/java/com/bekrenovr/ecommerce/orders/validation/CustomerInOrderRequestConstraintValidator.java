@@ -1,6 +1,6 @@
 package com.bekrenovr.ecommerce.orders.validation;
 
-import com.bekrenovr.ecommerce.common.util.auth.AuthenticationUtil;
+import com.bekrenovr.ecommerce.common.auth.AuthenticationUtil;
 import com.bekrenovr.ecommerce.users.dto.request.CustomerRequest;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

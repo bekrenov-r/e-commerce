@@ -1,7 +1,7 @@
 package com.bekrenovr.ecommerce.keycloakserver.dao;
 
+import com.bekrenovr.ecommerce.common.auth.Role;
 import com.bekrenovr.ecommerce.keycloakserver.model.EcommerceUser;
-import com.bekrenovr.ecommerce.keycloakserver.model.Role;
 import com.bekrenovr.ecommerce.keycloakserver.util.DbUtil;
 import lombok.NoArgsConstructor;
 import org.keycloak.component.ComponentModel;

@@ -1,5 +1,6 @@
 package com.bekrenovr.ecommerce.keycloakserver.model;
 
+import com.bekrenovr.ecommerce.common.auth.Role;
 import org.keycloak.component.ComponentModel;
 import org.keycloak.credential.LegacyUserCredentialManager;
 import org.keycloak.models.KeycloakSession;

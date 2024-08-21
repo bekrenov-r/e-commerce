@@ -19,7 +19,12 @@ public class Order extends AbstractEntity {
     @Column(name = "customer_email")
     private String customerEmail;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "order_item_entry",
+            joinColumns = @JoinColumn(name = "order_id"),
+            inverseJoinColumns = @JoinColumn(name = "item_entry_id")
+    )
     private List<ItemEntry> itemEntries;
 
     @OneToOne(cascade = CascadeType.ALL)

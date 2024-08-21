@@ -1,8 +1,10 @@
 package com.bekrenovr.ecommerce.orders.service;
 
+import com.bekrenovr.ecommerce.common.auth.AuthenticatedUser;
+import com.bekrenovr.ecommerce.common.auth.AuthenticationUtil;
+import com.bekrenovr.ecommerce.common.auth.Role;
+import com.bekrenovr.ecommerce.common.exception.EcommerceApplicationException;
 import com.bekrenovr.ecommerce.common.util.PageUtil;
-import com.bekrenovr.ecommerce.common.util.auth.AuthenticatedUser;
-import com.bekrenovr.ecommerce.common.util.auth.AuthenticationUtil;
 import com.bekrenovr.ecommerce.orders.dto.mapper.DeliveryMapper;
 import com.bekrenovr.ecommerce.orders.dto.mapper.OrderMapper;
 import com.bekrenovr.ecommerce.orders.dto.request.OrderRequest;
@@ -25,6 +27,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+import static com.bekrenovr.ecommerce.users.exception.UsersApplicationExceptionReason.CUSTOMER_IS_NOT_ORDER_OWNER;
+
 @Service
 @RequiredArgsConstructor
 public class OrderService {
@@ -36,6 +40,7 @@ public class OrderService {
 
     public OrderDetailedResponse getById(UUID id) {
         Order order = orderRepository.findByIdOrThrowDefault(id);
+        requireOrderOwnershipByCustomer(order);
         return orderMapper.entityToDetailedResponse(order);
     }
 
@@ -100,5 +105,12 @@ public class OrderService {
                 .append("_")
                 .append(RandomStringUtils.randomNumeric(7))
                 .toString();
+    }
+
+    private void requireOrderOwnershipByCustomer(Order order){
+        AuthenticatedUser user = AuthenticationUtil.getAuthenticatedUser();
+        if(user.hasRole(Role.CUSTOMER) && !order.getCustomerEmail().equals(user.getUsername())) {
+            throw new EcommerceApplicationException(CUSTOMER_IS_NOT_ORDER_OWNER, user.getUsername());
+        }
     }
 }

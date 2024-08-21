@@ -1,28 +1,23 @@
 package com.bekrenovr.ecommerce.orders.model.entity;
 
-import jakarta.persistence.*;
+import com.bekrenovr.ecommerce.common.entity.AbstractEntity;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
 @Entity
 @Table(name = "item_entry")
-@IdClass(ItemEntryId.class)
 @Data
 @NoArgsConstructor
-public class ItemEntry {
-    @Id
-    @Column(name = "order_id")
-    private UUID orderId;
-
-    @Id
+@EqualsAndHashCode(callSuper = true)
+public class ItemEntry extends AbstractEntity {
     @Column(name = "item_id")
     private UUID itemId;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id")
-    private Order order;
 
     @Column(name = "item_name")
     private String itemName;

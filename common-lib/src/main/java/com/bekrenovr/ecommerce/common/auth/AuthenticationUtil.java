@@ -1,4 +1,4 @@
-package com.bekrenovr.ecommerce.common.util.auth;
+package com.bekrenovr.ecommerce.common.auth;
 
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;

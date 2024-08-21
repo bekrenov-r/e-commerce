@@ -10,6 +10,7 @@ import org.mapstruct.*;
 public abstract class ItemEntryMapper {
     public abstract ItemEntryResponse entityToResponse(ItemEntry itemEntry);
 
+    @Mapping(target = "id", ignore = true)
     @Mapping(target = "itemId", source = "id")
     @Mapping(target = "itemName", source = "name")
     @Mapping(target = "itemPrice", source = "price")

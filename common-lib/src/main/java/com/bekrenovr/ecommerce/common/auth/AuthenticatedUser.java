@@ -1,4 +1,4 @@
-package com.bekrenovr.ecommerce.common.util.auth;
+package com.bekrenovr.ecommerce.common.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,4 +12,10 @@ import java.util.Collection;
 public class AuthenticatedUser {
     private String username;
     private Collection<String> authorities;
+
+    public boolean hasRole(Role role){
+        return authorities.stream()
+                .map(Role::valueOf)
+                .anyMatch(role::equals);
+    }
 }

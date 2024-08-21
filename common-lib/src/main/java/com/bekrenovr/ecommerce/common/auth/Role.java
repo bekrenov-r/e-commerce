@@ -1,4 +1,4 @@
-package com.bekrenovr.ecommerce.keycloakserver.model;
+package com.bekrenovr.ecommerce.common.auth;
 
 public enum Role {
     CUSTOMER,

@@ -3,6 +3,7 @@ package com.bekrenovr.ecommerce.orders.dto.response;
 import java.util.UUID;
 
 public record ItemEntryResponse(
+    UUID id,
     UUID itemId,
     String itemName,
     int quantity,
