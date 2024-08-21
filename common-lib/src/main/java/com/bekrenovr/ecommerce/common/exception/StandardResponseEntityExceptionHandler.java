@@ -1,5 +1,6 @@
 package com.bekrenovr.ecommerce.common.exception;
 
+import feign.FeignException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpHeaders;
@@ -74,6 +75,18 @@ public class StandardResponseEntityExceptionHandler extends ResponseEntityExcept
                 ex.getMessage()
         );
         return new ResponseEntity<>(errorDetail, ex.getReason().getStatus());
+    }
+
+    @ExceptionHandler(FeignException.class)
+    public ResponseEntity<ErrorDetail> handleFeignException(FeignException ex){
+        HttpStatus status = HttpStatus.resolve(ex.status());
+        logException(ex);
+        ErrorDetail errorDetail = new ErrorDetail(
+                LocalDateTime.now(),
+                status,
+                ex.getMessage()
+        );
+        return new ResponseEntity<>(errorDetail, status);
     }
 
     @Override

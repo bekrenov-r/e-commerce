@@ -5,12 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
-import static org.springframework.http.HttpStatus.CONFLICT;
-
 @AllArgsConstructor
 @Getter
 public enum UsersApplicationExceptionReason implements EcommerceApplicationExceptionReason {
-    EMAIL_ALREADY_EXISTS("User with email [%s] already exists", CONFLICT);
+    EMAIL_ALREADY_EXISTS("User with email [%s] already exists", HttpStatus.CONFLICT),
+    USER_NOT_FOUND_BY_EMAIL("User with email [%s] does not exist", HttpStatus.NOT_FOUND);;
 
     private final String message;
     private final HttpStatus status;

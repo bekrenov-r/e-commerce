@@ -5,10 +5,7 @@ import com.bekrenovr.ecommerce.users.service.RegistrationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/registration")
@@ -20,5 +17,11 @@ public class RegistrationController {
     public ResponseEntity<Void> registerCustomer(@RequestBody CustomerRegistrationRequest request) {
         registrationService.registerCustomer(request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PostMapping("/customer/resend-email")
+    public ResponseEntity<Void> resendActivationEmail(@RequestParam String email) {
+        registrationService.resendActivationEmail(email);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

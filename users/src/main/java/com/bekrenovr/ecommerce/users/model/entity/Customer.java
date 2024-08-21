@@ -1,6 +1,7 @@
-package com.bekrenovr.ecommerce.users.entity;
+package com.bekrenovr.ecommerce.users.model.entity;
 
 import com.bekrenovr.ecommerce.common.entity.AbstractEntity;
+import com.bekrenovr.ecommerce.users.model.Person;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -17,7 +18,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class Customer extends AbstractEntity {
+public class Customer extends AbstractEntity implements Person {
     @Column(name = "first_name")
     private String firstName;
 

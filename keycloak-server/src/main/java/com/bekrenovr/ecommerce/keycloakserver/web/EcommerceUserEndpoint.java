@@ -7,10 +7,7 @@ import com.bekrenovr.ecommerce.keycloakserver.model.Role;
 import com.bekrenovr.ecommerce.keycloakserver.providers.userstorage.EcommerceUserStorageProvider;
 import com.bekrenovr.ecommerce.keycloakserver.providers.userstorage.EcommerceUserStorageProviderFactory;
 import com.bekrenovr.ecommerce.keycloakserver.util.KeycloakCacheCleaner;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -58,6 +55,19 @@ public class EcommerceUserEndpoint {
                 .build();
     }
 
+    @GET
+    @Path("/activation-token")
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response getActivationTokenForUser(@QueryParam("username") String username) {
+        if(!activationTokenDao.existsByUsername(username)){
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        ActivationToken token = activationTokenDao.findByUsername(username);
+        return Response.status(Response.Status.OK)
+                .entity(token.getToken())
+                .build();
+    }
+
     @POST
     @Path("/enable")
     @Produces(MediaType.APPLICATION_JSON)
@@ -70,7 +80,7 @@ public class EcommerceUserEndpoint {
     }
 
     private UserModel doEnableUser(String token) {
-        if(!activationTokenDao.exists(token))
+        if(!activationTokenDao.existsByToken(token))
             throw new EcommerceApplicationException(ACTIVATION_TOKEN_NOT_FOUND, token);
         ActivationToken activationToken = activationTokenDao.findByToken(token);
         UserModel enabledUser = userStorage.enableUser(realmModel, activationToken.getUsername());

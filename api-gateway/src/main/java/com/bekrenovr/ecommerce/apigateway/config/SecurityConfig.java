@@ -31,6 +31,7 @@ public class SecurityConfig {
                         .pathMatchers(HttpMethod.DELETE, "/catalog/**").hasAuthority("EMPLOYEE")
                         .pathMatchers(HttpMethod.POST,
                                 "/users/registration/customer",
+                                "/users/registration/customer/resend-email",
                                 "/keycloak/realms/e-commerce/protocol/openid-connect/token",
                                 "/keycloak/realms/e-commerce/users/enable").permitAll()
                         .pathMatchers(HttpMethod.POST, "/orders/").access(postOrderEndpointAuthorizationManager)

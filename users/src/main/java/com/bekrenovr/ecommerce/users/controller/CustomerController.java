@@ -2,7 +2,7 @@ package com.bekrenovr.ecommerce.users.controller;
 
 import com.bekrenovr.ecommerce.users.dto.CustomerDTO;
 import com.bekrenovr.ecommerce.users.dto.request.CustomerRequest;
-import com.bekrenovr.ecommerce.users.entity.Customer;
+import com.bekrenovr.ecommerce.users.model.entity.Customer;
 import com.bekrenovr.ecommerce.users.service.CustomerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

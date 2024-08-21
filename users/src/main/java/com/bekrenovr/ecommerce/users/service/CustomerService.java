@@ -4,7 +4,7 @@ import com.bekrenovr.ecommerce.common.exception.EcommerceApplicationException;
 import com.bekrenovr.ecommerce.users.dto.CustomerDTO;
 import com.bekrenovr.ecommerce.users.dto.mapper.CustomerMapper;
 import com.bekrenovr.ecommerce.users.dto.request.CustomerRequest;
-import com.bekrenovr.ecommerce.users.entity.Customer;
+import com.bekrenovr.ecommerce.users.model.entity.Customer;
 import com.bekrenovr.ecommerce.users.repository.CustomerRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;

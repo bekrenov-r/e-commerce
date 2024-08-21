@@ -1,6 +1,6 @@
 package com.bekrenovr.ecommerce.users.service;
 
-import com.bekrenovr.ecommerce.users.dto.request.CustomerRequest;
+import com.bekrenovr.ecommerce.users.model.Person;
 import io.micrometer.core.instrument.util.IOUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,7 +24,7 @@ public class MailService {
 
     private static final String ACTIVATION_EMAIL_TEMPLATE_PATH = "/email_templates/activation.txt";
 
-    public void sendCustomerAccountActivationEmail(CustomerRequest customer, String activationToken) {
+    public void sendCustomerAccountActivationEmail(Person customer, String activationToken) {
         String contentTemplate = getContentTemplate(ACTIVATION_EMAIL_TEMPLATE_PATH);
         String url = frontendBaseUrl + "/activate-account?token=" + activationToken;
 
