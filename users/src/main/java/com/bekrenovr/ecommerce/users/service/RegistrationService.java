@@ -30,10 +30,8 @@ public class RegistrationService {
     }
 
     public void resendActivationEmail(String email) {
-        if (!customerRepository.existsByEmail(email)) {
-            throw new EcommerceApplicationException(USER_NOT_FOUND_BY_EMAIL, email);
-        }
-        Customer customer = customerRepository.findByEmail(email);
+        Customer customer = customerRepository.findByEmail(email)
+                .orElseThrow(() -> new EcommerceApplicationException(USER_NOT_FOUND_BY_EMAIL, email));
         String activationToken = keycloakProxy.getActivationTokenForUser(customer.getEmail()).getBody();
         mailService.sendCustomerAccountActivationEmail(customer, activationToken);
     }

@@ -31,13 +31,21 @@ public class CustomerService {
     }
 
     @Transactional
-    public void createCustomer(CustomerRequest request, boolean isRegistered){
-        if(customerRepository.existsByEmail(request.getEmail()))
-            throw new EcommerceApplicationException(EMAIL_ALREADY_EXISTS, request.getEmail());
-        Customer customer = customerMapper.requestToEntity(request);
-        customer.setRegistered(isRegistered);
-        customer.setCreatedAt(LocalDateTime.now());
-        customerRepository.save(customer);
+    public void createCustomer(CustomerRequest request, boolean isRegistered) {
+        customerRepository.findByEmail(request.getEmail())
+                .ifPresentOrElse(customer -> {
+                    if (!customer.isRegistered()) {
+                        customer.setFirstName(request.getFirstName());
+                        customer.setLastName(request.getLastName());
+                        customer.setRegistered(true);
+                        customerRepository.save(customer);
+                    } else throw new EcommerceApplicationException(EMAIL_ALREADY_EXISTS, request.getEmail());
+                }, () -> {
+                    Customer customer = customerMapper.requestToEntity(request);
+                    customer.setRegistered(isRegistered);
+                    customer.setCreatedAt(LocalDateTime.now());
+                    customerRepository.save(customer);
+                });
     }
 
     public ResponseEntity<Customer> update(Customer customer){
