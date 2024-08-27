@@ -2,15 +2,15 @@ package com.bekrenovr.ecommerce.users.model.entity;
 
 import com.bekrenovr.ecommerce.common.entity.AbstractEntity;
 import com.bekrenovr.ecommerce.users.model.Person;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "customer")
@@ -33,4 +33,9 @@ public class Customer extends AbstractEntity implements Person {
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+    @ElementCollection(targetClass = UUID.class, fetch = FetchType.LAZY)
+    @CollectionTable(name = "customer_wish_list", joinColumns = @JoinColumn(name = "customer_id"))
+    @Column(name = "item_id")
+    private List<UUID> wishListItems;
 }

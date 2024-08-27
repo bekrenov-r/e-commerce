@@ -1,6 +1,5 @@
 package com.bekrenovr.ecommerce.users.service;
 
-import com.bekrenovr.ecommerce.common.exception.EcommerceApplicationException;
 import com.bekrenovr.ecommerce.users.dto.request.CustomerRegistrationRequest;
 import com.bekrenovr.ecommerce.users.model.entity.Customer;
 import com.bekrenovr.ecommerce.users.proxy.KeycloakProxy;
@@ -9,8 +8,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import static com.bekrenovr.ecommerce.users.exception.UsersApplicationExceptionReason.USER_NOT_FOUND_BY_EMAIL;
 
 @Service
 @RequiredArgsConstructor
@@ -30,8 +27,7 @@ public class RegistrationService {
     }
 
     public void resendActivationEmail(String email) {
-        Customer customer = customerRepository.findByEmail(email)
-                .orElseThrow(() -> new EcommerceApplicationException(USER_NOT_FOUND_BY_EMAIL, email));
+        Customer customer = customerRepository.findByEmailOrThrowDefault(email);
         String activationToken = keycloakProxy.getActivationTokenForUser(customer.getEmail()).getBody();
         mailService.sendCustomerAccountActivationEmail(customer, activationToken);
     }

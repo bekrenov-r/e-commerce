@@ -20,7 +20,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -48,7 +47,7 @@ public class ItemService {
         return itemMapper.itemToDetailedResponse(item);
     }
 
-    public List<ItemResponse> getItemsByIds(Set<UUID> ids) {
+    public List<ItemResponse> getItemsByIds(List<UUID> ids) {
         List<Item> items = itemRepository.findAllById(ids);
         return items.stream()
                 .map(itemMapper::itemToResponse)

@@ -40,9 +40,9 @@ public class AddAuthenticatedUserHeaderGlobalFilter implements GlobalFilter {
                 .stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toSet());
-        JSONObject json = new JSONObject();
-        json.put("username", authentication.getName());
-        json.put("authorities", new JSONArray(authoritiesStr));
-        return json.toString();
+        return new JSONObject()
+                .put("username", authentication.getName())
+                .put("authorities", new JSONArray(authoritiesStr))
+                .toString();
     }
 }
