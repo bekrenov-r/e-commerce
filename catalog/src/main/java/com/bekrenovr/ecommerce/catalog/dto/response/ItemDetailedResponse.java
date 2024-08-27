@@ -10,17 +10,16 @@ import java.util.UUID;
 
 @Data
 @AllArgsConstructor
-public class ItemDetailedResponse {
+public final class ItemDetailedResponse {
     private UUID id;
     private String name;
     private String description;
     private Double price;
     private Double discount;
     private Double priceAfterDiscount;
-    private List<String> sizes;
-    private List<String> availableSizes;
     private Color color;
     private String itemCode;
+    private List<UniqueItemShortResponse> uniqueItems;
     private List<ReviewResponse> reviews;
     private List<ItemResponse> similarItems;
     @JsonProperty("isOnWishList")
@@ -33,5 +32,4 @@ public class ItemDetailedResponse {
     private boolean isPopular;
     private String brand;
     private Double rating;
-    private Integer reviewsCount;
 }

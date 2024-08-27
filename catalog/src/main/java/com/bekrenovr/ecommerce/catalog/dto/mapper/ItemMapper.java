@@ -38,8 +38,6 @@ public abstract class ItemMapper {
     @Mapping(target = "isNew", source = "item", qualifiedByName = "isNew")
     @Mapping(target = "isPopular", source = "item", qualifiedByName = "isPopular")
     @Mapping(target = "isAvailable", source = "item", qualifiedByName = "isAvailable")
-    @Mapping(target = "sizes", source = "item", qualifiedByName = "mapSizes")
-    @Mapping(target = "availableSizes", source = "item", qualifiedByName = "mapAvailableSizes")
     @Mapping(target = "reviews", source = "item", qualifiedByName = "getReviews")
     public abstract ItemDetailedResponse itemToDetailedResponse(Item item);
 
@@ -72,20 +70,5 @@ public abstract class ItemMapper {
     @Named("getReviews")
     protected List<ReviewResponse> getReviews(Item item){
         return reviewServiceProxy.getReviewsForItem(item.getId());
-    }
-
-    @Named("mapSizes")
-    protected List<String> mapSizes(Item item){
-        return item.getUniqueItems().stream()
-                .map(UniqueItem::getSize)
-                .toList();
-    }
-
-    @Named("mapAvailableSizes")
-    protected List<String> mapAvailableSizes(Item item){
-        return item.getUniqueItems().stream()
-                .filter(ui -> ui.getQuantity() != 0)
-                .map(UniqueItem::getSize)
-                .toList();
     }
 }
