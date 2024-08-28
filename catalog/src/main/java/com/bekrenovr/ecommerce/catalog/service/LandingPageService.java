@@ -1,6 +1,7 @@
 package com.bekrenovr.ecommerce.catalog.service;
 
 import com.bekrenovr.ecommerce.catalog.dto.mapper.ItemMapper;
+import com.bekrenovr.ecommerce.catalog.dto.response.ItemMetadata;
 import com.bekrenovr.ecommerce.catalog.dto.response.ItemResponse;
 import com.bekrenovr.ecommerce.catalog.jpa.repository.ItemRepository;
 import com.bekrenovr.ecommerce.catalog.jpa.repository.LandingPageRepository;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.function.Predicate;
 
@@ -24,12 +26,15 @@ public class LandingPageService {
     private final LandingPageRepository landingPageRepository;
     private final ItemMapper itemMapper;
     private final ItemRepository itemRepository;
+    private final ItemMetadataService itemMetadataService;
 
 
     public Page<ItemResponse> getLandingPageItems(Integer pageNumber, Integer pageSize) {
         List<Item> items = landingPageRepository.getLandingPageItems();
-        return PageUtil.paginateList(items, pageNumber, pageSize)
-                .map(itemMapper::itemToResponse);
+        Page<Item> paginatedItems = PageUtil.paginateList(items, pageNumber, pageSize);
+        Map<Item, ItemMetadata> metadataMap = itemMetadataService.generateMetadata(paginatedItems);
+        return paginatedItems
+                .map(item -> itemMapper.itemToResponse(item, metadataMap.get(item)));
     }
 
     public void addLandingPageItems(List<UUID> itemsIds){

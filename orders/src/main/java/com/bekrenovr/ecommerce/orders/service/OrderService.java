@@ -1,9 +1,9 @@
 package com.bekrenovr.ecommerce.orders.service;
 
-import com.bekrenovr.ecommerce.common.auth.AuthenticatedUser;
-import com.bekrenovr.ecommerce.common.auth.AuthenticationUtil;
-import com.bekrenovr.ecommerce.common.auth.Role;
 import com.bekrenovr.ecommerce.common.exception.EcommerceApplicationException;
+import com.bekrenovr.ecommerce.common.security.AuthenticatedUser;
+import com.bekrenovr.ecommerce.common.security.AuthenticationUtil;
+import com.bekrenovr.ecommerce.common.security.Role;
 import com.bekrenovr.ecommerce.common.util.PageUtil;
 import com.bekrenovr.ecommerce.orders.dto.mapper.DeliveryMapper;
 import com.bekrenovr.ecommerce.orders.dto.mapper.OrderMapper;

@@ -3,6 +3,7 @@ package com.bekrenovr.ecommerce.catalog.service;
 import com.bekrenovr.ecommerce.catalog.dto.mapper.ItemMapper;
 import com.bekrenovr.ecommerce.catalog.dto.request.FilterOptions;
 import com.bekrenovr.ecommerce.catalog.dto.response.ItemDetailedResponse;
+import com.bekrenovr.ecommerce.catalog.dto.response.ItemMetadata;
 import com.bekrenovr.ecommerce.catalog.dto.response.ItemResponse;
 import com.bekrenovr.ecommerce.catalog.jpa.repository.ItemRepository;
 import com.bekrenovr.ecommerce.catalog.jpa.specification.ItemSpecificationBuilder;
@@ -20,6 +21,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -29,6 +31,7 @@ public class ItemService {
     private final ItemSpecificationBuilder itemSpecificationBuilder;
     private final ItemGenerator itemGenerator;
     private final ItemMapper itemMapper;
+    private final ItemMetadataService metadataService;
 
     public Page<ItemResponse> getItemsByCriteria(
             SortOption sort, Integer pageNumber, Integer pageSize, FilterOptions filters
@@ -38,19 +41,22 @@ public class ItemService {
                 .stream()
                 .sorted(ItemSortComparators.forOption(sort))
                 .toList();
-        return PageUtil.paginateList(items, pageNumber, pageSize)
-                .map(itemMapper::itemToResponse);
+        Page<Item> paginatedItems = PageUtil.paginateList(items, pageNumber, pageSize);
+        Map<Item, ItemMetadata> metadataMap = metadataService.generateMetadata(paginatedItems);
+        return paginatedItems.map(item -> itemMapper.itemToResponse(item, metadataMap.get(item)));
     }
 
     public ItemDetailedResponse getItemById(UUID id) {
         Item item = itemRepository.findByIdOrThrowDefault(id);
-        return itemMapper.itemToDetailedResponse(item);
+        ItemMetadata metadata = metadataService.generateMetadata(item);
+        return itemMapper.itemToDetailedResponse(item, metadata);
     }
 
     public List<ItemResponse> getItemsByIds(List<UUID> ids) {
         List<Item> items = itemRepository.findAllById(ids);
+        Map<Item, ItemMetadata> metadataMap = metadataService.generateMetadata(items);
         return items.stream()
-                .map(itemMapper::itemToResponse)
+                .map(item -> itemMapper.itemToResponse(item, metadataMap.get(item)))
                 .toList();
     }
 
@@ -78,4 +84,5 @@ public class ItemService {
             createItem(item);
         }
     }
+
 }

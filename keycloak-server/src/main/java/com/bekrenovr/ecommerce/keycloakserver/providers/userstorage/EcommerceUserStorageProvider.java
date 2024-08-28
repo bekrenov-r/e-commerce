@@ -1,7 +1,7 @@
 package com.bekrenovr.ecommerce.keycloakserver.providers.userstorage;
 
-import com.bekrenovr.ecommerce.common.auth.Role;
 import com.bekrenovr.ecommerce.common.exception.EcommerceApplicationException;
+import com.bekrenovr.ecommerce.common.security.Role;
 import com.bekrenovr.ecommerce.keycloakserver.dao.EcommerceUserDao;
 import com.bekrenovr.ecommerce.keycloakserver.model.EcommerceUser;
 import com.bekrenovr.ecommerce.keycloakserver.model.EcommerceUserAdapter;

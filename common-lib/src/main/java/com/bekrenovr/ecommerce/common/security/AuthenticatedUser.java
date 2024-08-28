@@ -1,4 +1,4 @@
-package com.bekrenovr.ecommerce.common.auth;
+package com.bekrenovr.ecommerce.common.security;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

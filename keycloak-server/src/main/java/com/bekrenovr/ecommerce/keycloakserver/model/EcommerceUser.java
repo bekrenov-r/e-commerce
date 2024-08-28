@@ -1,6 +1,6 @@
 package com.bekrenovr.ecommerce.keycloakserver.model;
 
-import com.bekrenovr.ecommerce.common.auth.Role;
+import com.bekrenovr.ecommerce.common.security.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

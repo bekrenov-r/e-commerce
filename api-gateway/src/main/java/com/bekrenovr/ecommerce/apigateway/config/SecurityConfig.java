@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.context.NoOpServerSecurityContextRepository;
 import org.springframework.web.cors.reactive.CorsConfigurationSource;
@@ -21,12 +20,12 @@ public class SecurityConfig {
     @Bean
     public SecurityWebFilterChain filterChain(ServerHttpSecurity http) {
         var postOrderEndpointAuthorizationManager =
-                new OptionalAuthAuthorizationManager(new SimpleGrantedAuthority("CUSTOMER"));
+                new OptionalAuthAuthorizationManager("CUSTOMER");
         return http
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .cors(spec -> spec.configurationSource(corsConfigurationSource))
                 .authorizeExchange(auth -> auth
-                        .pathMatchers(HttpMethod.GET, "/catalog/**").permitAll()
+                        .pathMatchers(HttpMethod.GET, "/catalog/**").access(new OptionalAuthAuthorizationManager())
                         .pathMatchers(HttpMethod.POST, "/catalog/**").hasAuthority("EMPLOYEE")
                         .pathMatchers(HttpMethod.DELETE, "/catalog/**").hasAuthority("EMPLOYEE")
                         .pathMatchers(HttpMethod.POST,

@@ -1,8 +1,8 @@
 package com.bekrenovr.ecommerce.users.service;
 
 import com.bekrenovr.ecommerce.catalog.dto.response.ItemResponse;
-import com.bekrenovr.ecommerce.common.auth.AuthenticationUtil;
 import com.bekrenovr.ecommerce.common.exception.EcommerceApplicationException;
+import com.bekrenovr.ecommerce.common.security.AuthenticationUtil;
 import com.bekrenovr.ecommerce.users.model.entity.Customer;
 import com.bekrenovr.ecommerce.users.proxy.CatalogProxy;
 import com.bekrenovr.ecommerce.users.repository.CustomerRepository;

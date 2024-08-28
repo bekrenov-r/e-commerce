@@ -1,5 +1,6 @@
 package com.bekrenovr.ecommerce.apigateway.filter;
 
+import com.bekrenovr.ecommerce.common.security.SecurityConstants;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -18,8 +19,6 @@ import java.util.stream.Collectors;
 
 @Component
 public class AddAuthenticatedUserHeaderGlobalFilter implements GlobalFilter {
-    private static final String AUTHENTICATED_USER = "Authenticated-User";
-
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         return ReactiveSecurityContextHolder.getContext()
@@ -29,7 +28,7 @@ public class AddAuthenticatedUserHeaderGlobalFilter implements GlobalFilter {
                         return chain.filter(exchange);
                     }
                     ServerHttpRequest modifiedRequest = exchange.getRequest().mutate()
-                            .header(AUTHENTICATED_USER, convertAuthToJson(authentication))
+                            .header(SecurityConstants.AUTHENTICATED_USER_HEADER, convertAuthToJson(authentication))
                             .build();
                     return chain.filter(exchange.mutate().request(modifiedRequest).build());
                 }).then(chain.filter(exchange));
