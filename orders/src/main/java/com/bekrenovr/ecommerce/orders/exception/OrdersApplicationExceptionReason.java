@@ -11,7 +11,8 @@ public enum OrdersApplicationExceptionReason implements EcommerceApplicationExce
     ORDER_NOT_FOUND("Order with id [%s] does not exist", HttpStatus.NOT_FOUND),
     NON_EXISTENT_ITEMS_IN_ORDER("Order request contains non-existent items", HttpStatus.BAD_REQUEST),
     SIZE_IS_UNAVAILABLE("Size [%s] is unavailable for item with id [%s]", HttpStatus.BAD_REQUEST),
-    QUANTITY_IS_UNAVAILABLE("Requested quantity is unavailable for item [%s] with size [%s]", HttpStatus.BAD_REQUEST);
+    QUANTITY_IS_UNAVAILABLE("Requested quantity is unavailable for item [%s] with size [%s]", HttpStatus.BAD_REQUEST),
+    CUSTOMER_IS_NOT_ORDER_OWNER("Customer with username [%s] is not an owner of requested order", HttpStatus.FORBIDDEN),;
 
     private final String message;
     private final HttpStatus status;

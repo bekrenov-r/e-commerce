@@ -19,7 +19,3 @@ server:
 custom:
   page:
     default-size: 10
-  strategy:
-    shoes-size:
-      min: 30
-      max: 46

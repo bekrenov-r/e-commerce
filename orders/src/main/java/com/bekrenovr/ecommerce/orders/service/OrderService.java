@@ -27,7 +27,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-import static com.bekrenovr.ecommerce.users.exception.UsersApplicationExceptionReason.CUSTOMER_IS_NOT_ORDER_OWNER;
+import static com.bekrenovr.ecommerce.orders.exception.OrdersApplicationExceptionReason.CUSTOMER_IS_NOT_ORDER_OWNER;
 
 @Service
 @RequiredArgsConstructor
@@ -81,7 +81,7 @@ public class OrderService {
         } catch(FeignException.Conflict ex) {
             // do nothing since 409 means that customer already exists and can be used
         }
-        return request.customer().getEmail();
+        return request.customer().email();
     }
 
     private double calculateTotalPrice(List<ItemEntry> itemEntries) {

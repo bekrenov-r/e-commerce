@@ -1,11 +1,10 @@
 package com.bekrenovr.ecommerce.orders.service;
 
-import com.bekrenovr.ecommerce.catalog.dto.response.ItemResponse;
-import com.bekrenovr.ecommerce.catalog.dto.response.UniqueItemShortResponse;
-import com.bekrenovr.ecommerce.catalog.model.Size;
 import com.bekrenovr.ecommerce.common.exception.EcommerceApplicationException;
 import com.bekrenovr.ecommerce.orders.dto.mapper.ItemEntryMapper;
 import com.bekrenovr.ecommerce.orders.dto.request.ItemEntryRequest;
+import com.bekrenovr.ecommerce.orders.dto.response.ItemResponse;
+import com.bekrenovr.ecommerce.orders.dto.response.UniqueItemResponse;
 import com.bekrenovr.ecommerce.orders.model.entity.ItemEntry;
 import com.bekrenovr.ecommerce.orders.proxy.CatalogProxy;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +33,7 @@ public class ItemEntryService {
         for(int i = 0; i < items.size(); i++) {
             validateEntryAgainstItem(itemEntryRequests.get(i), items.get(i));
             int quantity = itemEntryRequests.get(i).quantity();
-            Size size = itemEntryRequests.get(i).size();
+            String size = itemEntryRequests.get(i).size();
             ItemEntry itemEntry = itemEntryMapper.itemResponseToEntity(items.get(i), quantity, size);
             itemEntries.add(itemEntry);
         }
@@ -42,13 +41,13 @@ public class ItemEntryService {
     }
 
     private void validateEntryAgainstItem(ItemEntryRequest itemEntry, ItemResponse item) {
-        Size requestedSize = itemEntry.size();
         int requestedQuantity = itemEntry.quantity();
-        UniqueItemShortResponse uniqueItemBySize = item.uniqueItems().stream()
-                .filter(uniqueItem -> uniqueItem.size().equals(requestedSize.getSizeValue()))
+        String requestedSize = itemEntry.size();
+        UniqueItemResponse uniqueItemBySize = item.uniqueItems().stream()
+                .filter(uniqueItem -> uniqueItem.size().equals(requestedSize))
                 .findFirst()
-                .orElseThrow(() -> new EcommerceApplicationException(SIZE_IS_UNAVAILABLE, requestedSize.getSizeValue(), item.id()));
+                .orElseThrow(() -> new EcommerceApplicationException(SIZE_IS_UNAVAILABLE, requestedSize, item.id()));
         if(uniqueItemBySize.quantity() < requestedQuantity)
-            throw new EcommerceApplicationException(QUANTITY_IS_UNAVAILABLE, item.id(), requestedSize.getSizeValue());
+            throw new EcommerceApplicationException(QUANTITY_IS_UNAVAILABLE, item.id(), requestedSize);
     }
 }

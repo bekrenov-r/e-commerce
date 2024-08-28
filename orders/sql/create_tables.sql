@@ -31,6 +31,16 @@ create table order_item_entry(
     item_entry_id uuid
 );
 
+create table cart(
+    id uuid,
+    customer_email text
+);
+
+create table cart_item_entry(
+    order_id uuid,
+    item_entry_id uuid
+);
+
 CREATE TABLE delivery (
   method text,
   order_id uuid,

@@ -1,7 +1,7 @@
 package com.bekrenovr.ecommerce.orders.proxy;
 
 import com.bekrenovr.ecommerce.orders.dto.CustomerDTO;
-import com.bekrenovr.ecommerce.users.dto.request.CustomerRequest;
+import com.bekrenovr.ecommerce.orders.dto.request.CustomerRequest;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
