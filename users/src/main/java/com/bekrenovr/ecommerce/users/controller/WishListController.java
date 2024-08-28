@@ -28,8 +28,12 @@ public class WishListController {
     }
 
     @DeleteMapping
-    public ResponseEntity<Void> removeItemFromWishList(@RequestParam(name = "id") UUID itemId) {
+    public void removeItemFromWishList(@RequestParam(name = "id") UUID itemId) {
         wishListService.removeItemFromWishList(itemId);
-        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @DeleteMapping("/clear")
+    public void clearWishList() {
+        wishListService.clearWishList();
     }
 }

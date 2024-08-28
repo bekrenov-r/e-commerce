@@ -48,4 +48,11 @@ public class WishListService {
         customer.getWishListItems().remove(itemId);
         customerRepository.save(customer);
     }
+
+    public void clearWishList() {
+        String email = AuthenticationUtil.getAuthenticatedUser().getUsername();
+        Customer customer = customerRepository.findByEmailOrThrowDefault(email);
+        customer.getWishListItems().clear();
+        customerRepository.save(customer);
+    }
 }
