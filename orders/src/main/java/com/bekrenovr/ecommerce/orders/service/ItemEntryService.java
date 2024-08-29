@@ -4,9 +4,9 @@ import com.bekrenovr.ecommerce.common.exception.EcommerceApplicationException;
 import com.bekrenovr.ecommerce.orders.dto.mapper.ItemEntryMapper;
 import com.bekrenovr.ecommerce.orders.dto.request.ItemEntryRequest;
 import com.bekrenovr.ecommerce.orders.dto.response.ItemResponse;
-import com.bekrenovr.ecommerce.orders.dto.response.UniqueItemResponse;
 import com.bekrenovr.ecommerce.orders.model.entity.ItemEntry;
 import com.bekrenovr.ecommerce.orders.proxy.CatalogProxy;
+import com.bekrenovr.ecommerce.orders.validation.ItemEntryValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static com.bekrenovr.ecommerce.orders.exception.OrdersApplicationExceptionReason.*;
+import static com.bekrenovr.ecommerce.orders.exception.OrdersApplicationExceptionReason.NON_EXISTENT_ITEMS_IN_ORDER;
 
 @Service
 @RequiredArgsConstructor
@@ -31,23 +31,12 @@ public class ItemEntryService {
             throw new EcommerceApplicationException(NON_EXISTENT_ITEMS_IN_ORDER);
         List<ItemEntry> itemEntries = new ArrayList<>();
         for(int i = 0; i < items.size(); i++) {
-            validateEntryAgainstItem(itemEntryRequests.get(i), items.get(i));
+            ItemEntryValidator.validateEntryAgainstItem(itemEntryRequests.get(i), items.get(i));
             int quantity = itemEntryRequests.get(i).quantity();
             String size = itemEntryRequests.get(i).size();
             ItemEntry itemEntry = itemEntryMapper.itemResponseToEntity(items.get(i), quantity, size);
             itemEntries.add(itemEntry);
         }
         return itemEntries;
-    }
-
-    private void validateEntryAgainstItem(ItemEntryRequest itemEntry, ItemResponse item) {
-        int requestedQuantity = itemEntry.quantity();
-        String requestedSize = itemEntry.size();
-        UniqueItemResponse uniqueItemBySize = item.uniqueItems().stream()
-                .filter(uniqueItem -> uniqueItem.size().equals(requestedSize))
-                .findFirst()
-                .orElseThrow(() -> new EcommerceApplicationException(SIZE_IS_UNAVAILABLE, requestedSize, item.id()));
-        if(uniqueItemBySize.quantity() < requestedQuantity)
-            throw new EcommerceApplicationException(QUANTITY_IS_UNAVAILABLE, item.id(), requestedSize);
     }
 }

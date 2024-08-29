@@ -37,7 +37,7 @@ create table cart(
 );
 
 create table cart_item_entry(
-    order_id uuid,
+    cart_id uuid,
     item_entry_id uuid
 );
 
