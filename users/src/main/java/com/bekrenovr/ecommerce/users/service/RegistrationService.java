@@ -21,7 +21,7 @@ public class RegistrationService {
     public void registerCustomer(CustomerRegistrationRequest request) {
         customerService.createCustomer(request, true);
         ResponseEntity<String> response = keycloakProxy.createKeycloakUser(
-                request.getEmail(), request.getPassword(), "CUSTOMER"
+                request.getEmail(), request.getPassword(), "CUSTOMER", request.getFirstName()
         );
         mailService.sendCustomerAccountActivationEmail(request, response.getBody());
     }

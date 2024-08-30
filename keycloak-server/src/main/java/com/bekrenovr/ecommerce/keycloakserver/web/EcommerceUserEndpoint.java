@@ -47,8 +47,10 @@ public class EcommerceUserEndpoint {
     @Produces({MediaType.TEXT_PLAIN})
     public Response addUser(@QueryParam("username") String username,
                             @QueryParam("password") String rawPassword,
-                            @QueryParam("role") Role role) {
-        userStorage.addUser(username, rawPassword, role);
+                            @QueryParam("role") Role role,
+                            @QueryParam("firstName") String firstName) {
+        System.out.println(firstName);
+        userStorage.addUser(username, rawPassword, role, firstName);
         String activationToken = createActivationToken(username);
         return Response.status(Response.Status.CREATED)
                 .entity(activationToken)

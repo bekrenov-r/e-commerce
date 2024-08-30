@@ -19,7 +19,7 @@ public class EcommerceUserDao {
     private static final String USER_BY_USERNAME_QUERY = "select * from users where users.username = ?";
     private static final String PASSWORD_BY_USERNAME_QUERY = "select password from users where username = ?";
     private static final String EXISTS_BY_USERNAME_QUERY = "select exists (select 1 from users where username = ?) as user_exists";
-    private static final String ADD_USER = "insert into users values (?, ?, false)";
+    private static final String ADD_USER = "insert into users values (?, ?, false, ?)";
     private static final String ADD_ROLE = "insert into roles values (?, ?)";
     private static final String ENABLE_USER = "update users set enabled = true where username = ?";
     private ComponentModel componentModel;
@@ -39,7 +39,8 @@ public class EcommerceUserDao {
                 EcommerceUser user = new EcommerceUser(
                         rs.getString("username"),
                         roles,
-                        rs.getBoolean("enabled")
+                        rs.getBoolean("enabled"),
+                        rs.getString("first_name")
                 );
                 users.add(user);
             }
@@ -58,7 +59,8 @@ public class EcommerceUserDao {
                 return new EcommerceUser(
                         rs.getString("username"),
                         getRolesForUser(username),
-                        rs.getBoolean("enabled")
+                        rs.getBoolean("enabled"),
+                        rs.getString("first_name")
                 );
             } else {
                 return null;
@@ -94,16 +96,17 @@ public class EcommerceUserDao {
         }
     }
 
-    public void addUser(String username, String password, Role role) {
+    public void addUser(EcommerceUser user, String password, Role role) {
         try(Connection connection = DbUtil.getConnection()) {
             PreparedStatement addUserStatement = connection.prepareStatement(ADD_USER);
-            addUserStatement.setString(1, username);
+            addUserStatement.setString(1, user.getUsername());
             addUserStatement.setString(2, password);
+            addUserStatement.setString(3, user.getFirstName());
             addUserStatement.executeUpdate();
             addUserStatement.close();
 
             PreparedStatement addRoleStatement = connection.prepareStatement(ADD_ROLE);
-            addRoleStatement.setString(1, username);
+            addRoleStatement.setString(1, user.getUsername());
             addRoleStatement.setString(2, role.name());
             addRoleStatement.executeUpdate();
             addRoleStatement.close();

@@ -26,6 +26,11 @@ public class EcommerceUserAdapter extends AbstractUserAdapter {
     }
 
     @Override
+    public String getFirstName(){
+        return user.getFirstName();
+    }
+
+    @Override
     protected boolean appendDefaultRolesToRoleMappings() {
         return false;
     }

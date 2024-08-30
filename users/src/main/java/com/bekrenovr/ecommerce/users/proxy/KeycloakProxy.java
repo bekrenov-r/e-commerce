@@ -11,7 +11,8 @@ public interface KeycloakProxy {
     @PostMapping("/keycloak/realms/e-commerce/users")
     ResponseEntity<String> createKeycloakUser(@RequestParam("username") String username,
                                               @RequestParam("password") String password,
-                                              @RequestParam("role") String role);
+                                              @RequestParam("role") String role,
+                                              @RequestParam("firstName") String firstName);
 
     @GetMapping("/keycloak/realms/e-commerce/users/activation-token")
     ResponseEntity<String> getActivationTokenForUser(@RequestParam("username") String username);

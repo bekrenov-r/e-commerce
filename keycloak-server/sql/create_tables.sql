@@ -4,7 +4,8 @@ create schema public;
 create table users(
     username text primary key,
     password text,
-    enabled boolean
+    enabled boolean,
+    first_name text
 );
 
 create table roles(
@@ -18,8 +19,8 @@ create table activation_token(
 );
 
 insert into users values
-                      ('john.doe@example.com', 'XohImNooBHFR0OVvjcYpJ3NgPQ1qq73WKhHvch0VQtg=', true), --password
-                      ('jane.doe@example.com', 'XohImNooBHFR0OVvjcYpJ3NgPQ1qq73WKhHvch0VQtg=', true);
+                      ('john.doe@example.com', 'XohImNooBHFR0OVvjcYpJ3NgPQ1qq73WKhHvch0VQtg=', true, 'John'), --password
+                      ('jane.doe@example.com', 'XohImNooBHFR0OVvjcYpJ3NgPQ1qq73WKhHvch0VQtg=', true, 'Jane');
 
 insert into roles values
                             ('john.doe@example.com', 'EMPLOYEE'),

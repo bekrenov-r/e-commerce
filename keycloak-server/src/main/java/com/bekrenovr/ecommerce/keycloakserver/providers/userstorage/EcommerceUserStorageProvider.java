@@ -105,11 +105,15 @@ public class EcommerceUserStorageProvider implements
         return null;
     }
 
-    public void addUser(String username, String rawPassword, Role role) {
+    public void addUser(String username, String rawPassword, Role role, String firstName) {
         if(userDao.existsByUsername(username))
             throw new EcommerceApplicationException(USER_ALREADY_EXISTS, username);
         String encodedPassword = passwordEncoder.encode(rawPassword);
-        userDao.addUser(username, encodedPassword, role);
+        EcommerceUser user = EcommerceUser.builder()
+                .username(username)
+                .firstName(firstName)
+                .build();
+        userDao.addUser(user, encodedPassword, role);
     }
 
     public UserModel enableUser(RealmModel realmModel, String username) {
