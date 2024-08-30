@@ -19,7 +19,7 @@ public class Cart extends AbstractEntity {
     @Column(name = "customer_email")
     private String customerEmail;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinTable(
             name = "cart_item_entry",
             joinColumns = @JoinColumn(name = "cart_id"),

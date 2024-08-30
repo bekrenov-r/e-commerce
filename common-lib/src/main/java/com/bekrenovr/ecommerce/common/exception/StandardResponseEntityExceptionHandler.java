@@ -2,6 +2,7 @@ package com.bekrenovr.ecommerce.common.exception;
 
 import feign.FeignException;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.ConstraintViolationException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -87,6 +88,17 @@ public class StandardResponseEntityExceptionHandler extends ResponseEntityExcept
                 ex.getMessage()
         );
         return new ResponseEntity<>(errorDetail, status);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ErrorDetail> handleConstraintViolationException(ConstraintViolationException ex){
+        logException(ex);
+        ErrorDetail errorDetail = new ErrorDetail(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST,
+                ex.getMessage()
+        );
+        return new ResponseEntity<>(errorDetail, HttpStatus.BAD_REQUEST);
     }
 
     @Override

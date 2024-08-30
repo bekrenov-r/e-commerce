@@ -6,6 +6,7 @@ public record ItemEntryResponse(
     UUID id,
     UUID itemId,
     String itemName,
+    String itemSize,
     int quantity,
     double discount,
     double itemPrice,

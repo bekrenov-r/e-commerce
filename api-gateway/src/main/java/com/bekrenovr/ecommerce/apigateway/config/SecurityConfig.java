@@ -35,7 +35,8 @@ public class SecurityConfig {
                                 "/keycloak/realms/e-commerce/users/enable").permitAll()
                         .pathMatchers(HttpMethod.POST, "/orders/").access(postOrderEndpointAuthorizationManager)
                         .pathMatchers(HttpMethod.GET, "/orders/{id}").hasAnyAuthority("CUSTOMER", "EMPLOYEE")
-                        .pathMatchers(HttpMethod.GET, "/orders/customer", "/orders/cart").hasAuthority("CUSTOMER")
+                        .pathMatchers(HttpMethod.GET, "/orders/customer").hasAuthority("CUSTOMER")
+                        .pathMatchers("/orders/cart").hasAuthority("CUSTOMER")
                         .pathMatchers( "/users/wishlist/**").hasAuthority("CUSTOMER")
                         .anyExchange().authenticated())
                 .oauth2ResourceServer(oauth -> oauth
