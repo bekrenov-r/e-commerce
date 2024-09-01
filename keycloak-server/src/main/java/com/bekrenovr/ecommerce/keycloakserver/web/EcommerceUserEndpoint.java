@@ -6,7 +6,6 @@ import com.bekrenovr.ecommerce.keycloakserver.model.ActivationToken;
 import com.bekrenovr.ecommerce.keycloakserver.providers.userstorage.EcommerceUserStorageProvider;
 import com.bekrenovr.ecommerce.keycloakserver.providers.userstorage.EcommerceUserStorageProviderFactory;
 import com.bekrenovr.ecommerce.keycloakserver.repository.ActivationTokenRepository;
-import com.bekrenovr.ecommerce.keycloakserver.util.KeycloakCacheCleaner;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -32,13 +31,11 @@ public class EcommerceUserEndpoint {
     private final RealmModel realmModel;
     private final ActivationTokenRepository activationTokenRepository;
     private final EcommerceUserStorageProvider userStorage;
-    private final KeycloakCacheCleaner cacheCleaner;
 
     public EcommerceUserEndpoint(KeycloakSession session) {
         this.session = session;
         this.realmModel = session.realms().getRealm("e-commerce");
         this.activationTokenRepository = new ActivationTokenRepository();
-        this.cacheCleaner = new KeycloakCacheCleaner();
         this.userStorage = (EcommerceUserStorageProvider)session.getComponentProvider(UserStorageProvider.class, EcommerceUserStorageProviderFactory.COMPONENT_ID);
     }
 
@@ -86,7 +83,6 @@ public class EcommerceUserEndpoint {
         ActivationToken activationToken = activationTokenRepository.findByToken(token);
         UserModel enabledUser = userStorage.enableUser(realmModel, activationToken.getUsername());
         activationTokenRepository.removeByUsername(activationToken.getUsername());
-        cacheCleaner.cleanUsersCache();
         return enabledUser;
     }
 
