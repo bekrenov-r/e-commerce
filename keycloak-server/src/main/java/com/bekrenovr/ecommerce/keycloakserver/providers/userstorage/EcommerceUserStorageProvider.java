@@ -2,9 +2,9 @@ package com.bekrenovr.ecommerce.keycloakserver.providers.userstorage;
 
 import com.bekrenovr.ecommerce.common.exception.EcommerceApplicationException;
 import com.bekrenovr.ecommerce.common.security.Role;
-import com.bekrenovr.ecommerce.keycloakserver.dao.EcommerceUserDao;
 import com.bekrenovr.ecommerce.keycloakserver.model.EcommerceUser;
 import com.bekrenovr.ecommerce.keycloakserver.model.EcommerceUserAdapter;
+import com.bekrenovr.ecommerce.keycloakserver.repository.EcommerceUserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.keycloak.component.ComponentModel;
 import org.keycloak.credential.CredentialInput;
@@ -21,6 +21,7 @@ import org.keycloak.storage.user.UserLookupProvider;
 import org.keycloak.storage.user.UserQueryProvider;
 
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import static com.bekrenovr.ecommerce.keycloakserver.exception.KeycloakApplicationExceptionReason.USER_ALREADY_EXISTS;
@@ -29,17 +30,16 @@ import static com.bekrenovr.ecommerce.keycloakserver.exception.KeycloakApplicati
 @Slf4j
 public class EcommerceUserStorageProvider implements
         UserStorageProvider, UserLookupProvider, UserQueryProvider, CredentialInputValidator {
-
     private KeycloakSession keycloakSession;
     private ComponentModel componentModel;
     private SHAPasswordEncoder passwordEncoder;
-    private EcommerceUserDao userDao;
+    private EcommerceUserRepository userRepository;
 
     public EcommerceUserStorageProvider(KeycloakSession keycloakSession, ComponentModel componentModel, SHAPasswordEncoder passwordEncoder) {
         this.keycloakSession = keycloakSession;
         this.componentModel = componentModel;
         this.passwordEncoder = passwordEncoder;
-        this.userDao = new EcommerceUserDao(componentModel);
+        this.userRepository = new EcommerceUserRepository();
     }
 
     @Override
@@ -62,7 +62,7 @@ public class EcommerceUserStorageProvider implements
     @Override
     public boolean isValid(RealmModel realmModel, UserModel userModel, CredentialInput credentialInput) {
         log.info("isValid()");
-        String encryptedPassword = userDao.getPasswordByUsername(userModel.getUsername());
+        String encryptedPassword = userRepository.getByUsername(userModel.getUsername()).getPassword();
         if (encryptedPassword == null)
             return false;
         return passwordEncoder.verify(credentialInput.getChallengeResponse(), encryptedPassword);
@@ -78,7 +78,7 @@ public class EcommerceUserStorageProvider implements
     @Override
     public UserModel getUserByUsername(RealmModel realmModel, String username) {
         log.info("getUserByUsername({})", username);
-        EcommerceUser user = userDao.getUserByUsername(username);
+        EcommerceUser user = userRepository.getByUsername(username);
         return user != null ? mapUser(realmModel, user) : null;
     }
 
@@ -90,7 +90,7 @@ public class EcommerceUserStorageProvider implements
 
     @Override
     public Stream<UserModel> searchForUserStream(RealmModel realmModel, Map<String, String> map, Integer integer, Integer integer1) {
-        return userDao.getAllUsers()
+        return userRepository.getAll()
                 .stream()
                 .map(user -> mapUser(realmModel, user));
     }
@@ -106,21 +106,24 @@ public class EcommerceUserStorageProvider implements
     }
 
     public void addUser(String username, String rawPassword, Role role, String firstName) {
-        if(userDao.existsByUsername(username))
+        if(userRepository.existsByUsername(username))
             throw new EcommerceApplicationException(USER_ALREADY_EXISTS, username);
         String encodedPassword = passwordEncoder.encode(rawPassword);
         EcommerceUser user = EcommerceUser.builder()
                 .username(username)
                 .firstName(firstName)
+                .password(encodedPassword)
+                .enabled(false)
+                .roles(Set.of(role))
                 .build();
-        userDao.addUser(user, encodedPassword, role);
+        userRepository.create(user);
     }
 
     public UserModel enableUser(RealmModel realmModel, String username) {
-        if(!userDao.existsByUsername(username))
+        if(!userRepository.existsByUsername(username))
             throw new EcommerceApplicationException(USER_NOT_FOUND, username);
-        userDao.enableUser(username);
-        EcommerceUser enabledUser = userDao.getUserByUsername(username);
+        userRepository.enable(username);
+        EcommerceUser enabledUser = userRepository.getByUsername(username);
         return mapUser(realmModel, enabledUser);
     }
 

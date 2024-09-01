@@ -52,4 +52,8 @@ public class EcommerceUserAdapter extends AbstractUserAdapter {
     public SubjectCredentialManager credentialManager() {
         return new LegacyUserCredentialManager(session, realm, this);
     }
+
+    public EcommerceUser getUser() {
+        return user;
+    }
 }

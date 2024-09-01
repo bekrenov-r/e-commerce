@@ -2,10 +2,10 @@ package com.bekrenovr.ecommerce.keycloakserver.web;
 
 import com.bekrenovr.ecommerce.common.exception.EcommerceApplicationException;
 import com.bekrenovr.ecommerce.common.security.Role;
-import com.bekrenovr.ecommerce.keycloakserver.dao.ActivationTokenDao;
 import com.bekrenovr.ecommerce.keycloakserver.model.ActivationToken;
 import com.bekrenovr.ecommerce.keycloakserver.providers.userstorage.EcommerceUserStorageProvider;
 import com.bekrenovr.ecommerce.keycloakserver.providers.userstorage.EcommerceUserStorageProviderFactory;
+import com.bekrenovr.ecommerce.keycloakserver.repository.ActivationTokenRepository;
 import com.bekrenovr.ecommerce.keycloakserver.util.KeycloakCacheCleaner;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -30,14 +30,14 @@ import static com.bekrenovr.ecommerce.keycloakserver.exception.KeycloakApplicati
 public class EcommerceUserEndpoint {
     private final KeycloakSession session;
     private final RealmModel realmModel;
-    private final ActivationTokenDao activationTokenDao;
+    private final ActivationTokenRepository activationTokenRepository;
     private final EcommerceUserStorageProvider userStorage;
     private final KeycloakCacheCleaner cacheCleaner;
 
     public EcommerceUserEndpoint(KeycloakSession session) {
         this.session = session;
         this.realmModel = session.realms().getRealm("e-commerce");
-        this.activationTokenDao = new ActivationTokenDao();
+        this.activationTokenRepository = new ActivationTokenRepository();
         this.cacheCleaner = new KeycloakCacheCleaner();
         this.userStorage = (EcommerceUserStorageProvider)session.getComponentProvider(UserStorageProvider.class, EcommerceUserStorageProviderFactory.COMPONENT_ID);
     }
@@ -49,7 +49,6 @@ public class EcommerceUserEndpoint {
                             @QueryParam("password") String rawPassword,
                             @QueryParam("role") Role role,
                             @QueryParam("firstName") String firstName) {
-        System.out.println(firstName);
         userStorage.addUser(username, rawPassword, role, firstName);
         String activationToken = createActivationToken(username);
         return Response.status(Response.Status.CREATED)
@@ -61,10 +60,10 @@ public class EcommerceUserEndpoint {
     @Path("/activation-token")
     @Produces(MediaType.TEXT_PLAIN)
     public Response getActivationTokenForUser(@QueryParam("username") String username) {
-        if(!activationTokenDao.existsByUsername(username)){
+        if(!activationTokenRepository.existsByUsername(username)){
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-        ActivationToken token = activationTokenDao.findByUsername(username);
+        ActivationToken token = activationTokenRepository.findByUsername(username);
         return Response.status(Response.Status.OK)
                 .entity(token.getToken())
                 .build();
@@ -82,11 +81,11 @@ public class EcommerceUserEndpoint {
     }
 
     private UserModel doEnableUser(String token) {
-        if(!activationTokenDao.existsByToken(token))
+        if(!activationTokenRepository.existsByToken(token))
             throw new EcommerceApplicationException(ACTIVATION_TOKEN_NOT_FOUND, token);
-        ActivationToken activationToken = activationTokenDao.findByToken(token);
+        ActivationToken activationToken = activationTokenRepository.findByToken(token);
         UserModel enabledUser = userStorage.enableUser(realmModel, activationToken.getUsername());
-        activationTokenDao.delete(activationToken.getUsername());
+        activationTokenRepository.removeByUsername(activationToken.getUsername());
         cacheCleaner.cleanUsersCache();
         return enabledUser;
     }
@@ -95,7 +94,7 @@ public class EcommerceUserEndpoint {
         ActivationToken activationToken = new ActivationToken(
                 username, RandomStringUtils.random(20, true, true)
         );
-        activationTokenDao.save(activationToken);
+        activationTokenRepository.create(activationToken);
         return activationToken.getToken();
     }
 
