@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static com.bekrenovr.ecommerce.users.exception.UsersApplicationExceptionReason.EMAIL_ALREADY_EXISTS;
+import static com.bekrenovr.ecommerce.users.exception.UsersApplicationExceptionReason.USER_NOT_FOUND_BY_EMAIL;
 
 @Service
 @RequiredArgsConstructor
@@ -48,16 +49,23 @@ public class CustomerService {
                 });
     }
 
-    public ResponseEntity<Customer> update(Customer customer){
+    public void updateCustomer(Customer customer){
         if(customerRepository.existsById(customer.getId())){
-            Customer updatedCustomer = customerRepository.save(customer);
-            return ResponseEntity
-                    .ok()
-                    .body(updatedCustomer);
-
+            customerRepository.save(customer);
         } else {
             throw new EntityNotFoundException("No customer found for id: " + customer.getId());
         }
+    }
+
+    public void updateCustomer(CustomerRequest customer){
+        customerRepository.findByEmail(customer.getEmail())
+                .ifPresentOrElse(c -> {
+                    c.setFirstName(customer.getFirstName());
+                    c.setLastName(customer.getLastName());
+                    customerRepository.save(c);
+                }, () -> {
+                    throw new EcommerceApplicationException(USER_NOT_FOUND_BY_EMAIL);
+                });
     }
 
     public ResponseEntity<Void> delete(UUID id){

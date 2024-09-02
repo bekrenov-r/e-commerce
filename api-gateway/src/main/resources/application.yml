@@ -8,10 +8,13 @@ spring:
     name: api-gateway
   security:
     oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://192.168.0.59:8400/keycloak/realms/e-commerce
-          jwk-set-uri: http://192.168.0.59:8400/keycloak/realms/e-commerce/protocol/openid-connect/certs
+      issuers:
+        - uri: http://192.168.0.59:8400/keycloak/realms/e-commerce
+          username-json-path: $.preferred_username
+          roles-json-path: $.realm_access.roles
+        - uri: https://accounts.google.com
+          username-json-path: $.email
+          default-roles: CUSTOMER
 springdoc:
   enable-native-support: true
   api-docs:

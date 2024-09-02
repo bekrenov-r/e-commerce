@@ -19,6 +19,18 @@ spring:
     import: optional:configserver:http://localhost:8888
   application:
     name: users
+  security:
+    oauth2:
+      resourceserver:
+        registration:
+          google:
+            client-id: 366892792903-hcvb0cr5rdfe6afvl628isd4l900uai6.apps.googleusercontent.com
+            client-secret:
+            redirect-uri: http://localhost:8765/users/registration/customer/google
+            scope: >
+              https://www.googleapis.com/auth/userinfo.profile
+              https://www.googleapis.com/auth/userinfo.email
+              openid
 server:
   port: 8100
   servlet:

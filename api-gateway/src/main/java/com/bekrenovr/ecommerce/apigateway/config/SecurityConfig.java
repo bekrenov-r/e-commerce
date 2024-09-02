@@ -1,21 +1,33 @@
 package com.bekrenovr.ecommerce.apigateway.config;
 
-import com.bekrenovr.ecommerce.apigateway.auth.JwtGrantedAuthoritiesConverter;
+import com.bekrenovr.ecommerce.apigateway.auth.JwtAuthenticationTokenConverter;
 import com.bekrenovr.ecommerce.apigateway.auth.OptionalAuthAuthorizationManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.ReactiveAuthenticationManager;
+import org.springframework.security.authentication.ReactiveAuthenticationManagerResolver;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
+import org.springframework.security.oauth2.jwt.ReactiveJwtDecoder;
+import org.springframework.security.oauth2.jwt.ReactiveJwtDecoders;
+import org.springframework.security.oauth2.server.resource.authentication.JwtIssuerReactiveAuthenticationManagerResolver;
+import org.springframework.security.oauth2.server.resource.authentication.JwtReactiveAuthenticationManager;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.context.NoOpServerSecurityContextRepository;
 import org.springframework.web.cors.reactive.CorsConfigurationSource;
+import org.springframework.web.server.ServerWebExchange;
+import reactor.core.publisher.Mono;
+
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
-
     private final CorsConfigurationSource corsConfigurationSource;
+    private final OAuth2ConfigurationProperties authConfigurationProperties;
 
     @Bean
     public SecurityWebFilterChain filterChain(ServerHttpSecurity http) {
@@ -28,9 +40,7 @@ public class SecurityConfig {
                         .pathMatchers(HttpMethod.GET, "/catalog/**").access(new OptionalAuthAuthorizationManager())
                         .pathMatchers(HttpMethod.POST, "/catalog/**").hasAuthority("EMPLOYEE")
                         .pathMatchers(HttpMethod.DELETE, "/catalog/**").hasAuthority("EMPLOYEE")
-                        .pathMatchers(HttpMethod.POST,
-                                "/users/registration/customer",
-                                "/users/registration/customer/resend-email",
+                        .pathMatchers("/users/registration/customer/**",
                                 "/keycloak/realms/e-commerce/protocol/openid-connect/token",
                                 "/keycloak/realms/e-commerce/users/enable").permitAll()
                         .pathMatchers(HttpMethod.POST, "/orders/").access(postOrderEndpointAuthorizationManager)
@@ -39,9 +49,24 @@ public class SecurityConfig {
                         .pathMatchers("/orders/cart").hasAuthority("CUSTOMER")
                         .pathMatchers( "/users/wishlist/**").hasAuthority("CUSTOMER")
                         .anyExchange().authenticated())
-                .oauth2ResourceServer(oauth -> oauth
-                        .jwt(spec -> spec.jwtAuthenticationConverter(new JwtGrantedAuthoritiesConverter()))
-                ).securityContextRepository(NoOpServerSecurityContextRepository.getInstance())
+                .oauth2ResourceServer(oauth -> oauth.authenticationManagerResolver(authenticationManagerResolver()))
+                .securityContextRepository(NoOpServerSecurityContextRepository.getInstance())
                 .build();
+    }
+
+    @Bean
+    public ReactiveAuthenticationManagerResolver<ServerWebExchange> authenticationManagerResolver() {
+        var jwtAuthConverter = new JwtAuthenticationTokenConverter(authConfigurationProperties);
+        Map<String, Mono<ReactiveAuthenticationManager>> jwtManagers = Stream.of(authConfigurationProperties.getIssuers())
+                .map(OAuth2ConfigurationProperties.IssuerProperties::getUri)
+                .collect(Collectors.toMap(iss -> iss, iss -> Mono.just(authenticationManager(iss, jwtAuthConverter))));
+        return new JwtIssuerReactiveAuthenticationManagerResolver(issuerLocation -> jwtManagers.getOrDefault(issuerLocation, Mono.empty()));
+    }
+
+    private ReactiveAuthenticationManager authenticationManager(String issuer, JwtAuthenticationTokenConverter jwtAuthConverter) {
+        ReactiveJwtDecoder decoder = ReactiveJwtDecoders.fromIssuerLocation(issuer);
+        var authManager = new JwtReactiveAuthenticationManager(decoder);
+        authManager.setJwtAuthenticationConverter(jwtAuthConverter);
+        return authManager;
     }
 }

@@ -1,29 +1,34 @@
 package com.bekrenovr.ecommerce.apigateway.auth;
 
+
+import com.bekrenovr.ecommerce.apigateway.config.OAuth2ConfigurationProperties;
 import com.jayway.jsonpath.JsonPath;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
-import reactor.core.publisher.Mono;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-public class JwtGrantedAuthoritiesConverter implements Converter<Jwt, Mono<? extends AbstractAuthenticationToken>> {
-    private static final String AUTHORITIES_JSON_PATH = "$.realm_access.roles";
-    private static final String USERNAME_JSON_PATH = "$.preferred_username";
+@RequiredArgsConstructor
+public class JwtGrantedAuthoritiesConverter implements Converter<Jwt, Collection<? extends GrantedAuthority>> {
+    private final OAuth2ConfigurationProperties.IssuerProperties issuerProperties;
 
     @Override
+    public Collection<? extends GrantedAuthority> convert(Jwt jwt) {
+        return extractRoles(jwt).map(SimpleGrantedAuthority::new).collect(Collectors.toSet());
+    }
+
     @SuppressWarnings("unchecked")
-    public Mono<? extends AbstractAuthenticationToken> convert(Jwt jwt) {
-        Collection<? extends GrantedAuthority> authorities = ((List<String>)JsonPath.read(jwt.getClaims(), AUTHORITIES_JSON_PATH))
-                        .stream()
-                        .map(SimpleGrantedAuthority::new)
-                        .toList();
-        String username = JsonPath.read(jwt.getClaims(), USERNAME_JSON_PATH);
-        return Mono.just(new JwtAuthenticationToken(jwt, authorities, username));
+    private Stream<String> extractRoles(Jwt jwt) {
+        if(issuerProperties.hasDefaultRoles()) {
+            return Stream.of(issuerProperties.getDefaultRoles());
+        } else {
+            return ((List<String>) JsonPath.read(jwt.getClaims(), issuerProperties.getRolesJsonPath())).stream();
+        }
     }
 }

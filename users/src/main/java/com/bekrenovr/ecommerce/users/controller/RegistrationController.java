@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.*;
 public class RegistrationController {
     private final RegistrationService registrationService;
 
-    @PostMapping("/customer")
-    public ResponseEntity<Void> registerCustomer(@RequestBody CustomerRegistrationRequest request) {
-        registrationService.registerCustomer(request);
+    @PostMapping("/customer/basic")
+    public ResponseEntity<Void> registerCustomerBasic(@RequestBody CustomerRegistrationRequest request) {
+        registrationService.registerCustomerBasic(request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -23,5 +23,15 @@ public class RegistrationController {
     public ResponseEntity<Void> resendActivationEmail(@RequestParam String email) {
         registrationService.resendActivationEmail(email);
         return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @GetMapping("/customer/google")
+    public ResponseEntity<String> registerCustomerGoogle(
+            @RequestParam("code") String code,
+            @RequestParam("scope") String scope,
+            @RequestParam("authuser") String authUser,
+            @RequestParam("prompt") String prompt
+    ) {
+        return ResponseEntity.ok(registrationService.registerCustomerGoogle(code));
     }
 }

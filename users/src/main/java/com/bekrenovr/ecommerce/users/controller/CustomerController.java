@@ -30,8 +30,8 @@ public class CustomerController {
     }
 
     @PutMapping
-    public ResponseEntity<Customer> update(@Valid @RequestBody Customer customer){
-        return customerService.update(customer);
+    public void update(@Valid @RequestBody Customer customer){
+        customerService.updateCustomer(customer);
     }
 
     @DeleteMapping("/{id}")
