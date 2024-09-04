@@ -29,4 +29,10 @@ public interface KeycloakProxy {
 
     @PostMapping("/users/enable")
     ResponseEntity<String> enableUser(@RequestParam String token);
+
+    @PostMapping("/users/recover-password")
+    void recoverPassword(@RequestParam String token, @RequestParam("password") String newPassword);
+
+    @PostMapping("/users/recover-password/token")
+    void createPasswordRecoveryToken(@RequestParam String username, @RequestParam String token);
 }

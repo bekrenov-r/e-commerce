@@ -1,8 +1,9 @@
 package com.bekrenovr.ecommerce.keycloakserver.repository;
 
-import com.bekrenovr.ecommerce.keycloakserver.model.EcommerceUser;
+import com.bekrenovr.ecommerce.keycloakserver.model.entity.EcommerceUser;
 import com.bekrenovr.ecommerce.keycloakserver.util.EntityManagerUtil;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 
 import java.util.List;
 
@@ -11,6 +12,8 @@ public class EcommerceUserRepository {
         try(EntityManager em = EntityManagerUtil.createEntityManager()){
             return em.createQuery("from EcommerceUser", EcommerceUser.class)
                     .getResultList();
+        } catch(NoResultException ex){
+            return null;
         }
     }
 
@@ -20,6 +23,8 @@ public class EcommerceUserRepository {
             return em.createQuery(query, EcommerceUser.class)
                     .setParameter("username", username)
                     .getSingleResult();
+        } catch(NoResultException ex){
+            return null;
         }
     }
 
@@ -46,6 +51,16 @@ public class EcommerceUserRepository {
             user.setEnabled(true);
             em.getTransaction().begin();
             em.merge(user);
+            em.getTransaction().commit();
+        }
+    }
+
+    public void changePassword(EcommerceUser user, String challengeResponse) {
+        try(EntityManager em = EntityManagerUtil.createEntityManager()) {
+            em.getTransaction().begin();
+            EcommerceUser eu = em.find(EcommerceUser.class, user.getUsername());
+            eu.setPassword(challengeResponse);
+            em.merge(eu);
             em.getTransaction().commit();
         }
     }

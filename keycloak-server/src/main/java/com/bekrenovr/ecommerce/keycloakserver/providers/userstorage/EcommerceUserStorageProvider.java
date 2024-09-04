@@ -2,12 +2,13 @@ package com.bekrenovr.ecommerce.keycloakserver.providers.userstorage;
 
 import com.bekrenovr.ecommerce.common.exception.EcommerceApplicationException;
 import com.bekrenovr.ecommerce.common.security.Role;
-import com.bekrenovr.ecommerce.keycloakserver.model.EcommerceUser;
 import com.bekrenovr.ecommerce.keycloakserver.model.EcommerceUserAdapter;
+import com.bekrenovr.ecommerce.keycloakserver.model.entity.EcommerceUser;
 import com.bekrenovr.ecommerce.keycloakserver.repository.EcommerceUserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.keycloak.component.ComponentModel;
 import org.keycloak.credential.CredentialInput;
+import org.keycloak.credential.CredentialInputUpdater;
 import org.keycloak.credential.CredentialInputValidator;
 import org.keycloak.models.GroupModel;
 import org.keycloak.models.KeycloakSession;
@@ -30,7 +31,7 @@ import static com.bekrenovr.ecommerce.keycloakserver.exception.KeycloakApplicati
 
 @Slf4j
 public class EcommerceUserStorageProvider implements
-        UserStorageProvider, UserLookupProvider, UserQueryProvider, CredentialInputValidator {
+        UserStorageProvider, UserLookupProvider, UserQueryProvider, CredentialInputValidator, CredentialInputUpdater {
     private KeycloakSession keycloakSession;
     private ComponentModel componentModel;
     private SHAPasswordEncoder passwordEncoder;
@@ -44,8 +45,23 @@ public class EcommerceUserStorageProvider implements
     }
 
     @Override
-    public void close() {
-        log.info("close()");
+    public UserModel getUserById(RealmModel realmModel, String id) {
+        log.info("getUserById({})", id);
+        StorageId storageId = new StorageId(id);
+        return getUserByUsername(realmModel, storageId.getExternalId());
+    }
+
+    @Override
+    public UserModel getUserByUsername(RealmModel realmModel, String username) {
+        log.info("getUserByUsername({})", username);
+        EcommerceUser user = userRepository.getByUsername(username);
+        return user != null ? mapUser(realmModel, user) : null;
+    }
+
+    @Override
+    public UserModel getUserByEmail(RealmModel realmModel, String email) {
+        log.info("getUserByEmail({})", email);
+        return getUserByUsername(realmModel, email);
     }
 
     @Override
@@ -70,23 +86,21 @@ public class EcommerceUserStorageProvider implements
     }
 
     @Override
-    public UserModel getUserById(RealmModel realmModel, String id) {
-        log.info("getUserById({})", id);
-        StorageId storageId = new StorageId(id);
-        return getUserByUsername(realmModel, storageId.getExternalId());
+    public boolean updateCredential(RealmModel realmModel, UserModel userModel, CredentialInput credentialInput) {
+        EcommerceUser user = ((EcommerceUserAdapter) userModel).getUser();
+        String newPassword = passwordEncoder.encode(credentialInput.getChallengeResponse());
+        userRepository.changePassword(user, newPassword);
+        return false;
     }
 
     @Override
-    public UserModel getUserByUsername(RealmModel realmModel, String username) {
-        log.info("getUserByUsername({})", username);
-        EcommerceUser user = userRepository.getByUsername(username);
-        return user != null ? mapUser(realmModel, user) : null;
+    public void disableCredentialType(RealmModel realmModel, UserModel userModel, String s) {
+        throw new UnsupportedOperationException();
     }
 
     @Override
-    public UserModel getUserByEmail(RealmModel realmModel, String email) {
-        log.info("getUserByEmail({})", email);
-        return getUserByUsername(realmModel, email);
+    public Stream<String> getDisableableCredentialTypesStream(RealmModel realmModel, UserModel userModel) {
+        return Stream.empty();
     }
 
     @Override
@@ -104,6 +118,11 @@ public class EcommerceUserStorageProvider implements
     @Override
     public Stream<UserModel> searchForUserByUserAttributeStream(RealmModel realmModel, String s, String s1) {
         return null;
+    }
+
+    @Override
+    public void close() {
+        log.info("close()");
     }
 
     public void addUser(String username, String rawPassword, Role role, String firstName) {

@@ -3,8 +3,8 @@
              xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
              version="1.0">
     <persistence-unit name="keycloak">
-        <class>com.bekrenovr.ecommerce.keycloakserver.model.EcommerceUser</class>
-        <class>com.bekrenovr.ecommerce.keycloakserver.model.ActivationToken</class>
+        <class>com.bekrenovr.ecommerce.keycloakserver.model.entity.EcommerceUser</class>
+        <class>com.bekrenovr.ecommerce.keycloakserver.model.entity.Token</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
 
         <properties>

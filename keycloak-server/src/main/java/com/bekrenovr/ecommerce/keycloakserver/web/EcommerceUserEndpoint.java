@@ -2,15 +2,18 @@ package com.bekrenovr.ecommerce.keycloakserver.web;
 
 import com.bekrenovr.ecommerce.common.exception.EcommerceApplicationException;
 import com.bekrenovr.ecommerce.common.security.Role;
-import com.bekrenovr.ecommerce.keycloakserver.model.ActivationToken;
+import com.bekrenovr.ecommerce.keycloakserver.model.PasswordCredentialInput;
+import com.bekrenovr.ecommerce.keycloakserver.model.TokenType;
+import com.bekrenovr.ecommerce.keycloakserver.model.entity.Token;
 import com.bekrenovr.ecommerce.keycloakserver.providers.userstorage.EcommerceUserStorageProvider;
 import com.bekrenovr.ecommerce.keycloakserver.providers.userstorage.EcommerceUserStorageProviderFactory;
-import com.bekrenovr.ecommerce.keycloakserver.repository.ActivationTokenRepository;
+import com.bekrenovr.ecommerce.keycloakserver.repository.TokenRepository;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.keycloak.common.ClientConnection;
+import org.keycloak.credential.CredentialInput;
 import org.keycloak.events.EventBuilder;
 import org.keycloak.models.*;
 import org.keycloak.protocol.oidc.TokenManager;
@@ -22,20 +25,21 @@ import org.keycloak.sessions.AuthenticationSessionModel;
 import org.keycloak.sessions.RootAuthenticationSessionModel;
 import org.keycloak.storage.UserStorageProvider;
 
+import java.util.Optional;
 import java.util.UUID;
 
-import static com.bekrenovr.ecommerce.keycloakserver.exception.KeycloakApplicationExceptionReason.ACTIVATION_TOKEN_NOT_FOUND;
+import static com.bekrenovr.ecommerce.keycloakserver.exception.KeycloakApplicationExceptionReason.*;
 
 public class EcommerceUserEndpoint {
     private final KeycloakSession session;
     private final RealmModel realmModel;
-    private final ActivationTokenRepository activationTokenRepository;
+    private final TokenRepository tokenRepository;
     private final EcommerceUserStorageProvider userStorage;
 
     public EcommerceUserEndpoint(KeycloakSession session) {
         this.session = session;
         this.realmModel = session.realms().getRealm("e-commerce");
-        this.activationTokenRepository = new ActivationTokenRepository();
+        this.tokenRepository = new TokenRepository();
         this.userStorage = (EcommerceUserStorageProvider)session.getComponentProvider(UserStorageProvider.class, EcommerceUserStorageProviderFactory.COMPONENT_ID);
     }
 
@@ -57,12 +61,12 @@ public class EcommerceUserEndpoint {
     @Path("/activation-token")
     @Produces(MediaType.TEXT_PLAIN)
     public Response getActivationTokenForUser(@QueryParam("username") String username) {
-        if(!activationTokenRepository.existsByUsername(username)){
+        if(!tokenRepository.existsByUsernameAndType(username, TokenType.ACTIVATION)){
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-        ActivationToken token = activationTokenRepository.findByUsername(username);
+        Token token = tokenRepository.findByUsernameAndType(username, TokenType.ACTIVATION);
         return Response.status(Response.Status.OK)
-                .entity(token.getToken())
+                .entity(token.getValue())
                 .build();
     }
 
@@ -77,21 +81,60 @@ public class EcommerceUserEndpoint {
                 .build();
     }
 
+    @POST
+    @Path("/recover-password")
+    public Response recoverPassword(@QueryParam("token") String username, @QueryParam("password") String newPassword) {
+        doRecoverPassword(username, newPassword);
+        return Response.status(Response.Status.CREATED).build();
+    }
+
+    @POST
+    @Path("/recover-password/token")
+    public Response createPasswordRecoveryToken(@QueryParam("username") String username, @QueryParam("token") String token) {
+        doCreatePasswordRecoveryToken(username, token);
+        return Response.status(Response.Status.CREATED).build();
+    }
+
     private UserModel doEnableUser(String token) {
-        if(!activationTokenRepository.existsByToken(token))
+        if(!tokenRepository.existsByValueAndType(token, TokenType.ACTIVATION))
             throw new EcommerceApplicationException(ACTIVATION_TOKEN_NOT_FOUND, token);
-        ActivationToken activationToken = activationTokenRepository.findByToken(token);
+        Token activationToken = tokenRepository.findByValueAndType(token, TokenType.ACTIVATION);
         UserModel enabledUser = userStorage.enableUser(realmModel, activationToken.getUsername());
-        activationTokenRepository.removeByUsername(activationToken.getUsername());
+        tokenRepository.removeByUsernameAndType(activationToken.getUsername(), TokenType.ACTIVATION);
         return enabledUser;
     }
 
     private String createActivationToken(String username) {
-        ActivationToken activationToken = new ActivationToken(
-                username, RandomStringUtils.random(20, true, true)
+        Token token = new Token(
+                username, RandomStringUtils.random(20, true, true), TokenType.ACTIVATION
         );
-        activationTokenRepository.create(activationToken);
-        return activationToken.getToken();
+        tokenRepository.create(token);
+        return token.getValue();
+    }
+
+    private void doRecoverPassword(String token, String newPassword) {
+        Optional.ofNullable(tokenRepository.findByValueAndType(token, TokenType.PASSWORD_RECOVERY))
+                .ifPresentOrElse(recoveryToken -> {
+                    CredentialInput passwordInput =
+                            new PasswordCredentialInput(recoveryToken.getUsername(), newPassword);
+                    UserModel user = userStorage.getUserByUsername(realmModel, recoveryToken.getUsername());
+                    userStorage.updateCredential(realmModel, user, passwordInput);
+                    tokenRepository.removeAllByUsernameAndType(recoveryToken.getUsername(), TokenType.PASSWORD_RECOVERY);
+                }, () -> {
+                    throw new EcommerceApplicationException(PASSWORD_RECOVERY_TOKEN_NOT_FOUND, token);
+                });
+    }
+
+    private void doCreatePasswordRecoveryToken(String username, String token) {
+        Optional.of(userStorage.getUserByUsername(realmModel, username))
+                .ifPresentOrElse(user -> {
+                    if(!user.isEnabled())
+                        throw new EcommerceApplicationException(USER_DISABLED, user.getUsername());
+                    Token recoveryToken = new Token(user.getUsername(), token, TokenType.PASSWORD_RECOVERY);
+                    tokenRepository.create(recoveryToken);
+                }, () -> {
+                    throw new EcommerceApplicationException(USER_NOT_FOUND, username);
+                });
     }
 
     private AccessTokenResponse generateAccessToken(UserModel user){

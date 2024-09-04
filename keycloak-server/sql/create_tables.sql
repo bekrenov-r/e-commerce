@@ -13,9 +13,10 @@ create table roles(
     role text
 );
 
-create table activation_token(
+create table token(
     username text,
-    token text
+    value text,
+    type text
 );
 
 insert into users values

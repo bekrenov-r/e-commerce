@@ -11,6 +11,7 @@ import static com.bekrenovr.ecommerce.users.exception.UsersApplicationExceptionR
 
 public interface CustomerRepository extends JpaRepository<Customer, UUID> {
     Optional<Customer> findByEmail(String email);
+    boolean existsByEmail(String email);
 
     default Customer findByEmailOrThrowDefault(String email){
         return findByEmail(email).orElseThrow(() -> new EcommerceApplicationException(USER_NOT_FOUND_BY_EMAIL, email));

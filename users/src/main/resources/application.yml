@@ -43,4 +43,8 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka
-frontend-base-url: http://localhost:4200
+frontend:
+  base-url: http://localhost:4200
+  mapping:
+    activate-account: /activate-account
+    recover-password: /recover-password

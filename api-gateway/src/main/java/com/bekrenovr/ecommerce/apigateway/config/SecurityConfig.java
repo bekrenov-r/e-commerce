@@ -40,8 +40,10 @@ public class SecurityConfig {
                         .pathMatchers(HttpMethod.GET, "/catalog/**").access(new OptionalAuthAuthorizationManager())
                         .pathMatchers(HttpMethod.POST, "/catalog/**").hasAuthority("EMPLOYEE")
                         .pathMatchers(HttpMethod.DELETE, "/catalog/**").hasAuthority("EMPLOYEE")
-                        .pathMatchers("/oauth2/login/**").permitAll()
-                        .pathMatchers("/oauth2/registration/customer/**").permitAll()
+                        .pathMatchers(
+                                "/oauth2/login/**",
+                                "/oauth2/registration/customer/**",
+                                "/oauth2/users/recover-password").permitAll()
                         .pathMatchers(HttpMethod.POST, "/orders/").access(postOrderEndpointAuthorizationManager)
                         .pathMatchers(HttpMethod.GET, "/orders/{id}").hasAnyAuthority("CUSTOMER", "EMPLOYEE")
                         .pathMatchers(HttpMethod.GET, "/orders/customer").hasAuthority("CUSTOMER")

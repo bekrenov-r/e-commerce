@@ -1,4 +1,4 @@
-package com.bekrenovr.ecommerce.keycloakserver.model;
+package com.bekrenovr.ecommerce.keycloakserver.model.entity;
 
 import com.bekrenovr.ecommerce.common.security.Role;
 import jakarta.persistence.*;
