@@ -1,19 +1,32 @@
 package com.bekrenovr.ecommerce.users.proxy;
 
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(name = "keycloak")
+import java.util.Map;
+
+@FeignClient(name = "keycloak", path = "/keycloak/realms/e-commerce")
 public interface KeycloakProxy {
-    @PostMapping("/keycloak/realms/e-commerce/users")
+    @PostMapping("/users")
     ResponseEntity<String> createKeycloakUser(@RequestParam("username") String username,
                                               @RequestParam("password") String password,
                                               @RequestParam("role") String role,
                                               @RequestParam("firstName") String firstName);
 
-    @GetMapping("/keycloak/realms/e-commerce/users/activation-token")
+    @PostMapping(
+            value = "/protocol/openid-connect/token",
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE
+    )
+    ResponseEntity<String> getAccessToken(@RequestBody Map<String, ?> form);
+
+    @GetMapping("/users/activation-token")
     ResponseEntity<String> getActivationTokenForUser(@RequestParam("username") String username);
+
+    @PostMapping("/users/enable")
+    ResponseEntity<String> enableUser(@RequestParam String token);
 }

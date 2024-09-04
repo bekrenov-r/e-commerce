@@ -4,10 +4,6 @@ spring:
   datasource:
     username: sa
     url: jdbc:h2:mem:testdb;DB_CLOSE_ON_EXIT=FALSE;NON_KEYWORDS=USER;
-  secondary-datasource:
-    username:
-    password:
-    url: jdbc:postgresql://localhost:5432/keycloak
   application:
     name: keycloak
 keycloak:

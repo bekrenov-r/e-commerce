@@ -21,20 +21,24 @@ spring:
     name: users
   security:
     oauth2:
-      resourceserver:
-        registration:
+      login:
+        provider:
+          keycloak:
+            client-id: ecommerce-api
+            client-secret:
+            scope: openid
+            grant-type: password
           google:
             client-id: 366892792903-hcvb0cr5rdfe6afvl628isd4l900uai6.apps.googleusercontent.com
             client-secret:
-            redirect-uri: http://localhost:8765/users/registration/customer/google
-            scope: >
-              https://www.googleapis.com/auth/userinfo.profile
-              https://www.googleapis.com/auth/userinfo.email
-              openid
+            redirect-uri: http://localhost:4200/login/google
+            scope:
+              - https://www.googleapis.com/auth/userinfo.profile
+              - https://www.googleapis.com/auth/userinfo.email
+              - openid
+            grant-type: authorization_code
 server:
   port: 8100
-  servlet:
-    context-path: /users
 eureka:
   client:
     serviceUrl:

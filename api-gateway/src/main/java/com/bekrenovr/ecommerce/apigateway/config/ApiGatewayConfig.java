@@ -21,10 +21,10 @@ public class ApiGatewayConfig {
                         .uri("lb://orders")) // redirect it to load-balanced server named orders-data
                 .route("catalog", p -> p.path("/catalog/**")
                         .uri("lb://catalog"))
-                .route("users", p -> p.path("/users/**")
+                .route("customers", p -> p.path("/customers/**")
                         .uri("lb://users"))
-                .route("keycloak", p -> p.path("/keycloak/**")
-                        .uri("lb://keycloak"))
+                .route("authorization", p -> p.path("/oauth2/**")
+                        .uri("lb://users"))
                 .build();
     }
 

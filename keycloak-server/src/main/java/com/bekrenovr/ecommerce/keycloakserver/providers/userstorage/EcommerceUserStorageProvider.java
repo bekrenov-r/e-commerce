@@ -20,6 +20,7 @@ import org.keycloak.storage.UserStorageProvider;
 import org.keycloak.storage.user.UserLookupProvider;
 import org.keycloak.storage.user.UserQueryProvider;
 
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -109,12 +110,14 @@ public class EcommerceUserStorageProvider implements
         if(userRepository.existsByUsername(username))
             throw new EcommerceApplicationException(USER_ALREADY_EXISTS, username);
         String encodedPassword = passwordEncoder.encode(rawPassword);
+        Set<Role> roles = new HashSet<>();
+        roles.add(role);
         EcommerceUser user = EcommerceUser.builder()
                 .username(username)
                 .firstName(firstName)
                 .password(encodedPassword)
                 .enabled(false)
-                .roles(Set.of(role))
+                .roles(roles)
                 .build();
         userRepository.create(user);
     }
