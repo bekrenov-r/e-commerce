@@ -11,7 +11,7 @@ import java.util.List;
 
 @FeignClient("users")
 public interface UsersProxy {
-    @GetMapping("/users/wishlist")
+    @GetMapping("/customers/wishlist")
     ResponseEntity<List<ItemResponse>> getWishListItems(
             @RequestHeader(SecurityConstants.AUTHENTICATED_USER_HEADER)
             String authenticatedUserHeader

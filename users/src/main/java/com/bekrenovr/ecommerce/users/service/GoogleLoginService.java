@@ -25,8 +25,8 @@ public class GoogleLoginService {
         String accessToken = accessTokenResponse.getString("access_token");
         JSONObject userInfo = googleApiClient.getGoogleUserInfo(accessToken);
         CustomerRequest customer = new CustomerRequest(
-                userInfo.getString("given_name"),
-                userInfo.getString("family_name"),
+                userInfo.optString("given_name"),
+                userInfo.optString("family_name"),
                 userInfo.getString("email")
         );
         try {

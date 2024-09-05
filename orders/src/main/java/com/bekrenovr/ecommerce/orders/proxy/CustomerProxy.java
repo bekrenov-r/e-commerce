@@ -13,9 +13,9 @@ import java.util.UUID;
 
 @FeignClient(name = "users")
 public interface CustomerProxy {
-    @GetMapping("/users/customers/{id}")
+    @GetMapping("/customers/{id}")
     ResponseEntity<CustomerDTO> getById(@PathVariable UUID id);
 
-    @PostMapping("/users/customers")
+    @PostMapping("/customers")
     ResponseEntity<Void> createCustomer(@RequestBody CustomerRequest request);
 }
