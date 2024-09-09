@@ -1,7 +1,9 @@
 package com.bekrenovr.ecommerce.keycloakserver.config;
 
 import com.bekrenovr.ecommerce.keycloakserver.config.properties.KeycloakServerProperties;
+import com.bekrenovr.ecommerce.keycloakserver.exception.EcommerceApplicationExceptionMapper;
 import com.bekrenovr.ecommerce.keycloakserver.providers.RegularJsonConfigProviderFactory;
+import com.bekrenovr.ecommerce.keycloakserver.util.CustomizedObjectMapperResolver;
 import org.keycloak.Config;
 import org.keycloak.exportimport.ExportImportManager;
 import org.keycloak.models.KeycloakSession;
@@ -10,18 +12,26 @@ import org.keycloak.services.managers.ApplianceBootstrap;
 import org.keycloak.services.managers.RealmManager;
 import org.keycloak.services.resources.KeycloakApplication;
 import org.keycloak.services.util.JsonConfigProviderFactory;
+import org.keycloak.services.util.ObjectMapperResolver;
 import org.keycloak.util.JsonSerialization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
+import java.util.Collection;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 public class EmbeddedKeycloakApplication extends KeycloakApplication {
     private static final Logger LOG = LoggerFactory.getLogger(EmbeddedKeycloakApplication.class);
 
     static KeycloakServerProperties keycloakServerProperties;
+
+    public EmbeddedKeycloakApplication() {
+        this.classes.add(EcommerceApplicationExceptionMapper.class);
+        this.customizeObjectMapperResolver();
+    }
 
     protected void loadConfig() {
         JsonConfigProviderFactory factory = new RegularJsonConfigProviderFactory();
@@ -76,5 +86,13 @@ public class EmbeddedKeycloakApplication extends KeycloakApplication {
         }
 
         session.close();
+    }
+
+    private void customizeObjectMapperResolver() {
+        Collection<Object> objectMappers = this.singletons.stream()
+                .filter(o -> o instanceof ObjectMapperResolver)
+                .collect(Collectors.toSet());
+        this.singletons.removeAll(objectMappers);
+        this.singletons.add(new CustomizedObjectMapperResolver());
     }
 }

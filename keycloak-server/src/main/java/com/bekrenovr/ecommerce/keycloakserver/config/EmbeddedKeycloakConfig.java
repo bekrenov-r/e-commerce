@@ -1,17 +1,13 @@
 package com.bekrenovr.ecommerce.keycloakserver.config;
 
-import com.bekrenovr.ecommerce.keycloakserver.config.properties.ApplicationPropertiesHolder;
 import com.bekrenovr.ecommerce.keycloakserver.config.properties.KeycloakServerProperties;
-import com.bekrenovr.ecommerce.keycloakserver.config.properties.SecondaryDatasourceConfigProperties;
 import com.bekrenovr.ecommerce.keycloakserver.providers.SimplePlatformProvider;
 import org.jboss.resteasy.plugins.server.servlet.HttpServlet30Dispatcher;
 import org.jboss.resteasy.plugins.server.servlet.ResteasyContextParameters;
 import org.keycloak.platform.Platform;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
-import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -92,15 +88,5 @@ public class EmbeddedKeycloakConfig {
     @ConditionalOnMissingBean(name = "springBootPlatform")
     protected SimplePlatformProvider springBootPlatform() {
         return (SimplePlatformProvider) Platform.getPlatform();
-    }
-
-    @Bean
-    public ApplicationListener<ApplicationReadyEvent> onApplicationReadyEventListener(
-            KeycloakServerProperties keycloakServerProperties,
-            SecondaryDatasourceConfigProperties secondaryDatasourceConfigProperties) {
-        return (evt) -> {
-            ApplicationPropertiesHolder.setKeycloakServerProperties(keycloakServerProperties);
-            ApplicationPropertiesHolder.setSecondaryDatasourceConfigProperties(secondaryDatasourceConfigProperties);
-        };
     }
 }
