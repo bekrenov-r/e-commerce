@@ -1,12 +1,12 @@
 package com.bekrenovr.ecommerce.users.service;
 
-import com.bekrenovr.ecommerce.catalog.dto.response.ItemResponse;
 import com.bekrenovr.ecommerce.common.exception.EcommerceApplicationException;
 import com.bekrenovr.ecommerce.common.security.AuthenticationUtil;
 import com.bekrenovr.ecommerce.users.model.entity.Customer;
 import com.bekrenovr.ecommerce.users.proxy.CatalogProxy;
 import com.bekrenovr.ecommerce.users.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,11 +21,10 @@ public class WishListService {
     private final CustomerRepository customerRepository;
     private final CatalogProxy catalogProxy;
 
-    public List<ItemResponse> getWishListItemsForCustomer() {
+    public ResponseEntity<?> getWishListItemsForCustomer() {
         String email = AuthenticationUtil.getAuthenticatedUser().getUsername();
         List<UUID> wishListItemsIds = customerRepository.findByEmailOrThrowDefault(email).getWishListItems();
-        System.out.println(wishListItemsIds);
-        return catalogProxy.getItemsByIds(wishListItemsIds).getBody();
+        return catalogProxy.getItemsByIds(wishListItemsIds);
     }
 
     public void addItemToWishList(UUID itemId) {

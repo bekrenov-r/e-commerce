@@ -1,13 +1,11 @@
 package com.bekrenovr.ecommerce.users.controller;
 
-import com.bekrenovr.ecommerce.catalog.dto.response.ItemResponse;
 import com.bekrenovr.ecommerce.users.service.WishListService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -17,8 +15,8 @@ public class WishListController {
     private final WishListService wishListService;
 
     @GetMapping
-    public ResponseEntity<List<ItemResponse>> getWishListItemsForCustomer(){
-        return ResponseEntity.ok(wishListService.getWishListItemsForCustomer());
+    public ResponseEntity<?> getWishListItemsForCustomer(){
+        return wishListService.getWishListItemsForCustomer();
     }
 
     @PostMapping

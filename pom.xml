@@ -11,6 +11,7 @@
         <module>orders</module>
         <module>users</module>
         <module>keycloak-server</module>
+        <module>authorization-server</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -18,7 +19,7 @@
         <version>3.1.1</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.ecommerce</groupId>
+    <groupId>com.bekrenovr.ecommerce</groupId>
     <artifactId>e-commerce-app</artifactId>
     <version>0.1</version>
     <name>E-Commerce Application</name>
