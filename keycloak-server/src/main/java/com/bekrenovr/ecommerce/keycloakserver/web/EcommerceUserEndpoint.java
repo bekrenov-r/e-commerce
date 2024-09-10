@@ -83,6 +83,7 @@ public class EcommerceUserEndpoint {
 
     @POST
     @Path("/recover-password")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response recoverPassword(@QueryParam("token") String username, @QueryParam("password") String newPassword) {
         doRecoverPassword(username, newPassword);
         return Response.status(Response.Status.CREATED).build();
@@ -90,6 +91,7 @@ public class EcommerceUserEndpoint {
 
     @POST
     @Path("/recover-password/token")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response createPasswordRecoveryToken(@QueryParam("username") String username, @QueryParam("token") String token) {
         doCreatePasswordRecoveryToken(username, token);
         return Response.status(Response.Status.CREATED).build();
@@ -126,7 +128,7 @@ public class EcommerceUserEndpoint {
     }
 
     private void doCreatePasswordRecoveryToken(String username, String token) {
-        Optional.of(userStorage.getUserByUsername(realmModel, username))
+        Optional.ofNullable(userStorage.getUserByUsername(realmModel, username))
                 .ifPresentOrElse(user -> {
                     if(!user.isEnabled())
                         throw new EcommerceApplicationException(USER_DISABLED, user.getUsername());
