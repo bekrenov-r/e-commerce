@@ -4,7 +4,7 @@ import com.bekrenovr.ecommerce.catalog.model.enums.Color;
 import com.bekrenovr.ecommerce.catalog.model.enums.Gender;
 import com.bekrenovr.ecommerce.catalog.model.enums.Material;
 import com.bekrenovr.ecommerce.catalog.model.enums.Season;
-import com.bekrenovr.ecommerce.common.entity.AbstractEntity;
+import com.bekrenovr.ecommerce.common.model.entity.AbstractEntity;
 import jakarta.persistence.*;
 import lombok.*;
 

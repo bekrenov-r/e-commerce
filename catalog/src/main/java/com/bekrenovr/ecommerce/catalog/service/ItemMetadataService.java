@@ -4,7 +4,7 @@ import com.bekrenovr.ecommerce.catalog.dto.response.ItemMetadata;
 import com.bekrenovr.ecommerce.catalog.dto.response.ItemResponse;
 import com.bekrenovr.ecommerce.catalog.model.entity.Item;
 import com.bekrenovr.ecommerce.catalog.model.entity.UniqueItem;
-import com.bekrenovr.ecommerce.catalog.proxy.UsersProxy;
+import com.bekrenovr.ecommerce.catalog.proxy.CustomerServiceProxy;
 import com.bekrenovr.ecommerce.common.security.AuthenticationUtil;
 import com.bekrenovr.ecommerce.common.security.SecurityConstants;
 import com.bekrenovr.ecommerce.common.util.RequestUtil;
@@ -23,7 +23,7 @@ import java.util.stream.StreamSupport;
 @Service
 @RequiredArgsConstructor
 public class ItemMetadataService {
-    private final UsersProxy usersProxy;
+    private final CustomerServiceProxy customerServiceProxy;
 
     @Value("${custom.strategy.popularity.item-is-considered-popular-at-orders-count}")
     private int popularItemOrdersCount;
@@ -66,7 +66,7 @@ public class ItemMetadataService {
     private List<ItemResponse> getWishListItems(){
         String authenticatedUserHeader =
                 RequestUtil.getCurrentRequest().getHeader(SecurityConstants.AUTHENTICATED_USER_HEADER);
-        List<ItemResponse> items = usersProxy.getWishListItems(authenticatedUserHeader).getBody();
+        List<ItemResponse> items = customerServiceProxy.getWishListItems(authenticatedUserHeader).getBody();
         return items != null ? items : List.of();
     }
 

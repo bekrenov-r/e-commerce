@@ -1,6 +1,6 @@
 package com.bekrenovr.ecommerce.orders.model.entity;
 
-import com.bekrenovr.ecommerce.common.entity.AbstractEntity;
+import com.bekrenovr.ecommerce.common.model.entity.AbstractEntity;
 import com.bekrenovr.ecommerce.orders.model.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.*;

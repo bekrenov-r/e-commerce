@@ -22,9 +22,9 @@ public class ApiGatewayConfig {
                 .route("catalog", p -> p.path("/catalog/**")
                         .uri("lb://catalog"))
                 .route("customers", p -> p.path("/customers/**")
-                        .uri("lb://users"))
+                        .uri("lb://customers"))
                 .route("authorization", p -> p.path("/oauth2/**")
-                        .uri("lb://users"))
+                        .uri("lb://authorization"))
                 .build();
     }
 

@@ -1,3 +1,49 @@
 spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: spacefincher@gmail.com
+    password:
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+    config:
+      import: optional:configserver:http://localhost:8888
+  security:
+    oauth2:
+      login:
+        provider:
+          keycloak:
+            client-id: ecommerce-api
+            client-secret:
+            scope: openid
+            grant-type: password
+          google:
+            client-id: 366892792903-hcvb0cr5rdfe6afvl628isd4l900uai6.apps.googleusercontent.com
+            client-secret:
+            redirect-uri: ${frontend.base-url}/
+            scope:
+              - https://www.googleapis.com/auth/userinfo.profile
+              - https://www.googleapis.com/auth/userinfo.email
+              - openid
+            grant-type: authorization_code
   application:
-    name: authorization-server
+    name: authorization
+  config:
+    import: optional:configserver:http://localhost:8888
+server:
+  port: 8500
+  servlet:
+    context-path: /oauth2
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+frontend:
+  base-url: http://localhost:4200
+  mapping:
+    activate-account: /activate-account
+    recover-password: /recover-password

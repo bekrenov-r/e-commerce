@@ -1,7 +1,7 @@
 package com.bekrenovr.ecommerce.catalog.model.entity;
 
 import com.bekrenovr.ecommerce.catalog.model.enums.CategoryEnum;
-import com.bekrenovr.ecommerce.common.entity.AbstractEntity;
+import com.bekrenovr.ecommerce.common.model.entity.AbstractEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

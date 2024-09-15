@@ -1,6 +1,6 @@
 package com.bekrenovr.ecommerce.catalog.model.entity;
 
-import com.bekrenovr.ecommerce.common.entity.AbstractEntity;
+import com.bekrenovr.ecommerce.common.model.entity.AbstractEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;

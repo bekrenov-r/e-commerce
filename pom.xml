@@ -9,7 +9,7 @@
         <module>eureka-server</module>
         <module>config-server</module>
         <module>orders</module>
-        <module>users</module>
+        <module>customers</module>
         <module>keycloak-server</module>
         <module>authorization-server</module>
     </modules>

@@ -1,7 +1,6 @@
 package com.bekrenovr.ecommerce.common.exception;
 
 import feign.FeignException;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpHeaders;
@@ -30,18 +29,6 @@ public class StandardResponseEntityExceptionHandler extends ResponseEntityExcept
                 ex.getMessage()
         );
         return new ResponseEntity<>(errorDetail, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
-    @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<ErrorDetail> handleEntityNotFound(EntityNotFoundException ex, WebRequest webRequest){
-        logException(ex);
-        ErrorDetail errorDetail = new ErrorDetail(
-                LocalDateTime.now(),
-                HttpStatus.NOT_FOUND,
-                ex.getMessage()
-        );
-
-        return new ResponseEntity<>(errorDetail, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
