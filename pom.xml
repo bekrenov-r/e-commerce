@@ -12,6 +12,7 @@
         <module>customers</module>
         <module>keycloak-server</module>
         <module>authorization-server</module>
+        <module>reviews</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
