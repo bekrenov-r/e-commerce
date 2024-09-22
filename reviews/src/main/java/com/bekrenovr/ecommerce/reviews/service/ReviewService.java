@@ -1,7 +1,9 @@
 package com.bekrenovr.ecommerce.reviews.service;
 
 import com.bekrenovr.ecommerce.common.exception.EcommerceApplicationException;
+import com.bekrenovr.ecommerce.common.security.AuthenticatedUser;
 import com.bekrenovr.ecommerce.common.security.AuthenticationUtil;
+import com.bekrenovr.ecommerce.common.security.Role;
 import com.bekrenovr.ecommerce.common.security.SecurityConstants;
 import com.bekrenovr.ecommerce.common.util.PageUtil;
 import com.bekrenovr.ecommerce.common.util.RequestUtil;
@@ -20,8 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import static com.bekrenovr.ecommerce.reviews.exception.ReviewsApplicationExceptionReason.CANNOT_CREATE_REVIEW;
-import static com.bekrenovr.ecommerce.reviews.exception.ReviewsApplicationExceptionReason.REVIEW_ALREADY_EXISTS;
+import static com.bekrenovr.ecommerce.reviews.exception.ReviewsApplicationExceptionReason.*;
 
 @Service
 @RequiredArgsConstructor
@@ -46,6 +47,25 @@ public class ReviewService {
         review.setCustomerEmail(customerEmail);
         review.setCreatedAt(LocalDateTime.now());
         reviewRepository.save(review);
+    }
+
+    public ReviewResponse updateReview(String id, ReviewRequest request) {
+        Review review = reviewRepository.findById(id)
+                .orElseThrow(() -> new EcommerceApplicationException(REVIEW_NOT_FOUND, id));
+        requireReviewOwnershipByCustomer(review);
+        review.setTitle(request.title());
+        review.setContent(request.content());
+        review.setRating(request.rating());
+        return reviewMapper.documentToResponse(reviewRepository.save(review));
+    }
+
+    public void deleteReview(String id) {
+        Review review = reviewRepository.findById(id)
+                .orElseThrow(() -> new EcommerceApplicationException(REVIEW_NOT_FOUND, id));
+        if(AuthenticationUtil.getAuthenticatedUser().hasRole(Role.CUSTOMER)) {
+            requireReviewOwnershipByCustomer(review);
+        }
+        reviewRepository.delete(review);
     }
 
     @SuppressWarnings("unchecked")
@@ -73,6 +93,13 @@ public class ReviewService {
         String customerEmail = AuthenticationUtil.getAuthenticatedUser().getUsername();
         if(reviewRepository.existsByItemIdAndCustomerEmail(itemId, customerEmail)) {
             throw new EcommerceApplicationException(REVIEW_ALREADY_EXISTS);
+        }
+    }
+
+    private void requireReviewOwnershipByCustomer(Review review) {
+        AuthenticatedUser currentUser = AuthenticationUtil.getAuthenticatedUser();
+        if(!review.getCustomerEmail().equals(currentUser.getUsername())) {
+            throw new EcommerceApplicationException(NOT_REVIEW_OWNER);
         }
     }
 }

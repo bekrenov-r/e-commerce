@@ -46,6 +46,8 @@ public class SecurityConfig {
                                 "/oauth2/users/recover-password").permitAll()
                         .pathMatchers(HttpMethod.GET, "/reviews/**").permitAll()
                         .pathMatchers(HttpMethod.POST, "/reviews/**").hasAuthority("CUSTOMER")
+                        .pathMatchers(HttpMethod.PUT, "/reviews/**").hasAuthority("CUSTOMER")
+                        .pathMatchers(HttpMethod.DELETE, "/reviews/**").hasAnyAuthority("CUSTOMER", "ADMIN")
                         .pathMatchers(HttpMethod.POST, "/orders/").access(postOrderEndpointAuthorizationManager)
                         .pathMatchers(HttpMethod.GET, "/orders/{id}").hasAnyAuthority("CUSTOMER", "EMPLOYEE")
                         .pathMatchers(HttpMethod.GET, "/orders/customer").hasAuthority("CUSTOMER")
