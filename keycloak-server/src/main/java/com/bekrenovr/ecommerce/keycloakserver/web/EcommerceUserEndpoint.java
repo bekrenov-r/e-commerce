@@ -61,10 +61,8 @@ public class EcommerceUserEndpoint {
     @Path("/activation-token")
     @Produces(MediaType.TEXT_PLAIN)
     public Response getActivationTokenForUser(@QueryParam("username") String username) {
-        if(!tokenRepository.existsByUsernameAndType(username, TokenType.ACTIVATION)){
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
-        Token token = tokenRepository.findByUsernameAndType(username, TokenType.ACTIVATION);
+        Token token = tokenRepository.findByUsernameAndType(username, TokenType.ACTIVATION)
+                .orElseThrow(() -> new EcommerceApplicationException(ACTIVATION_TOKEN_NOT_FOUND, username));
         return Response.status(Response.Status.OK)
                 .entity(token.getValue())
                 .build();
@@ -98,9 +96,8 @@ public class EcommerceUserEndpoint {
     }
 
     private UserModel doEnableUser(String token) {
-        if(!tokenRepository.existsByValueAndType(token, TokenType.ACTIVATION))
-            throw new EcommerceApplicationException(ACTIVATION_TOKEN_NOT_FOUND, token);
-        Token activationToken = tokenRepository.findByValueAndType(token, TokenType.ACTIVATION);
+        Token activationToken = tokenRepository.findByValueAndType(token, TokenType.ACTIVATION)
+                .orElseThrow(() -> new EcommerceApplicationException(ACTIVATION_TOKEN_NOT_FOUND, token));
         UserModel enabledUser = userStorage.enableUser(realmModel, activationToken.getUsername());
         tokenRepository.removeByUsernameAndType(activationToken.getUsername(), TokenType.ACTIVATION);
         return enabledUser;
@@ -115,7 +112,7 @@ public class EcommerceUserEndpoint {
     }
 
     private void doRecoverPassword(String token, String newPassword) {
-        Optional.ofNullable(tokenRepository.findByValueAndType(token, TokenType.PASSWORD_RECOVERY))
+        tokenRepository.findByValueAndType(token, TokenType.PASSWORD_RECOVERY)
                 .ifPresentOrElse(recoveryToken -> {
                     CredentialInput passwordInput =
                             new PasswordCredentialInput(recoveryToken.getUsername(), newPassword);

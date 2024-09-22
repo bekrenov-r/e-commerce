@@ -54,8 +54,9 @@ public class EcommerceUserStorageProvider implements
     @Override
     public UserModel getUserByUsername(RealmModel realmModel, String username) {
         log.info("getUserByUsername({})", username);
-        EcommerceUser user = userRepository.getByUsername(username);
-        return user != null ? mapUser(realmModel, user) : null;
+        return userRepository.getByUsername(username)
+                .map(user -> this.mapUser(realmModel, user))
+                .orElse(null);
     }
 
     @Override
@@ -79,9 +80,12 @@ public class EcommerceUserStorageProvider implements
     @Override
     public boolean isValid(RealmModel realmModel, UserModel userModel, CredentialInput credentialInput) {
         log.info("isValid()");
-        String encryptedPassword = userRepository.getByUsername(userModel.getUsername()).getPassword();
-        if (encryptedPassword == null)
+        String encryptedPassword = userRepository.getByUsername(userModel.getUsername())
+                .orElseThrow(() -> new EcommerceApplicationException(USER_NOT_FOUND, userModel.getUsername()))
+                .getPassword();
+        if (encryptedPassword == null){
             return false;
+        }
         return passwordEncoder.verify(credentialInput.getChallengeResponse(), encryptedPassword);
     }
 
@@ -142,10 +146,9 @@ public class EcommerceUserStorageProvider implements
     }
 
     public UserModel enableUser(RealmModel realmModel, String username) {
-        if(!userRepository.existsByUsername(username))
-            throw new EcommerceApplicationException(USER_NOT_FOUND, username);
-        userRepository.enable(username);
-        EcommerceUser enabledUser = userRepository.getByUsername(username);
+        EcommerceUser user = userRepository.getByUsername(username)
+                .orElseThrow(() -> new EcommerceApplicationException(USER_NOT_FOUND, username));
+        EcommerceUser enabledUser =  userRepository.enable(user);
         return mapUser(realmModel, enabledUser);
     }
 

@@ -6,6 +6,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 
 import java.util.List;
+import java.util.Optional;
 
 public class EcommerceUserRepository {
     public List<EcommerceUser> getAll() {
@@ -17,14 +18,15 @@ public class EcommerceUserRepository {
         }
     }
 
-    public EcommerceUser getByUsername(String username) {
+    public Optional<EcommerceUser> getByUsername(String username) {
         String query = "from EcommerceUser u where u.username = :username";
         try(EntityManager em = EntityManagerUtil.createEntityManager()) {
-            return em.createQuery(query, EcommerceUser.class)
+            EcommerceUser user = em.createQuery(query, EcommerceUser.class)
                     .setParameter("username", username)
                     .getSingleResult();
+            return Optional.of(user);
         } catch(NoResultException ex){
-            return null;
+            return Optional.empty();
         }
     }
 
@@ -45,13 +47,13 @@ public class EcommerceUserRepository {
         }
     }
 
-    public void enable(String username) {
+    public EcommerceUser enable(EcommerceUser user) {
         try(EntityManager em = EntityManagerUtil.createEntityManager()) {
-            EcommerceUser user = getByUsername(username);
             user.setEnabled(true);
             em.getTransaction().begin();
             em.merge(user);
             em.getTransaction().commit();
+            return user;
         }
     }
 

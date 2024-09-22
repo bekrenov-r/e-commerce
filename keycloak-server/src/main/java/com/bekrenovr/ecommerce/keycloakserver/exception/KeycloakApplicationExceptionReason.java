@@ -12,6 +12,7 @@ public enum KeycloakApplicationExceptionReason implements EcommerceApplicationEx
     USER_NOT_FOUND("User with username [%s] does not exist", HttpStatus.NOT_FOUND),
     USER_DISABLED("User with username [%s] is disabled", HttpStatus.FORBIDDEN),
     ACTIVATION_TOKEN_NOT_FOUND("Activation token [%s] does not exist", HttpStatus.NOT_FOUND),
+    ACTIVATION_TOKEN_NOT_FOUND_FOR_USER("User with username [%s] does not have activation token", HttpStatus.NOT_FOUND),
     PASSWORD_RECOVERY_TOKEN_NOT_FOUND("Password recovery token [%s] does not exist", HttpStatus.NOT_FOUND);
 
     private final String message;
