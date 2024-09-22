@@ -44,6 +44,7 @@ public class SecurityConfig {
                                 "/oauth2/login/**",
                                 "/oauth2/registration/customer/**",
                                 "/oauth2/users/recover-password").permitAll()
+                        .pathMatchers("/reviews/**").permitAll()
                         .pathMatchers(HttpMethod.POST, "/orders/").access(postOrderEndpointAuthorizationManager)
                         .pathMatchers(HttpMethod.GET, "/orders/{id}").hasAnyAuthority("CUSTOMER", "EMPLOYEE")
                         .pathMatchers(HttpMethod.GET, "/orders/customer").hasAuthority("CUSTOMER")
