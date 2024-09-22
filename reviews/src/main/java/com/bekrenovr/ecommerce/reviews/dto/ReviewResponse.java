@@ -1,14 +1,20 @@
 package com.bekrenovr.ecommerce.reviews.dto;
 
-import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
-public record ReviewResponse(
-        String id,
-        Object customer,
-        int rating,
-        String title,
-        String content,
-        LocalDateTime createdAt,
-        int likes,
-        int dislikes
-) { }
+import java.time.LocalDateTime;
+import java.util.Map;
+
+@Data
+@AllArgsConstructor
+public final class ReviewResponse {
+    private String id;
+    private Map<String, String> customer;
+    private int rating;
+    private String title;
+    private String content;
+    private LocalDateTime createdAt;
+    private int likes;
+    private int dislikes;
+}

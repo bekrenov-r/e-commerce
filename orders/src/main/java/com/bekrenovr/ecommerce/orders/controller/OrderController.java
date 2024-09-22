@@ -3,6 +3,7 @@ package com.bekrenovr.ecommerce.orders.controller;
 import com.bekrenovr.ecommerce.orders.dto.request.OrderRequest;
 import com.bekrenovr.ecommerce.orders.dto.response.OrderDetailedResponse;
 import com.bekrenovr.ecommerce.orders.dto.response.OrderResponse;
+import com.bekrenovr.ecommerce.orders.model.enums.OrderStatus;
 import com.bekrenovr.ecommerce.orders.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,10 +27,11 @@ public class OrderController {
 
     @GetMapping("/customer")
     public ResponseEntity<Page<OrderResponse>> getAllForCustomer(
-            @RequestParam(name = "pageNumber", defaultValue = "0") int pageNumber,
-            @RequestParam(name = "pageSize", defaultValue = "${custom.page.default-size}") int pageSize
+            @RequestParam(required = false) OrderStatus status,
+            @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = "${custom.page.default-size}") Integer pageSize
     ){
-        return ResponseEntity.ok(orderService.getAllForCustomer(pageNumber, pageSize));
+        return ResponseEntity.ok(orderService.getAllForCustomer(status, pageNumber, pageSize));
     }
 
     @PostMapping

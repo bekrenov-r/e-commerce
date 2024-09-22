@@ -1,18 +1,27 @@
 package com.bekrenovr.ecommerce.reviews.dto;
 
 import com.bekrenovr.ecommerce.reviews.model.Review;
+import com.bekrenovr.ecommerce.reviews.proxy.CustomersServiceProxy;
+import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Map;
 
 @Mapper(componentModel = "spring")
-public interface ReviewMapper {
-    @Mapping(target = "id", source = "id")
-    @Mapping(target = "rating", source = "rating")
-    @Mapping(target = "title", source = "title")
-    @Mapping(target = "content", source = "content")
-    @Mapping(target = "likes", source = "likes")
-    @Mapping(target = "dislikes", source = "dislikes")
-    ReviewResponse documentToResponse(Review review);
+public abstract class ReviewMapper {
 
-    Review requestToDocument(ReviewRequest request);
+    @Autowired
+    protected CustomersServiceProxy customersProxy;
+
+    public abstract ReviewResponse documentToResponse(Review review);
+
+    public abstract Review requestToDocument(ReviewRequest request);
+
+    @AfterMapping
+    protected void setCustomer(Review review, @MappingTarget ReviewResponse response) {
+        Map<String, String> customer = customersProxy.getCustomerByEmail(review.getCustomerEmail()).getBody();
+        response.setCustomer(customer);
+    }
 }

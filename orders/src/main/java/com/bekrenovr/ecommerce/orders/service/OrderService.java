@@ -44,9 +44,9 @@ public class OrderService {
         return orderMapper.entityToDetailedResponse(order);
     }
 
-    public Page<OrderResponse> getAllForCustomer(int pageNumber, int pageSize) {
-        AuthenticatedUser user = AuthenticationUtil.getAuthenticatedUser();
-        List<OrderResponse> orders = orderRepository.findAllByCustomerEmail(user.getUsername())
+    public Page<OrderResponse> getAllForCustomer(OrderStatus status, int pageNumber, int pageSize) {
+        String customerEmail = AuthenticationUtil.getAuthenticatedUser().getUsername();
+        List<OrderResponse> orders = this.findOrders(customerEmail, status)
                 .stream()
                 .map(orderMapper::entityToResponse)
                 .toList();
@@ -70,6 +70,12 @@ public class OrderService {
                 .build();
 
         return orderMapper.entityToResponse(orderRepository.save(order));
+    }
+
+    private List<Order> findOrders(String customerEmail, OrderStatus status) {
+        return status != null
+                ? orderRepository.findAllByCustomerEmailAndStatus(customerEmail, status)
+                : orderRepository.findAllByCustomerEmail(customerEmail);
     }
 
     private String resolveCustomer(OrderRequest request){
