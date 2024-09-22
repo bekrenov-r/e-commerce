@@ -10,4 +10,5 @@ import java.util.UUID;
 @Repository
 public interface ReviewRepository extends MongoRepository<Review, String> {
     List<Review> findAllByItemId(UUID itemId);
+    boolean existsByItemIdAndCustomerEmail(UUID itemId, String customerEmail);
 }

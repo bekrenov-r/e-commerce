@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import static com.bekrenovr.ecommerce.reviews.exception.ReviewsApplicationExceptionReason.CANNOT_CREATE_REVIEW;
+import static com.bekrenovr.ecommerce.reviews.exception.ReviewsApplicationExceptionReason.REVIEW_ALREADY_EXISTS;
 
 @Service
 @RequiredArgsConstructor
@@ -39,6 +40,7 @@ public class ReviewService {
 
     public void createReview(ReviewRequest request) {
         String customerEmail = AuthenticationUtil.getAuthenticatedUser().getUsername();
+        validateReviewDoesNotExist(request.itemId());
         validateCustomerHasCompletedOrderForItem(request.itemId());
         Review review = reviewMapper.requestToDocument(request);
         review.setCustomerEmail(customerEmail);
@@ -64,6 +66,13 @@ public class ReviewService {
                 .anyMatch(itemEntry -> itemEntry.get("itemId").equals(itemId.toString()));
         if(!hasCompletedOrderForItem) {
             throw new EcommerceApplicationException(CANNOT_CREATE_REVIEW);
+        }
+    }
+
+    private void validateReviewDoesNotExist(UUID itemId) {
+        String customerEmail = AuthenticationUtil.getAuthenticatedUser().getUsername();
+        if(reviewRepository.existsByItemIdAndCustomerEmail(itemId, customerEmail)) {
+            throw new EcommerceApplicationException(REVIEW_ALREADY_EXISTS);
         }
     }
 }

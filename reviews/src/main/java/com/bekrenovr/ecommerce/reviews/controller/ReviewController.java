@@ -3,6 +3,7 @@ package com.bekrenovr.ecommerce.reviews.controller;
 import com.bekrenovr.ecommerce.reviews.dto.ReviewRequest;
 import com.bekrenovr.ecommerce.reviews.dto.ReviewResponse;
 import com.bekrenovr.ecommerce.reviews.service.ReviewService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -26,7 +27,7 @@ public class ReviewController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createReview(@RequestBody ReviewRequest request) {
+    public ResponseEntity<Void> createReview(@RequestBody @Valid ReviewRequest request) {
         reviewService.createReview(request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

@@ -104,7 +104,6 @@ public class StandardResponseEntityExceptionHandler extends ResponseEntityExcept
         logException(ex);
         StringBuilder message = new StringBuilder("Errors:");
         for(FieldError error : ex.getFieldErrors()){
-            System.out.println(error.getObjectName());
             message
                     .append(" [")
                     .append(error.getObjectName())
