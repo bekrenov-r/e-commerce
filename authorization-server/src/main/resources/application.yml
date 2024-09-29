@@ -22,7 +22,7 @@ spring:
           google:
             client-id: 366892792903-hcvb0cr5rdfe6afvl628isd4l900uai6.apps.googleusercontent.com
             client-secret:
-            redirect-uri: ${frontend.base-url}/
+            redirect-uri: ${frontend.base-url}/account
             scope:
               - https://www.googleapis.com/auth/userinfo.profile
               - https://www.googleapis.com/auth/userinfo.email
