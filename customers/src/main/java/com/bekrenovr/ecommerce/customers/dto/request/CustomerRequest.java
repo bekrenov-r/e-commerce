@@ -13,13 +13,9 @@ import lombok.NoArgsConstructor;
 public class CustomerRequest implements Person {
     @NotBlank
     private String firstName;
-
-    @NotBlank
     private String lastName;
-
     @NotBlank
     @Email
     private String email;
-
     private boolean isRegistered;
 }
