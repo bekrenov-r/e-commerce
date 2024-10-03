@@ -58,7 +58,7 @@
 			<version>20240303</version>
 		</dependency>
 		<dependency>
-			<groupId>com.ecommerce</groupId>
+			<groupId>com.bekrenovr.ecommerce</groupId>
 			<artifactId>common-lib</artifactId>
 			<version>${project.version}</version>
 			<scope>compile</scope>
