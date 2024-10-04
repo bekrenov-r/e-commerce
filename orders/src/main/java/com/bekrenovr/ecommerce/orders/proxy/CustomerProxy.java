@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.UUID;
 
-@FeignClient(name = "users")
+@FeignClient(name = "customers", path = "/customers")
 public interface CustomerProxy {
-    @GetMapping("/customers/{id}")
+    @GetMapping("/{id}")
     ResponseEntity<CustomerDTO> getById(@PathVariable UUID id);
 
-    @PostMapping("/customers")
+    @PostMapping
     ResponseEntity<Void> createCustomer(@RequestBody CustomerRequest request);
 }

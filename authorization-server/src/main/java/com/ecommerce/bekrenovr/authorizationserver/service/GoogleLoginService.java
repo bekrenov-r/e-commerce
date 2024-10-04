@@ -33,7 +33,7 @@ public class GoogleLoginService {
         try {
             customerServiceProxy.createCustomer(customer);
         } catch(FeignException.Conflict ex){
-            customerServiceProxy.updateCustomer(customer);
+            // do nothing because CONFLICT means that user is already created
         }
         return accessTokenResponse.toString();
     }

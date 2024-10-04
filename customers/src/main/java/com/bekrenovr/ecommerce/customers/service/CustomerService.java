@@ -25,18 +25,18 @@ public class CustomerService {
     private final CustomerMapper customerMapper;
 
     @Transactional
-    public void createCustomer(CustomerRequest request, boolean isRegistered) {
+    public void createCustomer(CustomerRequest request) {
         customerRepository.findByEmail(request.getEmail())
                 .ifPresentOrElse(customer -> {
                     if (!customer.isRegistered()) {
-                        customer.setFirstName(request.getFirstName());
-                        customer.setLastName(request.getLastName());
                         customer.setRegistered(true);
                         customerRepository.save(customer);
-                    } else throw new EcommerceApplicationException(EMAIL_ALREADY_EXISTS, request.getEmail());
+                    } else {
+                        throw new EcommerceApplicationException(EMAIL_ALREADY_EXISTS, request.getEmail());
+                    }
                 }, () -> {
                     Customer customer = customerMapper.requestToEntity(request);
-                    customer.setRegistered(isRegistered);
+                    customer.setRegistered(request.isRegistered());
                     customer.setCreatedAt(LocalDateTime.now());
                     customerRepository.save(customer);
                 });

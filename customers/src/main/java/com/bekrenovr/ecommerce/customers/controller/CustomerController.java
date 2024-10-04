@@ -23,7 +23,7 @@ public class CustomerController {
 
     @PostMapping
     public void createCustomer(@Valid @RequestBody CustomerRequest request){
-        customerService.createCustomer(request, false);
+        customerService.createCustomer(request);
     }
 
     @PutMapping

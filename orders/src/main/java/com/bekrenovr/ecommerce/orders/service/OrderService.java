@@ -7,6 +7,7 @@ import com.bekrenovr.ecommerce.common.security.Role;
 import com.bekrenovr.ecommerce.common.util.PageUtil;
 import com.bekrenovr.ecommerce.orders.dto.mapper.DeliveryMapper;
 import com.bekrenovr.ecommerce.orders.dto.mapper.OrderMapper;
+import com.bekrenovr.ecommerce.orders.dto.request.CustomerRequest;
 import com.bekrenovr.ecommerce.orders.dto.request.OrderRequest;
 import com.bekrenovr.ecommerce.orders.dto.response.OrderDetailedResponse;
 import com.bekrenovr.ecommerce.orders.dto.response.OrderResponse;
@@ -83,11 +84,13 @@ public class OrderService {
             return AuthenticationUtil.getAuthenticatedUser().getUsername();
         }
         try {
-            customerProxy.createCustomer(request.customer());
+            CustomerRequest customer = request.customer();
+            customer.setRegistered(false);
+            customerProxy.createCustomer(customer);
         } catch(FeignException.Conflict ex) {
             // do nothing since 409 means that customer already exists and can be used
         }
-        return request.customer().email();
+        return request.customer().getEmail();
     }
 
     private double calculateTotalPrice(List<ItemEntry> itemEntries) {
