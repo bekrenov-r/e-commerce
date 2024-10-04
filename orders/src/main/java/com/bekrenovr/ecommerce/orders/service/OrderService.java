@@ -23,6 +23,8 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -96,13 +98,19 @@ public class OrderService {
     private double calculateTotalPrice(List<ItemEntry> itemEntries) {
         return itemEntries.stream()
                 .map(ItemEntry::getTotalPrice)
-                .reduce(0.0, Double::sum);
+                .map(BigDecimal::valueOf)
+                .reduce(BigDecimal.ZERO, BigDecimal::add)
+                .setScale(2, RoundingMode.HALF_DOWN)
+                .doubleValue();
     }
 
     private double calculateTotalPriceAfterDiscount(List<ItemEntry> itemEntries) {
         return itemEntries.stream()
                 .map(ItemEntry::getTotalPriceAfterDiscount)
-                .reduce(0.0, Double::sum);
+                .map(BigDecimal::valueOf)
+                .reduce(BigDecimal.ZERO, BigDecimal::add)
+                .setScale(2, RoundingMode.HALF_DOWN)
+                .doubleValue();
     }
 
     private String generateOrderNumber() {
