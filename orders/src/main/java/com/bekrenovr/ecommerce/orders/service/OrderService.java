@@ -11,6 +11,7 @@ import com.bekrenovr.ecommerce.orders.dto.request.CustomerRequest;
 import com.bekrenovr.ecommerce.orders.dto.request.OrderRequest;
 import com.bekrenovr.ecommerce.orders.dto.response.OrderDetailedResponse;
 import com.bekrenovr.ecommerce.orders.dto.response.OrderResponse;
+import com.bekrenovr.ecommerce.orders.model.OrderEvent;
 import com.bekrenovr.ecommerce.orders.model.entity.Delivery;
 import com.bekrenovr.ecommerce.orders.model.entity.ItemEntry;
 import com.bekrenovr.ecommerce.orders.model.entity.Order;
@@ -40,6 +41,7 @@ public class OrderService {
     private final CustomerProxy customerProxy;
     private final DeliveryMapper deliveryMapper;
     private final ItemEntryService itemEntryService;
+    private final OrderEventProducer orderEventProducer;
 
     public OrderDetailedResponse getById(UUID id) {
         Order order = orderRepository.findByIdOrThrowDefault(id);
@@ -71,8 +73,9 @@ public class OrderService {
                 .number(generateOrderNumber())
                 .status(OrderStatus.ACCEPTED)
                 .build();
-
-        return orderMapper.entityToResponse(orderRepository.save(order));
+        Order savedOrder = orderRepository.save(order);
+        orderEventProducer.send(new OrderEvent(savedOrder.getId(), savedOrder.getStatus(), orderRequest.itemEntries()));
+        return orderMapper.entityToResponse(savedOrder);
     }
 
     private List<Order> findOrders(String customerEmail, OrderStatus status) {

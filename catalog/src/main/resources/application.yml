@@ -5,6 +5,11 @@ spring:
     import: "optional:configserver:http://localhost:8888"
   application:
     name: catalog
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:9092
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      group-id: order-events-listener-group
 custom:
   page:
     default-size: 10
