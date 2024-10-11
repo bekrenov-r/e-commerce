@@ -19,7 +19,7 @@ public class OrderEventProducer {
 
     private final KafkaTemplate<Object, String> kafkaTemplate;
 
-    public void send(OrderEvent event) {
+    public void produce(OrderEvent event) {
         log.info("Sending event {} to topic '{}'", event, topic);
         String json = this.serializeEvent(event);
         ProducerRecord<Object, String> producerRecord = new ProducerRecord<>(topic, null, null, json);

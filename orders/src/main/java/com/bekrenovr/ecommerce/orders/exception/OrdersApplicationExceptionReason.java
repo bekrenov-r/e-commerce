@@ -14,7 +14,8 @@ public enum OrdersApplicationExceptionReason implements EcommerceApplicationExce
     QUANTITY_IS_UNAVAILABLE("Requested quantity is unavailable for item [%s] with size [%s]", HttpStatus.BAD_REQUEST),
     CUSTOMER_IS_NOT_ORDER_OWNER("Customer with username [%s] is not an owner of requested order", HttpStatus.FORBIDDEN),
     ITEM_ALREADY_IN_CART("Item with id [%s] is already added to cart", HttpStatus.CONFLICT),
-    CART_ENTRY_NOT_FOUND("Cart does not contain item entry with id [%s]", HttpStatus.NOT_FOUND);
+    CART_ENTRY_NOT_FOUND("Cart does not contain item entry with id [%s]", HttpStatus.NOT_FOUND),
+    CANNOT_CANCEL_ORDER("Cannot cancel order with status [%s]", HttpStatus.BAD_REQUEST);
 
     private final String message;
     private final HttpStatus status;

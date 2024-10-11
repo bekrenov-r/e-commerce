@@ -8,6 +8,7 @@ import com.bekrenovr.ecommerce.common.util.PageUtil;
 import com.bekrenovr.ecommerce.orders.dto.mapper.DeliveryMapper;
 import com.bekrenovr.ecommerce.orders.dto.mapper.OrderMapper;
 import com.bekrenovr.ecommerce.orders.dto.request.CustomerRequest;
+import com.bekrenovr.ecommerce.orders.dto.request.ItemEntryRequest;
 import com.bekrenovr.ecommerce.orders.dto.request.OrderRequest;
 import com.bekrenovr.ecommerce.orders.dto.response.OrderDetailedResponse;
 import com.bekrenovr.ecommerce.orders.dto.response.OrderResponse;
@@ -31,6 +32,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+import static com.bekrenovr.ecommerce.orders.exception.OrdersApplicationExceptionReason.CANNOT_CANCEL_ORDER;
 import static com.bekrenovr.ecommerce.orders.exception.OrdersApplicationExceptionReason.CUSTOMER_IS_NOT_ORDER_OWNER;
 
 @Service
@@ -74,7 +76,7 @@ public class OrderService {
                 .status(OrderStatus.ACCEPTED)
                 .build();
         Order savedOrder = orderRepository.save(order);
-        orderEventProducer.send(new OrderEvent(savedOrder.getId(), savedOrder.getStatus(), orderRequest.itemEntries()));
+        orderEventProducer.produce(new OrderEvent(savedOrder.getId(), savedOrder.getStatus(), orderRequest.itemEntries()));
         return orderMapper.entityToResponse(savedOrder);
     }
 
@@ -131,6 +133,29 @@ public class OrderService {
         AuthenticatedUser user = AuthenticationUtil.getAuthenticatedUser();
         if(user.hasRole(Role.CUSTOMER) && !order.getCustomerEmail().equals(user.getUsername())) {
             throw new EcommerceApplicationException(CUSTOMER_IS_NOT_ORDER_OWNER, user.getUsername());
+        }
+    }
+
+    public void cancelOrder(UUID id) {
+        Order order = orderRepository.findByIdOrThrowDefault(id);
+        validateOrderStatusBeforeCancellation(order);
+        order.setStatus(OrderStatus.CANCELLED);
+        Order savedOrder = orderRepository.save(order);
+        this.publishCancellationEvent(savedOrder);
+    }
+
+    private void publishCancellationEvent(Order order) {
+        List<ItemEntryRequest> itemEntries = order.getItemEntries()
+                .stream()
+                .map(ie -> new ItemEntryRequest(ie.getItemId(), ie.getQuantity(), ie.getItemSize()))
+                .toList();
+        orderEventProducer.produce(new OrderEvent(order.getId(), order.getStatus(), itemEntries));
+    }
+
+    private void validateOrderStatusBeforeCancellation(Order order) {
+        OrderStatus status = order.getStatus();
+        if(!(status.equals(OrderStatus.ACCEPTED) || status.equals(OrderStatus.SHIPPING))) {
+            throw new EcommerceApplicationException(CANNOT_CANCEL_ORDER, status);
         }
     }
 }

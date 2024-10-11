@@ -39,4 +39,9 @@ public class OrderController {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(orderService.createOrder(orderRequest));
     }
+
+    @DeleteMapping("/{id}")
+    public void cancel(@PathVariable UUID id) {
+        orderService.cancelOrder(id);
+    }
 }

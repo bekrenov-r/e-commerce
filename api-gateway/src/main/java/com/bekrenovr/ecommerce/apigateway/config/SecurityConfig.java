@@ -51,6 +51,7 @@ public class SecurityConfig {
                         .pathMatchers(HttpMethod.POST, "/orders/").access(postOrderEndpointAuthorizationManager)
                         .pathMatchers(HttpMethod.GET, "/orders/{id}").hasAnyAuthority("CUSTOMER", "EMPLOYEE")
                         .pathMatchers(HttpMethod.GET, "/orders/customer").hasAuthority("CUSTOMER")
+                        .pathMatchers(HttpMethod.DELETE, "/orders/**").hasAuthority("CUSTOMER")
                         .pathMatchers("/orders/cart").hasAuthority("CUSTOMER")
                         .pathMatchers( "/users/wishlist/**").hasAuthority("CUSTOMER")
                         .anyExchange().authenticated())
