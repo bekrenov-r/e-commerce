@@ -19,7 +19,6 @@ import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -100,7 +99,7 @@ public class ItemGenerator {
         LocalDateTime createdAt = LocalDateTime.of(date, LocalTime.now());
         Integer ordersCountLastMonth = rand.nextInt(30);
         Integer ordersCountTotal = rand.nextInt(100);
-        return new ItemDetails(ordersCountTotal, ordersCountLastMonth, createdAt, UUID.randomUUID());
+        return new ItemDetails(ordersCountTotal, ordersCountLastMonth, createdAt, "john.doe@example.com");
     }
 
     private List<UniqueItem> generateUniqueItems(Item item){
@@ -113,14 +112,7 @@ public class ItemGenerator {
 
     private UniqueItem generateUniqueItem(Item item, Size size){
         Random rand = new Random();
-        BigDecimal weightKg = BigDecimal.valueOf(rand.nextDouble());
-        return new UniqueItem(
-                size.getSizeValue(),
-                weightKg,
-                generateBarcode(),
-                rand.nextInt(21),
-                2, 2,
-                item);
+        return new UniqueItem(size.getSizeValue(), rand.nextInt(21), item);
     }
 
     public List<Item> generateMultiple(int num){
@@ -151,17 +143,6 @@ public class ItemGenerator {
             sb.append(rand.nextInt(10));
         }
         return sb.toString();
-    }
-
-    private String generateBarcode() {
-        final int length = 10;
-        Random rand = new Random();
-        return Stream
-                .generate(
-                        () -> String.valueOf(rand.nextInt(10))
-                )
-                .limit(length)
-                .collect(Collectors.joining());
     }
 
     public Double calculatePriceAfterDiscount(Double price, Double discount){

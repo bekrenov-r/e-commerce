@@ -36,19 +36,13 @@ public class ItemDetails {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+    @Column(name = "creating_employee")
+    private String creatingEmployeeUsername;
 
-    @Column(name = "creating_employee_id")
-    private UUID creatingEmployeeId;
-
-    @Column(name = "updating_employee_id")
-    private UUID updatingEmployeeId;
-
-    public ItemDetails(Integer ordersCountTotal, Integer ordersCountLastMonth, LocalDateTime createdAt, UUID creatingEmployeeId) {
+    public ItemDetails(Integer ordersCountTotal, Integer ordersCountLastMonth, LocalDateTime createdAt, String creatingEmployeeUsername) {
         this.ordersCountTotal = ordersCountTotal;
         this.ordersCountLastMonth = ordersCountLastMonth;
         this.createdAt = createdAt;
-        this.creatingEmployeeId = creatingEmployeeId;
+        this.creatingEmployeeUsername = creatingEmployeeUsername;
     }
 }
