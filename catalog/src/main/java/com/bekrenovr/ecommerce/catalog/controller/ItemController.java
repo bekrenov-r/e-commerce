@@ -51,14 +51,7 @@ public class ItemController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> create(@RequestBody Item item) throws Exception {
-        return itemService.createItem(item);
+    public void create(@RequestBody Item item) {
+        itemService.createItem(item);
     }
-
-    // method for dev purpose
-    @GetMapping("/createSampleItems/{quantity}")
-    public void createSampleItems(@PathVariable Integer quantity){
-        itemService.createSampleItems(quantity);
-    }
-
 }

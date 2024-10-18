@@ -6,7 +6,6 @@ import com.bekrenovr.ecommerce.catalog.model.ShoesSize;
 import com.bekrenovr.ecommerce.catalog.model.Size;
 import com.bekrenovr.ecommerce.catalog.model.entity.*;
 import com.bekrenovr.ecommerce.catalog.model.enums.*;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -26,11 +25,12 @@ import static com.bekrenovr.ecommerce.catalog.util.RandomUtils.getRandomElement;
 import static com.bekrenovr.ecommerce.catalog.util.RandomUtils.getRandomSeries;
 
 @Component
-@RequiredArgsConstructor
 public class ItemGenerator {
 
     private final CategoryRepository categoryRepository;
     private final BrandRepository brandRepository;
+    private List<Category> categories;
+    private List<Brand> brands;
 
     @Value("${custom.strategy.shoes-size.min}")
     private int shoesSizeMin;
@@ -38,10 +38,17 @@ public class ItemGenerator {
     @Value("${custom.strategy.shoes-size.max}")
     private int shoesSizeMax;
 
+    public ItemGenerator(CategoryRepository categoryRepository, BrandRepository brandRepository) {
+        this.categoryRepository = categoryRepository;
+        this.brandRepository = brandRepository;
+        this.categories = this.categoryRepository.findAll();
+        this.brands = this.brandRepository.findAll();
+    }
+
     public Item generateItem(){
         Random rand = new Random();
-
-        Category category = getRandomElement(categoryRepository.findAll());
+        List<Double> discounts = List.of(0.05, 0.1, 0.15, 0.20);
+        Category category = getRandomElement(categories);
         List<Subcategory> subcategories = category.getSubcategories();
         Subcategory subcategory = !subcategories.isEmpty()
                 ? getRandomElement(subcategories)
@@ -51,13 +58,13 @@ public class ItemGenerator {
         String itemName = capitalize(category.getName()) + " " + (rand.nextInt(100) + 1);
         String description = "Description";
         Double price = rand.nextInt(90) + 10 - 0.01;
-        Double discount = BigDecimal.valueOf(rand.nextDouble(0.4))
+        Double discount = hasDiscount() ? BigDecimal.valueOf(getRandomElement(discounts))
                 .setScale(2, RoundingMode.HALF_UP)
-                .doubleValue();
+                .doubleValue() : 0.0;
         Double priceAfterDiscount = this.calculatePriceAfterDiscount(price, discount);
         Gender gender = getRandomElement(Gender.values());
         String collection = "Collection";
-        Brand brand = getRandomElement(brandRepository.findAll());
+        Brand brand = getRandomElement(brands);
         Material material = getRandomElement(Material.values());
         Season season = getRandomElement(Season.values());
         Double rating = BigDecimal.valueOf(rand.nextDouble(3.0) + 2).round(new MathContext(2)).doubleValue();
@@ -97,8 +104,8 @@ public class ItemGenerator {
         Random rand = new Random();
         LocalDate date = LocalDate.ofEpochDay(rand.nextInt(18262, 19357));
         LocalDateTime createdAt = LocalDateTime.of(date, LocalTime.now());
-        Integer ordersCountLastMonth = rand.nextInt(30);
-        Integer ordersCountTotal = rand.nextInt(100);
+        int ordersCountTotal = rand.nextInt(100);
+        int ordersCountLastMonth = ordersCountTotal == 0 ? 0 : rand.nextInt(ordersCountTotal);
         return new ItemDetails(ordersCountTotal, ordersCountLastMonth, createdAt, "john.doe@example.com");
     }
 
@@ -165,5 +172,10 @@ public class ItemGenerator {
                 .stream()
                 .map(i -> (Size) new ShoesSize(i))
                 .toList();
+    }
+
+    private boolean hasDiscount() {
+        int i = new Random().nextInt(20);
+        return i == 0;
     }
 }

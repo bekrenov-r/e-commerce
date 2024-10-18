@@ -18,7 +18,6 @@ import com.bekrenovr.ecommerce.catalog.util.dev.ItemGenerator;
 import jakarta.transaction.Transactional;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.DoubleRange;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
@@ -52,12 +51,6 @@ public class ItemSpecificationTest {
     private ItemSpecificationBuilder itemSpecificationBuilder;
 
     private static final DoubleRange PRICE_RANGE = new DoubleRange(10.0, 50.0);
-
-    @BeforeEach
-    void init(){
-        Iterable<Item> testItems = itemGenerator.generateMultiple(50);
-        itemRepository.saveAll(testItems);
-    }
 
     @ParameterizedTest
     @EnumSource(Gender.class)
@@ -174,7 +167,6 @@ public class ItemSpecificationTest {
     @Test
     @Transactional
     public void testSpecificationComposition(){
-        itemRepository.saveAll(itemGenerator.generateMultiple(100));
         var gender = RandomUtils.getRandomElement(Gender.values());
         var category = getCategoryWithSubcategories();
         var subcategory = RandomUtils.getRandomElement(category.getSubcategories());

@@ -1,11 +1,10 @@
 package com.bekrenovr.ecommerce.catalog.sort;
 
 import com.bekrenovr.ecommerce.catalog.CatalogApplication;
+import com.bekrenovr.ecommerce.catalog.jpa.repository.ItemRepository;
 import com.bekrenovr.ecommerce.catalog.model.entity.Item;
 import com.bekrenovr.ecommerce.catalog.service.sort.ItemSortComparators;
 import com.bekrenovr.ecommerce.catalog.service.sort.SortOption;
-import com.bekrenovr.ecommerce.catalog.util.dev.ItemGenerator;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,17 +18,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ActiveProfiles("test")
 public class ItemSortTest {
 
-    ItemGenerator itemGenerator;
+    ItemRepository itemRepository;
     List<Item> data;
 
     @Autowired
-    public ItemSortTest(ItemGenerator itemGenerator) {
-        this.itemGenerator = itemGenerator;
-    }
-
-    @BeforeEach
-    void generateData(){
-        this.data = itemGenerator.generateMultipleWithDetails(1000);
+    public ItemSortTest(ItemRepository itemRepository) {
+        this.itemRepository = itemRepository;
+        data = itemRepository.findAll();
     }
 
     @Test
