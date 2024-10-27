@@ -220,7 +220,7 @@ public class ItemSpecificationTest {
 
     private boolean allItemsHaveSizeIn(List<Item> items, Collection<Size> sizes){
         Collection<String> sizeValues = sizes.stream()
-                .map(Size::getSizeValue)
+                .map(Size::getStringValue)
                 .toList();
         Predicate<Item> hasSize = item ->
                 item.getUniqueItems()

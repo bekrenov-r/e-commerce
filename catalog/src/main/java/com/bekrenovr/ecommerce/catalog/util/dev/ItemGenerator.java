@@ -119,7 +119,7 @@ public class ItemGenerator {
 
     private UniqueItem generateUniqueItem(Item item, Size size){
         Random rand = new Random();
-        return new UniqueItem(size.getSizeValue(), rand.nextInt(21), item);
+        return new UniqueItem(size.getStringValue(), rand.nextInt(21), item);
     }
 
     public List<Item> generateMultiple(int num){

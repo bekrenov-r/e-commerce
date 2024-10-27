@@ -1,12 +1,25 @@
 package com.bekrenovr.ecommerce.catalog.model.enums;
 
 import com.bekrenovr.ecommerce.catalog.model.Size;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
+@AllArgsConstructor
+@Getter
 public enum ClothesSize implements Size {
-    XS, S, M, L, XL, XXL, XXXL, XXXXL;
+    XS(1),
+    S(2),
+    M(3),
+    L(4),
+    XL(5),
+    XXL(6),
+    XXXL(7),
+    XXXXL(8);
+
+    private final int numericValue;
 
     @Override
-    public String getSizeValue() {
+    public String getStringValue() {
         return name();
     }
 

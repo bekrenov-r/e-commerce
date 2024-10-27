@@ -7,7 +7,7 @@ import com.bekrenovr.ecommerce.catalog.dto.response.ItemResponse;
 import com.bekrenovr.ecommerce.catalog.model.entity.Item;
 import com.bekrenovr.ecommerce.catalog.service.ItemImageService;
 import com.bekrenovr.ecommerce.catalog.service.ItemService;
-import com.bekrenovr.ecommerce.catalog.service.sort.SortOption;
+import com.bekrenovr.ecommerce.catalog.util.sort.SortOption;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

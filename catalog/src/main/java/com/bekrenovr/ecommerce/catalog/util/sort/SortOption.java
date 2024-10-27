@@ -1,4 +1,4 @@
-package com.bekrenovr.ecommerce.catalog.service.sort;
+package com.bekrenovr.ecommerce.catalog.util.sort;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -41,7 +41,7 @@ public class ItemSpecification {
 
     public static Specification<Item> hasSizeIn(Collection<Size> sizes){
         Collection<String> sizeValues = sizes.stream()
-                .map(Size::getSizeValue)
+                .map(Size::getStringValue)
                 .toList();
         return (root, query, criteriaBuilder) -> {
             Subquery<UniqueItem> uniqueItemSubquery = query.subquery(UniqueItem.class);

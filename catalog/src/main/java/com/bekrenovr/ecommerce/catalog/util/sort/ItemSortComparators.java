@@ -1,4 +1,4 @@
-package com.bekrenovr.ecommerce.catalog.service.sort;
+package com.bekrenovr.ecommerce.catalog.util.sort;
 
 import com.bekrenovr.ecommerce.catalog.model.entity.Item;
 
