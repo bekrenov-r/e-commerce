@@ -28,7 +28,7 @@ public class ItemSortTest {
     }
 
     @Test
-    void sortByPopularityTest(){
+    void sortByPopularity(){
         List<Item> sortedItems = data.stream()
                 .sorted(ItemSortComparators.forOption(SortOption.BY_POPULARITY))
                 .toList();
@@ -38,7 +38,7 @@ public class ItemSortTest {
     }
 
     @Test
-    void sortByNewTest(){
+    void sortByNew(){
         List<Item> sortedItems = data.stream()
                 .sorted(ItemSortComparators.forOption(SortOption.BY_NEW))
                 .toList();
@@ -48,7 +48,7 @@ public class ItemSortTest {
     }
 
     @Test
-    void sortByPriceAscTest(){
+    void sortByPriceAsc(){
         List<Item> sortedItems = data.stream()
                 .sorted(ItemSortComparators.forOption(SortOption.BY_PRICE_ASC))
                 .toList();
@@ -58,7 +58,7 @@ public class ItemSortTest {
     }
 
     @Test
-    void sortByPriceDescTest(){
+    void sortByPriceDesc(){
         List<Item> sortedItems = data.stream()
                 .sorted(ItemSortComparators.forOption(SortOption.BY_PRICE_DESC))
                 .toList();

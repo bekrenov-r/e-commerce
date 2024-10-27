@@ -26,17 +26,17 @@ public class ItemController {
     private final ItemImageService itemImageService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<ItemDetailedResponse> getItemById(@PathVariable UUID id){
-        return ResponseEntity.ok(itemService.getItemById(id));
+    public ResponseEntity<ItemDetailedResponse> getById(@PathVariable UUID id){
+        return ResponseEntity.ok(itemService.getById(id));
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<ItemResponse>> getItemsByIds(@RequestParam List<UUID> ids){
-        return ResponseEntity.ok(itemService.getItemsByIds(ids));
+    public ResponseEntity<List<ItemResponse>> getByIds(@RequestParam List<UUID> ids){
+        return ResponseEntity.ok(itemService.getByIds(ids));
     }
 
     @GetMapping
-    public ResponseEntity<Page<ItemResponse>> getItemsByCriteria(
+    public ResponseEntity<Page<ItemResponse>> getByCriteria(
             @RequestParam(name = "sort", required = false) SortOption sort,
             @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
             @RequestParam(name = "pageSize", defaultValue = "${custom.page.default-size}") Integer pageSize,
@@ -52,6 +52,6 @@ public class ItemController {
 
     @PostMapping
     public void create(@RequestBody Item item) {
-        itemService.createItem(item);
+        itemService.create(item);
     }
 }

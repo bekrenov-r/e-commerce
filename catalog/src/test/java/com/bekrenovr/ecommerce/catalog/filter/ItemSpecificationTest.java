@@ -14,7 +14,6 @@ import com.bekrenovr.ecommerce.catalog.model.entity.Item;
 import com.bekrenovr.ecommerce.catalog.model.entity.Subcategory;
 import com.bekrenovr.ecommerce.catalog.model.enums.*;
 import com.bekrenovr.ecommerce.catalog.util.RandomUtils;
-import com.bekrenovr.ecommerce.catalog.util.dev.ItemGenerator;
 import jakarta.transaction.Transactional;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.DoubleRange;
@@ -44,8 +43,6 @@ public class ItemSpecificationTest {
     @Autowired
     private BrandRepository brandRepository;
     @Autowired
-    private ItemGenerator itemGenerator;
-    @Autowired
     private SizeFactory sizeFactory;
     @Autowired
     private ItemSpecificationBuilder itemSpecificationBuilder;
@@ -54,7 +51,7 @@ public class ItemSpecificationTest {
 
     @ParameterizedTest
     @EnumSource(Gender.class)
-    public void testHasGender(Gender gender) {
+    public void hasGender(Gender gender) {
         Specification<Item> spec = ItemSpecification.hasGender(gender);
 
         List<Item> items = itemRepository.findAll(spec);
@@ -63,7 +60,7 @@ public class ItemSpecificationTest {
     }
 
     @Test
-    public void testHasCategory() {
+    public void hasCategory() {
         Category category = RandomUtils.getRandomElement(categoryRepository.findAll());
         Specification<Item> spec = ItemSpecification.hasCategory(category);
 
@@ -73,7 +70,7 @@ public class ItemSpecificationTest {
     }
 
     @Test
-    public void testHasCategoryAndSubcategory() {
+    public void hasCategoryAndSubcategory() {
         Category category = getCategoryWithSubcategories();
         Subcategory subcategory = RandomUtils.getRandomElement(category.getSubcategories());
         Specification<Item> spec = ItemSpecification.hasCategoryAndSubcategory(category, subcategory);
@@ -84,7 +81,7 @@ public class ItemSpecificationTest {
     }
 
     @Test
-    public void testHasPriceWithinRange() {
+    public void hasPriceWithinRange() {
         Specification<Item> spec = ItemSpecification.hasPriceWithinRange(PRICE_RANGE);
 
         List<Item> items = itemRepository.findAll(spec);
@@ -94,7 +91,7 @@ public class ItemSpecificationTest {
 
     @Test
     @Transactional
-    public void testHasSizeIn() {
+    public void hasSizeIn() {
         Collection<Size> sizes = Arrays.asList(ClothesSize.values());
         Specification<Item> spec = ItemSpecification.hasSizeIn(sizes);
 
@@ -104,7 +101,7 @@ public class ItemSpecificationTest {
     }
 
     @Test
-    public void testHasColorIn() {
+    public void hasColorIn() {
         Collection<Color> colors = RandomUtils.getRandomSeries(Color.values(), 5);
         Specification<Item> spec = ItemSpecification.hasColorIn(colors);
 
@@ -115,7 +112,7 @@ public class ItemSpecificationTest {
 
     @Test
     @Transactional
-    public void testHasBrandIn() {
+    public void hasBrandIn() {
         Collection<Brand> brands = RandomUtils.getRandomSeries(brandRepository.findAll(), 3);
         Specification<Item> spec = ItemSpecification.hasBrandIn(brands);
 
@@ -125,7 +122,7 @@ public class ItemSpecificationTest {
     }
 
     @Test
-    public void testHasMaterialIn() {
+    public void hasMaterialIn() {
         Collection<Material> materials = RandomUtils.getRandomSeries(Material.values(), 3);
         Specification<Item> spec = ItemSpecification.hasMaterialIn(materials);
 
@@ -135,7 +132,7 @@ public class ItemSpecificationTest {
     }
 
     @Test
-    public void testHasSeason() {
+    public void hasSeason() {
         Season season = RandomUtils.getRandomElement(Season.values());
         Specification<Item> spec = ItemSpecification.hasSeason(season);
 
@@ -145,7 +142,7 @@ public class ItemSpecificationTest {
     }
 
     @Test
-    public void testHasRatingGreaterThan() {
+    public void hasRatingGreaterThan() {
         Short rating = 4;
         Specification<Item> spec = ItemSpecification.hasRatingGreaterThan(rating);
 
@@ -155,7 +152,7 @@ public class ItemSpecificationTest {
     }
 
     @Test
-    public void testMatchesSearchPattern() {
+    public void matchesSearchPattern() {
         String searchPattern = "trousers";
         Specification<Item> spec = ItemSpecification.matchesSearchPattern(searchPattern);
 
@@ -166,7 +163,7 @@ public class ItemSpecificationTest {
 
     @Test
     @Transactional
-    public void testSpecificationComposition(){
+    public void specificationComposition(){
         var gender = RandomUtils.getRandomElement(Gender.values());
         var category = getCategoryWithSubcategories();
         var subcategory = RandomUtils.getRandomElement(category.getSubcategories());

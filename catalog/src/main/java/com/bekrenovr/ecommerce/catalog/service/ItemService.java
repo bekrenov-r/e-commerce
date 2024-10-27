@@ -45,13 +45,13 @@ public class ItemService {
         return paginatedItems.map(item -> itemMapper.itemToResponse(item, metadataMap.get(item)));
     }
 
-    public ItemDetailedResponse getItemById(UUID id) {
+    public ItemDetailedResponse getById(UUID id) {
         Item item = itemRepository.findByIdOrThrowDefault(id);
         ItemMetadata metadata = metadataService.generateMetadata(item);
         return itemMapper.itemToDetailedResponse(item, metadata);
     }
 
-    public List<ItemResponse> getItemsByIds(List<UUID> ids) {
+    public List<ItemResponse> getByIds(List<UUID> ids) {
         List<Item> items = itemRepository.findAllById(ids);
         Map<Item, ItemMetadata> metadataMap = metadataService.generateMetadata(items);
         return items.stream()
@@ -59,7 +59,7 @@ public class ItemService {
                 .toList();
     }
 
-    public void createItem(Item item) {
+    public void create(Item item) {
         Item savedItem = itemRepository.save(item);
         this.createItemDetails(savedItem);
     }

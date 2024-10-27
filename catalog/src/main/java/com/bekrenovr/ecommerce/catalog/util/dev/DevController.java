@@ -22,7 +22,7 @@ public class DevController {
     public void createSampleItems(@PathVariable int quantity){
         for(int i = 0; i < quantity; i++){
             Item item = itemGenerator.generateItemWithDetails();
-            itemService.createItem(item);
+            itemService.create(item);
         }
     }
 
