@@ -53,7 +53,7 @@ public class SecurityConfig {
                         .pathMatchers(HttpMethod.GET, "/orders/customer").hasAuthority("CUSTOMER")
                         .pathMatchers(HttpMethod.DELETE, "/orders/**").hasAuthority("CUSTOMER")
                         .pathMatchers("/orders/cart").hasAuthority("CUSTOMER")
-                        .pathMatchers( "/customers/wishlist/**").hasAuthority("CUSTOMER")
+                        .pathMatchers("/customers/wishlist/**").hasAuthority("CUSTOMER")
                         .anyExchange().authenticated())
                 .oauth2ResourceServer(oauth -> oauth.authenticationManagerResolver(authenticationManagerResolver()))
                 .securityContextRepository(NoOpServerSecurityContextRepository.getInstance())

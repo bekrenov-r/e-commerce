@@ -21,13 +21,13 @@ public class WishListService {
     private final CustomerRepository customerRepository;
     private final CatalogProxy catalogProxy;
 
-    public ResponseEntity<?> getWishListItemsForCustomer() {
+    public ResponseEntity<?> getForCustomer() {
         String email = AuthenticationUtil.getAuthenticatedUser().getUsername();
         List<UUID> wishListItemsIds = customerRepository.findByEmailOrThrowDefault(email).getWishListItems();
         return catalogProxy.getItemsByIds(wishListItemsIds);
     }
 
-    public void addItemToWishList(UUID itemId) {
+    public void addItem(UUID itemId) {
         catalogProxy.getItemById(itemId); // check if item exists (if not, 404 exception is thrown)
         String email = AuthenticationUtil.getAuthenticatedUser().getUsername();
         Customer customer = customerRepository.findByEmailOrThrowDefault(email);
@@ -38,7 +38,7 @@ public class WishListService {
         customerRepository.save(customer);
     }
 
-    public void removeItemFromWishList(UUID itemId) {
+    public void removeItem(UUID itemId) {
         String email = AuthenticationUtil.getAuthenticatedUser().getUsername();
         Customer customer = customerRepository.findByEmailOrThrowDefault(email);
         if(!customer.getWishListItems().contains(itemId)){
@@ -48,7 +48,7 @@ public class WishListService {
         customerRepository.save(customer);
     }
 
-    public void clearWishList() {
+    public void clear() {
         String email = AuthenticationUtil.getAuthenticatedUser().getUsername();
         Customer customer = customerRepository.findByEmailOrThrowDefault(email);
         customer.getWishListItems().clear();

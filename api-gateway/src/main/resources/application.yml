@@ -12,6 +12,9 @@ spring:
         - uri: http://192.168.0.59:8400/keycloak/realms/e-commerce
           username-json-path: $.preferred_username
           roles-json-path: $.realm_access.roles
+        - uri: http://localhost:8400/keycloak/realms/e-commerce
+          username-json-path: $.preferred_username
+          roles-json-path: $.realm_access.roles
         - uri: https://accounts.google.com
           username-json-path: $.email
           default-roles: CUSTOMER

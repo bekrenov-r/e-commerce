@@ -15,23 +15,23 @@ public class WishListController {
     private final WishListService wishListService;
 
     @GetMapping
-    public ResponseEntity<?> getWishListItemsForCustomer(){
-        return wishListService.getWishListItemsForCustomer();
+    public ResponseEntity<?> getForCustomer(){
+        return wishListService.getForCustomer();
     }
 
     @PostMapping
-    public ResponseEntity<Void> addItemToWishList(@RequestParam(name = "id") UUID itemId) {
-        wishListService.addItemToWishList(itemId);
+    public ResponseEntity<Void> addItem(@RequestParam(name = "id") UUID itemId) {
+        wishListService.addItem(itemId);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @DeleteMapping
-    public void removeItemFromWishList(@RequestParam(name = "id") UUID itemId) {
-        wishListService.removeItemFromWishList(itemId);
+    public void removeItem(@RequestParam(name = "id") UUID itemId) {
+        wishListService.removeItem(itemId);
     }
 
     @DeleteMapping("/clear")
-    public void clearWishList() {
-        wishListService.clearWishList();
+    public void clear() {
+        wishListService.clear();
     }
 }
