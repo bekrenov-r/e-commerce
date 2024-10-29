@@ -1,4 +1,8 @@
 spring:
+  config:
+    activate:
+      on-profile: dev
+    import: optional:configserver:http://localhost:8888
   datasource:
     url: jdbc:postgresql://localhost:5432/customers_data
     username: postgres
@@ -14,3 +18,19 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka
+---
+spring:
+  config:
+    activate:
+      on-profile: test
+    import: optional:configserver:http://localhost:8888
+  datasource:
+    url: jdbc:tc:postgresql:16.4://host/integration-tests-db?TC_INITSCRIPT=data.sql&TC_DAEMON=true
+  jpa:
+    hibernate:
+      ddl-auto: validate
+server:
+  port: 8101
+eureka:
+  client:
+    enabled: false

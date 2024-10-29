@@ -5,6 +5,7 @@ import com.bekrenovr.ecommerce.customers.dto.response.CustomerResponse;
 import com.bekrenovr.ecommerce.customers.service.CustomerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,18 +18,19 @@ public class CustomerController {
     private final CustomerService customerService;
 
     @GetMapping
-    public ResponseEntity<CustomerResponse> getCustomerByEmail(@RequestParam String email) {
-        return ResponseEntity.ok(customerService.getCustomerByEmail(email));
+    public ResponseEntity<CustomerResponse> getByEmail(@RequestParam String email) {
+        return ResponseEntity.ok(customerService.getByEmail(email));
     }
 
     @PostMapping
-    public void createCustomer(@Valid @RequestBody CustomerRequest request){
-        customerService.createCustomer(request);
+    public ResponseEntity<Void> create(@Valid @RequestBody CustomerRequest request){
+        HttpStatus status = customerService.create(request);
+        return ResponseEntity.status(status).build();
     }
 
     @PutMapping
-    public void update(@Valid @RequestBody CustomerRequest request){
-        customerService.updateCustomer(request);
+    public ResponseEntity<CustomerResponse> update(@Valid @RequestBody CustomerRequest request){
+        return ResponseEntity.ok(customerService.update(request));
     }
 
     @DeleteMapping("/{id}")

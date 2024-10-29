@@ -1,26 +1,26 @@
-drop schema public cascade;
-create schema public;
-
-CREATE TABLE customer (
-  first_name text,
-  last_name text,
-  email text,
-  is_registered boolean,
-  created_at timestamp,
-  id uuid NOT NULL PRIMARY KEY,
-  UNIQUE (email)
+CREATE TABLE customer
+(
+    first_name    text,
+    last_name     text,
+    email         text,
+    is_registered boolean,
+    created_at    timestamp,
+    id            uuid NOT NULL PRIMARY KEY,
+    UNIQUE (email)
 );
 
-CREATE TABLE customer_wish_list (
-  customer_id uuid,
-  item_id uuid
+CREATE TABLE customer_wish_list
+(
+    customer_id uuid,
+    item_id     uuid
 );
 
 insert into customer(first_name, last_name, email, is_registered, created_at, id)
 values
     ('Jane', 'Doe', 'jane.doe@example.com', true, current_timestamp, '5018177b-b2cb-4d07-aba9-3132583fe7af'),
     ('Mathew', 'Smith', 'bekrenov.s@gmail.com', true, current_timestamp, '37678e03-9aa8-4788-9486-e531aab2a855'),
-    ('Roman', 'Bekrenov', 'roman.bekrenov@interia.pl', false, current_timestamp, 'ef96381d-4682-45e9-94db-63a3d06b0b84');
+    ('Roman', 'Bekrenov', 'roman.bekrenov@interia.pl', false, current_timestamp, 'ef96381d-4682-45e9-94db-63a3d06b0b84'),
+    ('Alex', 'Mitchell', 'alex.mitchell@example.com', false, current_timestamp, '0900916c-3e4e-4ed8-b842-c2813ece8e4f');
 
 insert into customer_wish_list(customer_id, item_id)
 values ('5018177b-b2cb-4d07-aba9-3132583fe7af', 'fa5f648e-b2b8-4f8a-a0d7-d65a4547f8d6'),
