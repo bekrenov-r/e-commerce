@@ -3,73 +3,81 @@
 drop schema public cascade;
 create schema public;
 
-create table category (
-  name text,
-  img_name text,
-  enum_value text,
-  id uuid primary key
+create table category
+(
+    name       text,
+    img_name   text,
+    enum_value text,
+    id         uuid primary key
 );
 
-create table subcategory (
-  name text,
-  category_id uuid,
-  id uuid primary key,
-  foreign key (category_id) references category(id)
+create table subcategory
+(
+    name        text,
+    category_id uuid,
+    id          uuid primary key,
+    foreign key (category_id) references category (id)
 );
 
-create table brand(
+create table brand
+(
     name text,
-    id uuid primary key
+    id   uuid primary key
 );
 
-CREATE TABLE item (
-  name text,
-  description text,
-  price numeric,
-  discount numeric,
-  price_after_discount numeric,
-  category_id uuid,
-  subcategory_id uuid,
-  brand_id uuid,
-  color text,
-  gender text,
-  collection text,
-  material text,
-  season text,
-  rating numeric,
-  item_code text,
-  id uuid PRIMARY KEY,
-  foreign key (category_id) references category(id),
-  foreign key (subcategory_id) references subcategory(id)
+CREATE TABLE item
+(
+    name                 text,
+    description          text,
+    price                float,
+    discount             float,
+    price_after_discount float,
+    category_id          uuid,
+    subcategory_id       uuid,
+    brand_id             uuid,
+    color                text,
+    gender               text,
+    collection           text,
+    material             text,
+    season               text,
+    rating               float,
+    item_code            text,
+    id                   uuid PRIMARY KEY,
+    foreign key (category_id) references category (id),
+    foreign key (subcategory_id) references subcategory (id)
 );
 
-create table image (
+create table image
+(
     item_id uuid,
-    path text,
-    id uuid primary key,
-    foreign key (item_id) references item(id)
+    path    text,
+    id      uuid primary key,
+    foreign key (item_id) references item (id)
 );
 
-CREATE TABLE item_details (
-  item_id uuid,
-  orders_count_total bigint,
-  orders_count_last_month int,
-  created_at timestamp,
-  creating_employee text,
-  FOREIGN KEY (item_id) REFERENCES item (id)
+CREATE TABLE item_details
+(
+    item_id                 uuid,
+    orders_count_total      int,
+    orders_count_last_month int,
+    created_at              timestamp,
+    creating_employee       text,
+    FOREIGN KEY (item_id) REFERENCES item (id)
 );
 
-CREATE TABLE unique_item (
-  item_id uuid,
-  size text,
-  quantity int,
-  id uuid PRIMARY KEY,
-  FOREIGN KEY (item_id) REFERENCES item (id)
+CREATE TABLE unique_item
+(
+    item_id  uuid,
+    size     text,
+    quantity int,
+    id       uuid PRIMARY KEY,
+    FOREIGN KEY (item_id) REFERENCES item (id)
 );
 
-create table landing_page_item(
+create table landing_page_item
+(
     item_id uuid,
-    foreign key (item_id) references item(id)
+    foreign key (item_id) references item (id)
 );
 
 INSERT INTO category VALUES

@@ -14,8 +14,6 @@ import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.util.UriComponentsBuilder;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.net.URI;
@@ -26,11 +24,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @ActiveProfiles("test")
 public class CustomerIT {
-    @Container
-    static PostgreSQLContainer<?> postgreSQLContainer = IntegrationTestsPostgreSQLContainer.getInstance();
+    TestRestTemplate restTemplate;
 
     @Autowired
-    TestRestTemplate restTemplate;
+    CustomerIT(TestRestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
 
     static final String URI_MAPPING = "/customers";
 

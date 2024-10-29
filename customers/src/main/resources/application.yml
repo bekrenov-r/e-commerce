@@ -8,8 +8,6 @@ spring:
     username: postgres
     password:
     driver-class-name: org.postgresql.Driver
-  config:
-    import: optional:configserver:http://localhost:8888
   application:
     name: customers
 server:
@@ -25,10 +23,10 @@ spring:
       on-profile: test
     import: optional:configserver:http://localhost:8888
   datasource:
-    url: jdbc:tc:postgresql:16.4://host/integration-tests-db?TC_INITSCRIPT=data.sql&TC_DAEMON=true
+    url: jdbc:tc:postgresql:16.4:///test-db?TC_INITSCRIPT=data.sql&TC_DAEMON=true
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: none
 server:
   port: 8101
 eureka:

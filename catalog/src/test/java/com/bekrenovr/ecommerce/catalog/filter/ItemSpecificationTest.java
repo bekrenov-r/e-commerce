@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.context.ActiveProfiles;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -33,19 +34,28 @@ import java.util.function.Predicate;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Testcontainers
 @SpringBootTest
 @ActiveProfiles("test")
 public class ItemSpecificationTest {
+    ItemRepository itemRepository;
+    CategoryRepository categoryRepository;
+    BrandRepository brandRepository;
+    SizeFactory sizeFactory;
+    ItemSpecificationBuilder itemSpecificationBuilder;
+
     @Autowired
-    private ItemRepository itemRepository;
-    @Autowired
-    private CategoryRepository categoryRepository;
-    @Autowired
-    private BrandRepository brandRepository;
-    @Autowired
-    private SizeFactory sizeFactory;
-    @Autowired
-    private ItemSpecificationBuilder itemSpecificationBuilder;
+    ItemSpecificationTest(ItemRepository itemRepository,
+                          CategoryRepository categoryRepository,
+                          BrandRepository brandRepository,
+                          SizeFactory sizeFactory,
+                          ItemSpecificationBuilder itemSpecificationBuilder) {
+        this.itemRepository = itemRepository;
+        this.categoryRepository = categoryRepository;
+        this.brandRepository = brandRepository;
+        this.sizeFactory = sizeFactory;
+        this.itemSpecificationBuilder = itemSpecificationBuilder;
+    }
 
     private static final DoubleRange PRICE_RANGE = new DoubleRange(10.0, 50.0);
 

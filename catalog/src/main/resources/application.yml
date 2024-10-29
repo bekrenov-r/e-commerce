@@ -53,21 +53,16 @@ spring:
   config:
     activate:
       on-profile: test
-  h2:
-    console:
-      settings:
-        trace: true
-      enabled: true
   datasource:
-    url: jdbc:h2:mem:testdb;NON_KEYWORDS=USER;
-  data:
-    jpa:
-      repositories:
-        bootstrap-mode: default
+    url: jdbc:tc:postgresql:16.4:///test-db?TC_INITSCRIPT=data.sql&TC_DAEMON=true
   jpa:
-    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: none
 server:
   port: 8001
+eureka:
+  client:
+    enabled: false
 ---
 spring:
   config:
