@@ -6,10 +6,12 @@ import com.bekrenovr.ecommerce.common.security.AuthenticationUtil;
 import com.bekrenovr.ecommerce.common.security.Role;
 import com.bekrenovr.ecommerce.common.util.PageUtil;
 import com.bekrenovr.ecommerce.orders.dto.mapper.DeliveryMapper;
+import com.bekrenovr.ecommerce.orders.dto.mapper.ItemEntryMapper;
 import com.bekrenovr.ecommerce.orders.dto.mapper.OrderMapper;
 import com.bekrenovr.ecommerce.orders.dto.request.CustomerRequest;
 import com.bekrenovr.ecommerce.orders.dto.request.ItemEntryRequest;
 import com.bekrenovr.ecommerce.orders.dto.request.OrderRequest;
+import com.bekrenovr.ecommerce.orders.dto.response.CatalogItem;
 import com.bekrenovr.ecommerce.orders.dto.response.OrderDetailedResponse;
 import com.bekrenovr.ecommerce.orders.dto.response.OrderResponse;
 import com.bekrenovr.ecommerce.orders.model.OrderEvent;
@@ -30,6 +32,7 @@ import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import static com.bekrenovr.ecommerce.orders.exception.OrdersApplicationExceptionReason.CANNOT_CANCEL_ORDER;
@@ -44,6 +47,7 @@ public class OrderService {
     private final DeliveryMapper deliveryMapper;
     private final ItemEntryService itemEntryService;
     private final OrderEventProducer orderEventProducer;
+    private final ItemEntryMapper itemEntryMapper;
 
     public OrderDetailedResponse getById(UUID id) {
         Order order = orderRepository.findByIdOrThrowDefault(id);
@@ -60,18 +64,24 @@ public class OrderService {
         return PageUtil.paginateList(orders, pageNumber, pageSize);
     }
 
-    public OrderResponse createOrder(OrderRequest orderRequest) {
+    public OrderResponse create(OrderRequest orderRequest) {
         String customerEmail = resolveCustomer(orderRequest);
-        List<ItemEntry> itemEntries = itemEntryService.createItemEntries(orderRequest.itemEntries());
+        Map<ItemEntryRequest, CatalogItem> itemEntryRequestToCatalogItem =
+                itemEntryService.processRequests(orderRequest.itemEntries());
+        List<ItemEntry> itemEntries = orderRequest.itemEntries().stream()
+                .map(itemEntryMapper::requestToEntity)
+                .toList();
         Delivery delivery = deliveryMapper.requestToEntity(orderRequest.delivery());
+        double totalPrice = calculateTotalPrice(itemEntryRequestToCatalogItem);
+        double totalPriceAfterDiscount = calculateTotalPriceAfterDiscount(itemEntryRequestToCatalogItem);
         Order order = Order.builder()
                 .customerEmail(customerEmail)
                 .itemEntries(itemEntries)
                 .delivery(delivery)
                 .createdAt(LocalDateTime.now())
                 .lastUpdatedAt(LocalDateTime.now())
-                .totalPrice(calculateTotalPrice(itemEntries))
-                .totalPriceAfterDiscount(calculateTotalPriceAfterDiscount(itemEntries))
+                .totalPrice(totalPrice)
+                .totalPriceAfterDiscount(totalPriceAfterDiscount)
                 .number(generateOrderNumber())
                 .status(OrderStatus.ACCEPTED)
                 .build();
@@ -100,20 +110,26 @@ public class OrderService {
         return request.customer().getEmail();
     }
 
-    private double calculateTotalPrice(List<ItemEntry> itemEntries) {
-        return itemEntries.stream()
-                .map(ItemEntry::getTotalPrice)
-                .map(BigDecimal::valueOf)
-                .reduce(BigDecimal.ZERO, BigDecimal::add)
+    private double calculateTotalPrice(Map<ItemEntryRequest, CatalogItem> catalogItemsMap) {
+        return catalogItemsMap.entrySet().stream()
+                .map(mapEntry -> {
+                    int quantity = mapEntry.getKey().quantity();
+                    double itemPrice = mapEntry.getValue().price();
+                    return BigDecimal.valueOf(itemPrice)
+                            .multiply(BigDecimal.valueOf(quantity));
+                }).reduce(BigDecimal.ZERO, BigDecimal::add)
                 .setScale(2, RoundingMode.HALF_DOWN)
                 .doubleValue();
     }
 
-    private double calculateTotalPriceAfterDiscount(List<ItemEntry> itemEntries) {
-        return itemEntries.stream()
-                .map(ItemEntry::getTotalPriceAfterDiscount)
-                .map(BigDecimal::valueOf)
-                .reduce(BigDecimal.ZERO, BigDecimal::add)
+    private double calculateTotalPriceAfterDiscount(Map<ItemEntryRequest, CatalogItem> catalogItemsMap) {
+        return catalogItemsMap.entrySet().stream()
+                .map(mapEntry -> {
+                    int quantity = mapEntry.getKey().quantity();
+                    double itemPrice = mapEntry.getValue().priceAfterDiscount();
+                    return BigDecimal.valueOf(itemPrice)
+                            .multiply(BigDecimal.valueOf(quantity));
+                }).reduce(BigDecimal.ZERO, BigDecimal::add)
                 .setScale(2, RoundingMode.HALF_DOWN)
                 .doubleValue();
     }
@@ -136,7 +152,7 @@ public class OrderService {
         }
     }
 
-    public void cancelOrder(UUID id) {
+    public void cancel(UUID id) {
         Order order = orderRepository.findByIdOrThrowDefault(id);
         validateOrderStatusBeforeCancellation(order);
         order.setStatus(OrderStatus.CANCELLED);

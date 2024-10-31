@@ -1,16 +1,19 @@
 package com.bekrenovr.ecommerce.orders.dto.response;
 
+import lombok.Data;
+
 import java.util.UUID;
 
-public record ItemEntryResponse(
-    UUID id,
-    UUID itemId,
-    String itemName,
-    String itemSize,
-    int quantity,
-    double discount,
-    double itemPrice,
-    double itemPriceAfterDiscount,
-    double totalPrice,
-    double totalPriceAfterDiscount
-) { }
+@Data
+public class ItemEntryResponse {
+    private UUID id;
+    private UUID itemId;
+    private String itemName;
+    private String itemSize;
+    private int quantity;
+    private double discount;
+    private double itemPrice;
+    private double itemPriceAfterDiscount;
+    private double totalPrice;
+    private double totalPriceAfterDiscount;
+}

@@ -37,11 +37,11 @@ public class OrderController {
     @PostMapping
     public ResponseEntity<OrderResponse> create(@RequestBody @Validated OrderRequest orderRequest) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(orderService.createOrder(orderRequest));
+                .body(orderService.create(orderRequest));
     }
 
     @DeleteMapping("/{id}")
     public void cancel(@PathVariable UUID id) {
-        orderService.cancelOrder(id);
+        orderService.cancel(id);
     }
 }

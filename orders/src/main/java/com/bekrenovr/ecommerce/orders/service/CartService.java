@@ -4,8 +4,8 @@ import com.bekrenovr.ecommerce.common.exception.EcommerceApplicationException;
 import com.bekrenovr.ecommerce.common.security.AuthenticationUtil;
 import com.bekrenovr.ecommerce.orders.dto.mapper.ItemEntryMapper;
 import com.bekrenovr.ecommerce.orders.dto.request.ItemEntryRequest;
+import com.bekrenovr.ecommerce.orders.dto.response.CatalogItem;
 import com.bekrenovr.ecommerce.orders.dto.response.ItemEntryResponse;
-import com.bekrenovr.ecommerce.orders.dto.response.ItemResponse;
 import com.bekrenovr.ecommerce.orders.model.entity.Cart;
 import com.bekrenovr.ecommerce.orders.model.entity.ItemEntry;
 import com.bekrenovr.ecommerce.orders.proxy.CatalogProxy;
@@ -35,8 +35,8 @@ public class CartService {
 
     public void addItemToCart(ItemEntryRequest request) {
         Cart cart = getOrCreateCart();
-        ItemResponse item = catalogProxy.getItemById(request.itemId()).getBody();
-        ItemEntryValidator.validateEntryAgainstItem(request, item);
+        CatalogItem item = catalogProxy.getItemById(request.itemId()).getBody();
+        ItemEntryValidator.validateEntryAgainstCatalogItem(request, item);
         ItemEntry itemEntry = itemEntryMapper.itemResponseToEntity(item, request.quantity(), request.size());
         cart.getItemEntries().add(itemEntry);
         cartRepository.save(cart);
@@ -48,8 +48,8 @@ public class CartService {
                 .filter(entry -> entry.getId().equals(itemEntryId))
                 .findFirst()
                 .orElseThrow(() -> new EcommerceApplicationException(CART_ENTRY_NOT_FOUND, itemEntryId));
-        ItemResponse item = catalogProxy.getItemById(itemEntry.getItemId()).getBody();
-        ItemEntryValidator.validateEntryAgainstItem(new ItemEntryRequest(item.id(), quantity, size), item);
+        CatalogItem item = catalogProxy.getItemById(itemEntry.getItemId()).getBody();
+        ItemEntryValidator.validateEntryAgainstCatalogItem(new ItemEntryRequest(item.id(), quantity, size), item);
 
         itemEntry.setQuantity(quantity);
         itemEntry.setItemSize(size);

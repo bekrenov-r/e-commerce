@@ -2,14 +2,14 @@ package com.bekrenovr.ecommerce.orders.validation;
 
 import com.bekrenovr.ecommerce.common.exception.EcommerceApplicationException;
 import com.bekrenovr.ecommerce.orders.dto.request.ItemEntryRequest;
-import com.bekrenovr.ecommerce.orders.dto.response.ItemResponse;
+import com.bekrenovr.ecommerce.orders.dto.response.CatalogItem;
 import com.bekrenovr.ecommerce.orders.dto.response.UniqueItemResponse;
 
 import static com.bekrenovr.ecommerce.orders.exception.OrdersApplicationExceptionReason.QUANTITY_IS_UNAVAILABLE;
 import static com.bekrenovr.ecommerce.orders.exception.OrdersApplicationExceptionReason.SIZE_IS_UNAVAILABLE;
 
 public class ItemEntryValidator {
-    public static void validateEntryAgainstItem(ItemEntryRequest itemEntry, ItemResponse item) {
+    public static void validateEntryAgainstCatalogItem(ItemEntryRequest itemEntry, CatalogItem item) {
         int requestedQuantity = itemEntry.quantity();
         String requestedSize = itemEntry.size();
         UniqueItemResponse uniqueItemBySize = item.uniqueItems().stream()
