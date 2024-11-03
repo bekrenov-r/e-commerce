@@ -30,7 +30,7 @@ public class RegistrationController {
     }
 
     @PostMapping("/customer/activate-account")
-    public ResponseEntity<String> activateAccount(@RequestParam @NotBlank String token) {
+    public ResponseEntity<?> activateAccount(@RequestParam @NotBlank String token) {
         return registrationService.activateAccount(token);
     }
 }

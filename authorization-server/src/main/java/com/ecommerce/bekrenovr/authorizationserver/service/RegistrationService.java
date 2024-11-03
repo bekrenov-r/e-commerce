@@ -30,7 +30,7 @@ public class RegistrationService {
         mailService.sendCustomerAccountActivationEmail(response.getBody(), activationToken);
     }
 
-    public ResponseEntity<String> activateAccount(String token) {
+    public ResponseEntity<?> activateAccount(String token) {
         return keycloakProxy.enableUser(token);
     }
 }

@@ -96,7 +96,8 @@ public class WishListIT {
 
         @Test
         void shouldReturn404_WhenItemDoesNotExist() {
-            when(catalogProxy.getItemById(any(UUID.class))).thenThrow(mockFeignException(HttpStatus.NOT_FOUND));
+            FeignException notFound = mockFeignException(HttpStatus.NOT_FOUND);
+            when(catalogProxy.getItemById(any(UUID.class))).thenThrow(notFound);
 
             String authenticatedUser = TestUtil.getAuthenticatedUserJSON(
                     "jane.doe@example.com", List.of(Role.CUSTOMER));

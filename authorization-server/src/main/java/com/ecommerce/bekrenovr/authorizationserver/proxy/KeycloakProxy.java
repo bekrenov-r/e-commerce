@@ -28,7 +28,7 @@ public interface KeycloakProxy {
     ResponseEntity<String> getActivationTokenForUser(@RequestParam("username") String username);
 
     @PostMapping("/users/enable")
-    ResponseEntity<String> enableUser(@RequestParam String token);
+    ResponseEntity<?> enableUser(@RequestParam String token);
 
     @PostMapping("/users/recover-password")
     ResponseEntity<?> recoverPassword(@RequestParam String token, @RequestParam("password") String newPassword);
