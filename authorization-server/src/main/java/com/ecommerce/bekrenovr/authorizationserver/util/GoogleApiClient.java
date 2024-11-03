@@ -1,18 +1,25 @@
 package com.ecommerce.bekrenovr.authorizationserver.util;
 
 import com.ecommerce.bekrenovr.authorizationserver.config.OAuth2LoginProviderProperties;
-import lombok.RequiredArgsConstructor;
+import com.ecommerce.bekrenovr.authorizationserver.config.OAuth2LoginProviderProperties.Providers;
 import org.json.JSONObject;
 import org.springframework.http.*;
+import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Arrays;
 
-@RequiredArgsConstructor
+@Component
 public class GoogleApiClient {
     private final OAuth2LoginProviderProperties.LoginProvider googleProperties;
+
+    public GoogleApiClient(OAuth2LoginProviderProperties oauth2Properties) {
+        this.googleProperties = oauth2Properties.get(Providers.GOOGLE.name());
+    }
 
     public JSONObject getAccessTokenResponse(String grantCode) {
         RestTemplate restTemplate = new RestTemplate();
@@ -30,9 +37,12 @@ public class GoogleApiClient {
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(params, httpHeaders);
 
         String url = "https://oauth2.googleapis.com/token";
-        String response = restTemplate.postForObject(url, requestEntity, String.class);
-
-        return new JSONObject(response);
+        try {
+            String response = restTemplate.postForObject(url, requestEntity, String.class);
+            return new JSONObject(response);
+        } catch(HttpClientErrorException.BadRequest ex) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        }
     }
 
     public String refreshAccessToken(String refreshToken) {
@@ -49,7 +59,11 @@ public class GoogleApiClient {
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(params, httpHeaders);
 
         String url = "https://oauth2.googleapis.com/token";
-        return restTemplate.postForObject(url, requestEntity, String.class);
+        try {
+            return restTemplate.postForObject(url, requestEntity, String.class);
+        } catch(HttpClientErrorException.BadRequest ex) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        }
     }
 
     public JSONObject getGoogleUserInfo(String accessToken) {
