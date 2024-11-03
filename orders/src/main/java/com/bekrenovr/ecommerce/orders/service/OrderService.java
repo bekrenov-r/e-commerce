@@ -154,6 +154,7 @@ public class OrderService {
 
     public void cancel(UUID id) {
         Order order = orderRepository.findByIdOrThrowDefault(id);
+        requireOrderOwnershipByCustomer(order);
         validateOrderStatusBeforeCancellation(order);
         order.setStatus(OrderStatus.CANCELLED);
         Order savedOrder = orderRepository.save(order);
