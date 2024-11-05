@@ -84,7 +84,7 @@ public class EcommerceUserEndpoint {
     @Produces(MediaType.APPLICATION_JSON)
     public Response recoverPassword(@QueryParam("token") String username, @QueryParam("password") String newPassword) {
         doRecoverPassword(username, newPassword);
-        return Response.status(Response.Status.CREATED).build();
+        return Response.status(Response.Status.OK).build();
     }
 
     @POST

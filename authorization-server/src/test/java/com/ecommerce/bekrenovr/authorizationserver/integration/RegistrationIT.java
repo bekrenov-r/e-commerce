@@ -1,5 +1,6 @@
 package com.ecommerce.bekrenovr.authorizationserver.integration;
 
+import com.bekrenovr.ecommerce.common.model.Person;
 import com.ecommerce.bekrenovr.authorizationserver.dto.request.CustomerRegistrationRequest;
 import com.ecommerce.bekrenovr.authorizationserver.proxy.CustomerServiceProxy;
 import com.ecommerce.bekrenovr.authorizationserver.proxy.KeycloakProxy;
@@ -28,8 +29,7 @@ import java.net.URI;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @ActiveProfiles("test")
@@ -53,6 +53,7 @@ public class RegistrationIT {
         static final String URI_MAPPING = "/registration/customer";
         @Test
         void shouldReturn201_WhenCustomerRegisteredSuccessfully() throws JSONException {
+            doNothing().when(mailService).sendCustomerAccountActivationEmail(any(Person.class), anyString());
             when(keycloakProxy.createKeycloakUser(anyString(), anyString(), anyString(), anyString()))
                     .thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(""));
             when(customerServiceProxy.createCustomer(any(CustomerRegistrationRequest.class)))
@@ -125,6 +126,7 @@ public class RegistrationIT {
         void shouldReturn200_WhenResendSuccessful() {
             ResponseEntity<String> mockKeycloakResponse = mock(ResponseEntity.class);
             when(mockKeycloakResponse.getBody()).thenReturn("");
+            doNothing().when(mailService).sendCustomerAccountActivationEmail(any(Person.class), anyString());
             when(customerServiceProxy.getCustomerByEmail(anyString())).thenReturn(ResponseEntity.ok().build());
             when(keycloakProxy.getActivationTokenForUser(anyString())).thenReturn(mockKeycloakResponse);
 
@@ -181,6 +183,7 @@ public class RegistrationIT {
 
         @Test
         void shouldReturn200_WhenUserActivatedSuccessfully() {
+            doNothing().when(mailService).sendCustomerAccountActivationEmail(any(Person.class), anyString());
             when(keycloakProxy.enableUser(anyString()))
                     .thenReturn(ResponseEntity.ok().build());
 
