@@ -6,6 +6,7 @@ import com.bekrenovr.ecommerce.catalog.model.entity.Item;
 import com.bekrenovr.ecommerce.catalog.model.entity.UniqueItem;
 import com.bekrenovr.ecommerce.catalog.proxy.CustomerServiceProxy;
 import com.bekrenovr.ecommerce.common.security.AuthenticationUtil;
+import com.bekrenovr.ecommerce.common.security.Role;
 import com.bekrenovr.ecommerce.common.security.SecurityConstants;
 import com.bekrenovr.ecommerce.common.util.RequestUtil;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +32,7 @@ public class ItemMetadataService {
     public Map<Item, ItemMetadata> generateMetadata(Iterable<Item> items) {
         Map<Item, ItemMetadata> map = StreamSupport.stream(items.spliterator(), false)
                 .collect(Collectors.toMap(item -> item, item -> new ItemMetadata()));
-        if(AuthenticationUtil.requestHasAuthentication()){
+        if(shouldIncludeWishListData()){
             Set<UUID> wishListItemsIds = getWishListItems().stream()
                     .map(ItemResponse::getId)
                     .collect(Collectors.toSet());
@@ -50,7 +51,7 @@ public class ItemMetadataService {
 
     public ItemMetadata generateMetadata(Item item) {
         ItemMetadata metadata = new ItemMetadata();
-        if(AuthenticationUtil.requestHasAuthentication()) {
+        if(shouldIncludeWishListData()) {
             Set<UUID> wishListItemsIds = getWishListItems().stream()
                     .map(ItemResponse::getId)
                     .collect(Collectors.toSet());
@@ -84,5 +85,10 @@ public class ItemMetadataService {
 
     private boolean isPopular(Item item){
         return item.getItemDetails().getOrdersCountLastMonth() >= popularItemOrdersCount;
+    }
+
+    private boolean shouldIncludeWishListData() {
+        return AuthenticationUtil.requestHasAuthentication()
+                && AuthenticationUtil.getAuthenticatedUser().hasRole(Role.CUSTOMER);
     }
 }

@@ -136,7 +136,7 @@ public class ItemInsertGenerator {
     private String createRecord(UniqueItem uniqueItem) {
         String template = "(${id}, '${itemId}', '${size}', ${quantity})";
         Map<String, Object> values = new HashMap<>();
-        values.put("id", "random_uuid()");
+        values.put("id", "gen_random_uuid()");
         values.put("itemId",uniqueItem.getItem().getId());
         values.put("size", uniqueItem.getSize());
         values.put("quantity", uniqueItem.getQuantity());
@@ -147,7 +147,7 @@ public class ItemInsertGenerator {
     private String createRecord(ItemImage image) {
         String template = "(${id}, '${itemId}', '${path}')";
         Map<String, Object> values = new HashMap<>();
-        values.put("id", "random_uuid()");
+        values.put("id", "gen_random_uuid()");
         values.put("itemId", image.getItem().getId());
         values.put("path", image.getPath());
         return StringSubstitutor.replace(template, values, "${", "}");
