@@ -1,8 +1,7 @@
-package com.bekrenovr.ecommerce.reviews.controller;
+package com.bekrenovr.ecommerce.reviews.review;
 
-import com.bekrenovr.ecommerce.reviews.dto.ReviewRequest;
-import com.bekrenovr.ecommerce.reviews.dto.ReviewResponse;
-import com.bekrenovr.ecommerce.reviews.service.ReviewService;
+import com.bekrenovr.ecommerce.reviews.review.dto.ReviewRequest;
+import com.bekrenovr.ecommerce.reviews.review.dto.ReviewResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

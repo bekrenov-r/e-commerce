@@ -3,11 +3,11 @@ package com.bekrenovr.ecommerce.reviews.integration;
 import com.bekrenovr.ecommerce.common.security.Role;
 import com.bekrenovr.ecommerce.common.security.SecurityConstants;
 import com.bekrenovr.ecommerce.common.util.TestUtil;
-import com.bekrenovr.ecommerce.reviews.model.Review;
-import com.bekrenovr.ecommerce.reviews.proxy.CatalogProxy;
-import com.bekrenovr.ecommerce.reviews.proxy.CustomersServiceProxy;
-import com.bekrenovr.ecommerce.reviews.proxy.OrdersServiceProxy;
-import com.bekrenovr.ecommerce.reviews.repository.ReviewRepository;
+import com.bekrenovr.ecommerce.reviews.feign.CatalogProxy;
+import com.bekrenovr.ecommerce.reviews.feign.CustomersProxy;
+import com.bekrenovr.ecommerce.reviews.feign.OrdersProxy;
+import com.bekrenovr.ecommerce.reviews.review.Review;
+import com.bekrenovr.ecommerce.reviews.review.ReviewRepository;
 import com.bekrenovr.ecommerce.reviews.util.ReviewRequestJsonBuilder;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
@@ -53,9 +53,9 @@ public class ReviewIT {
     @MockBean
     CatalogProxy catalogProxy;
     @MockBean
-    CustomersServiceProxy customersProxy;
+    CustomersProxy customersProxy;
     @MockBean
-    OrdersServiceProxy ordersProxy;
+    OrdersProxy ordersProxy;
     @SpyBean
     ReviewRepository reviewRepository;
 

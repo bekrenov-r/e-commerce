@@ -7,7 +7,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class })
-@EnableMongoRepositories(basePackages = "com.bekrenovr.ecommerce.reviews.repository")
+@EnableMongoRepositories(basePackages = "com.bekrenovr.ecommerce.reviews")
 @EnableFeignClients
 public class ReviewsServiceApplication {
 

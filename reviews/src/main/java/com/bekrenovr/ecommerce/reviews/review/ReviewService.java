@@ -1,4 +1,4 @@
-package com.bekrenovr.ecommerce.reviews.service;
+package com.bekrenovr.ecommerce.reviews.review;
 
 import com.bekrenovr.ecommerce.common.exception.EcommerceApplicationException;
 import com.bekrenovr.ecommerce.common.security.AuthenticatedUser;
@@ -7,13 +7,11 @@ import com.bekrenovr.ecommerce.common.security.Role;
 import com.bekrenovr.ecommerce.common.security.SecurityConstants;
 import com.bekrenovr.ecommerce.common.util.PageUtil;
 import com.bekrenovr.ecommerce.common.util.RequestUtil;
-import com.bekrenovr.ecommerce.reviews.dto.ReviewMapper;
-import com.bekrenovr.ecommerce.reviews.dto.ReviewRequest;
-import com.bekrenovr.ecommerce.reviews.dto.ReviewResponse;
-import com.bekrenovr.ecommerce.reviews.model.Review;
-import com.bekrenovr.ecommerce.reviews.proxy.CatalogProxy;
-import com.bekrenovr.ecommerce.reviews.proxy.OrdersServiceProxy;
-import com.bekrenovr.ecommerce.reviews.repository.ReviewRepository;
+import com.bekrenovr.ecommerce.reviews.feign.CatalogProxy;
+import com.bekrenovr.ecommerce.reviews.feign.OrdersProxy;
+import com.bekrenovr.ecommerce.reviews.review.dto.ReviewMapper;
+import com.bekrenovr.ecommerce.reviews.review.dto.ReviewRequest;
+import com.bekrenovr.ecommerce.reviews.review.dto.ReviewResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -32,7 +30,7 @@ public class ReviewService {
 
     private final ReviewRepository reviewRepository;
     private final ReviewMapper reviewMapper;
-    private final OrdersServiceProxy ordersProxy;
+    private final OrdersProxy ordersProxy;
     private final CatalogProxy catalogProxy;
 
     public Page<ReviewResponse> getAllForItem(UUID itemId, int pageNumber, int pageSize) {

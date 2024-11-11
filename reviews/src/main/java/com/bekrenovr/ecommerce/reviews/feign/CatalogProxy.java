@@ -1,4 +1,4 @@
-package com.bekrenovr.ecommerce.reviews.proxy;
+package com.bekrenovr.ecommerce.reviews.feign;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;

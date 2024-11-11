@@ -1,6 +1,6 @@
 package com.bekrenovr.ecommerce.reviews.config;
 
-import com.bekrenovr.ecommerce.reviews.model.Review;
+import com.bekrenovr.ecommerce.reviews.review.Review;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;

@@ -1,4 +1,4 @@
-package com.bekrenovr.ecommerce.reviews.model;
+package com.bekrenovr.ecommerce.reviews.review;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

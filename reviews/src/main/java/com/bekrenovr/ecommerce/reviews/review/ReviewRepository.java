@@ -1,6 +1,5 @@
-package com.bekrenovr.ecommerce.reviews.repository;
+package com.bekrenovr.ecommerce.reviews.review;
 
-import com.bekrenovr.ecommerce.reviews.model.Review;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

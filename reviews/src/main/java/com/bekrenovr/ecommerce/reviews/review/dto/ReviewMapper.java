@@ -1,7 +1,7 @@
-package com.bekrenovr.ecommerce.reviews.dto;
+package com.bekrenovr.ecommerce.reviews.review.dto;
 
-import com.bekrenovr.ecommerce.reviews.model.Review;
-import com.bekrenovr.ecommerce.reviews.proxy.CustomersServiceProxy;
+import com.bekrenovr.ecommerce.reviews.feign.CustomersProxy;
+import com.bekrenovr.ecommerce.reviews.review.Review;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
@@ -13,7 +13,7 @@ import java.util.Map;
 public abstract class ReviewMapper {
 
     @Autowired
-    protected CustomersServiceProxy customersProxy;
+    protected CustomersProxy customersProxy;
 
     public abstract ReviewResponse documentToResponse(Review review);
 
