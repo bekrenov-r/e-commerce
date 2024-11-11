@@ -1,0 +1,32 @@
+[
+  {
+    "itemId": "ea7cb002-3fea-4051-9f8d-c86ca4d4a696",
+    "customerEmail": "bekrenov.s@gmail.com",
+    "rating": 4,
+    "title": "Good stuff",
+    "content": "Veeeeery good stuff",
+    "likes": 0,
+    "dislikes": 0,
+    "createdAt": "2024-11-10T12:00:30"
+  },
+  {
+    "itemId": "2583b1be-ef5f-450a-a9df-fd5ad4fde768",
+    "customerEmail": "bekrenov.s@gmail.com",
+    "rating": 3,
+    "title": "Mediocre item",
+    "content": "Could be better for its price",
+    "likes": 0,
+    "dislikes": 0,
+    "createdAt": "2024-11-10T12:00:30"
+  },
+  {
+    "itemId": "df694bcf-117b-446e-ba68-c5eab425f1d7",
+    "customerEmail": "bekrenov.roman@gmail.com",
+    "rating": 5,
+    "title": "Great item",
+    "content": "The best item I had",
+    "likes": 0,
+    "dislikes": 0,
+    "createdAt": "2024-11-10T12:00:30"
+  }
+]

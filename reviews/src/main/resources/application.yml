@@ -1,19 +1,43 @@
 spring:
+  config:
+    import: optional:configserver:http://localhost:8888
+  application:
+    name: reviews
+custom:
+  page:
+    default-size: 10
+logging:
+  level:
+    org.springframework.data.mongodb: debug
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
   data:
     mongodb:
       uri: mongodb://localhost:27017/reviews_data
       database: reviews_data
       uuid-representation: java_legacy
-  application:
-    name: reviews
-  config:
-    import: optional:configserver:http://localhost:8888
+      init-file: /init.json
+server:
+  port: 8300
 eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka
+---
+spring:
+  config:
+    activate:
+      on-profile: test
+  data:
+    mongodb:
+      database: reviews_data
+      uuid-representation: java_legacy
+      init-file: /init.json
 server:
-  port: 8300
-custom:
-  page:
-    default-size: 10
+  port: 8301
+eureka:
+  client:
+    enabled: false

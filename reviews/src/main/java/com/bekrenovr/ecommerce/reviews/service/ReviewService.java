@@ -11,6 +11,7 @@ import com.bekrenovr.ecommerce.reviews.dto.ReviewMapper;
 import com.bekrenovr.ecommerce.reviews.dto.ReviewRequest;
 import com.bekrenovr.ecommerce.reviews.dto.ReviewResponse;
 import com.bekrenovr.ecommerce.reviews.model.Review;
+import com.bekrenovr.ecommerce.reviews.proxy.CatalogProxy;
 import com.bekrenovr.ecommerce.reviews.proxy.OrdersServiceProxy;
 import com.bekrenovr.ecommerce.reviews.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
@@ -32,14 +33,16 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final ReviewMapper reviewMapper;
     private final OrdersServiceProxy ordersProxy;
+    private final CatalogProxy catalogProxy;
 
-    public Page<ReviewResponse> getReviewsForItem(UUID itemId, int pageNumber, int pageSize) {
+    public Page<ReviewResponse> getAllForItem(UUID itemId, int pageNumber, int pageSize) {
+        catalogProxy.getItemById(itemId); // if item doesn't exist, 404 exception is thrown
         List<Review> reviews = reviewRepository.findAllByItemId(itemId);
         return PageUtil.paginateList(reviews, pageNumber, pageSize)
                 .map(reviewMapper::documentToResponse);
     }
 
-    public void createReview(ReviewRequest request) {
+    public void create(ReviewRequest request) {
         String customerEmail = AuthenticationUtil.getAuthenticatedUser().getUsername();
         validateReviewDoesNotExist(request.itemId());
         validateCustomerHasCompletedOrderForItem(request.itemId());
@@ -49,7 +52,7 @@ public class ReviewService {
         reviewRepository.save(review);
     }
 
-    public ReviewResponse updateReview(String id, ReviewRequest request) {
+    public ReviewResponse update(String id, ReviewRequest request) {
         Review review = reviewRepository.findById(id)
                 .orElseThrow(() -> new EcommerceApplicationException(REVIEW_NOT_FOUND, id));
         requireReviewOwnershipByCustomer(review);
@@ -59,7 +62,7 @@ public class ReviewService {
         return reviewMapper.documentToResponse(reviewRepository.save(review));
     }
 
-    public void deleteReview(String id) {
+    public void delete(String id) {
         Review review = reviewRepository.findById(id)
                 .orElseThrow(() -> new EcommerceApplicationException(REVIEW_NOT_FOUND, id));
         if(AuthenticationUtil.getAuthenticatedUser().hasRole(Role.CUSTOMER)) {
