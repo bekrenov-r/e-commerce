@@ -36,8 +36,6 @@ spring:
       database: reviews_data
       uuid-representation: java_legacy
       init-file: /init.json
-server:
-  port: 8301
 eureka:
   client:
     enabled: false
