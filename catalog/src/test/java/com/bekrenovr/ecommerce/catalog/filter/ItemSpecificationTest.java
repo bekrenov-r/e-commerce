@@ -6,8 +6,8 @@ import com.bekrenovr.ecommerce.catalog.jpa.repository.CategoryRepository;
 import com.bekrenovr.ecommerce.catalog.jpa.repository.ItemRepository;
 import com.bekrenovr.ecommerce.catalog.jpa.specification.ItemSpecification;
 import com.bekrenovr.ecommerce.catalog.jpa.specification.ItemSpecificationBuilder;
+import com.bekrenovr.ecommerce.catalog.model.ShoesSize;
 import com.bekrenovr.ecommerce.catalog.model.Size;
-import com.bekrenovr.ecommerce.catalog.model.SizeFactory;
 import com.bekrenovr.ecommerce.catalog.model.entity.Brand;
 import com.bekrenovr.ecommerce.catalog.model.entity.Category;
 import com.bekrenovr.ecommerce.catalog.model.entity.Item;
@@ -21,40 +21,43 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.context.ActiveProfiles;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@Testcontainers
-@SpringBootTest
+@DataJpaTest(showSql = false)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ActiveProfiles("test")
 public class ItemSpecificationTest {
+    @Value("${custom.strategy.shoes-size.min}")
+    int shoesSizeMin;
+    @Value("${custom.strategy.shoes-size.max}")
+    int shoesSizeMax;
+
     ItemRepository itemRepository;
     CategoryRepository categoryRepository;
     BrandRepository brandRepository;
-    SizeFactory sizeFactory;
     ItemSpecificationBuilder itemSpecificationBuilder;
 
     @Autowired
     ItemSpecificationTest(ItemRepository itemRepository,
                           CategoryRepository categoryRepository,
-                          BrandRepository brandRepository,
-                          SizeFactory sizeFactory,
-                          ItemSpecificationBuilder itemSpecificationBuilder) {
+                          BrandRepository brandRepository) {
         this.itemRepository = itemRepository;
         this.categoryRepository = categoryRepository;
         this.brandRepository = brandRepository;
-        this.sizeFactory = sizeFactory;
-        this.itemSpecificationBuilder = itemSpecificationBuilder;
+        this.itemSpecificationBuilder = new ItemSpecificationBuilder(categoryRepository, brandRepository);
     }
 
     private static final DoubleRange PRICE_RANGE = new DoubleRange(10.0, 50.0);
@@ -269,8 +272,13 @@ public class ItemSpecificationTest {
     }
 
     private List<Size> getRandomShoesSizes(int numberOfSizes){
-        List<Size> allShoesSizes = sizeFactory.getAllShoesSizes();
+        List<Size> allShoesSizes = Stream
+                .iterate(shoesSizeMin, i -> i <= shoesSizeMax, i -> i + 1)
+                .map(ShoesSize::new)
+                .map(Size.class::cast)
+                .toList();
         return RandomUtils.getRandomSeries(allShoesSizes, numberOfSizes);
     }
+
 }
 

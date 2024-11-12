@@ -5,9 +5,6 @@ import com.bekrenovr.ecommerce.catalog.model.enums.SizeType;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang.StringUtils;
 
-import java.util.List;
-import java.util.stream.Stream;
-
 @RequiredArgsConstructor
 public class SizeFactory {
     private final int shoesSizeMin;
@@ -19,16 +16,6 @@ public class SizeFactory {
 
     public Size getSize(String value){
         return StringUtils.isNumeric(value) ? getShoesSize(value) : getClothesSize(value);
-    }
-
-    public List<Size> getAllShoesSizes(){
-        return Stream
-                .iterate(
-                        shoesSizeMin,
-                        i -> i <= shoesSizeMax,
-                        i -> i + 1
-                ).map(this::getShoesSize)
-                .toList();
     }
 
     private Size getClothesSize(String value){
