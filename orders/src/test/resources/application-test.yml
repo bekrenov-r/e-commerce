@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: orders
+  cloud:
+    config:
+      enabled: false
+  datasource:
+    url: jdbc:tc:postgresql:16.4:///test-db?TC_INITSCRIPT=data.sql&TC_DAEMON=true
+  jpa:
+    hibernate:
+      ddl-auto: none
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration
+  kafka:
+    topic: order-events
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.IntegerSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    admin:
+      properties:
+        bootstrap-servers: localhost:9092
+server:
+  servlet:
+    context-path: /orders
+custom:
+  page:
+    default-size: 10
+eureka:
+  client:
+    enabled: false
+

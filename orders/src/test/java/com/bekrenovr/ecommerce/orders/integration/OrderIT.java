@@ -3,16 +3,16 @@ package com.bekrenovr.ecommerce.orders.integration;
 import com.bekrenovr.ecommerce.common.security.Role;
 import com.bekrenovr.ecommerce.common.security.SecurityConstants;
 import com.bekrenovr.ecommerce.common.util.TestUtil;
-import com.bekrenovr.ecommerce.orders.dto.response.CatalogItem;
-import com.bekrenovr.ecommerce.orders.dto.response.OrderResponse;
-import com.bekrenovr.ecommerce.orders.dto.response.UniqueItemResponse;
-import com.bekrenovr.ecommerce.orders.model.OrderEvent;
-import com.bekrenovr.ecommerce.orders.model.entity.Order;
-import com.bekrenovr.ecommerce.orders.model.enums.OrderStatus;
-import com.bekrenovr.ecommerce.orders.proxy.CatalogProxy;
-import com.bekrenovr.ecommerce.orders.proxy.CustomerProxy;
-import com.bekrenovr.ecommerce.orders.repository.OrderRepository;
-import com.bekrenovr.ecommerce.orders.service.OrderEventProducer;
+import com.bekrenovr.ecommerce.orders.feign.CatalogProxy;
+import com.bekrenovr.ecommerce.orders.feign.CustomersProxy;
+import com.bekrenovr.ecommerce.orders.order.Order;
+import com.bekrenovr.ecommerce.orders.order.OrderRepository;
+import com.bekrenovr.ecommerce.orders.order.OrderStatus;
+import com.bekrenovr.ecommerce.orders.order.dto.CatalogItem;
+import com.bekrenovr.ecommerce.orders.order.dto.OrderResponse;
+import com.bekrenovr.ecommerce.orders.order.dto.UniqueItemResponse;
+import com.bekrenovr.ecommerce.orders.order.event.OrderEvent;
+import com.bekrenovr.ecommerce.orders.order.event.OrderEventProducer;
 import com.bekrenovr.ecommerce.orders.util.OrderJsonBuilder;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
@@ -55,7 +55,7 @@ public class OrderIT {
     @MockBean
     CatalogProxy catalogProxy;
     @MockBean
-    CustomerProxy customerProxy;
+    CustomersProxy customersProxy;
     @MockBean
     OrderEventProducer eventProducer;
 

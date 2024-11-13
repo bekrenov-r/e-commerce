@@ -21,6 +21,7 @@ spring:
             - classpath:/config/authorization
             - classpath:/config/customers
             - classpath:/config/keycloak
+            - classpath:/config/orders
 ---
 spring:
   config:

@@ -1,7 +1,7 @@
 package com.bekrenovr.ecommerce.orders.datasets;
 
-import com.bekrenovr.ecommerce.orders.dto.response.CatalogItem;
-import com.bekrenovr.ecommerce.orders.dto.response.UniqueItemResponse;
+import com.bekrenovr.ecommerce.orders.order.dto.CatalogItem;
+import com.bekrenovr.ecommerce.orders.order.dto.UniqueItemResponse;
 
 import java.util.List;
 import java.util.UUID;

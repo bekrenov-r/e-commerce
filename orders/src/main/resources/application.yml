@@ -1,51 +1,9 @@
 spring:
   application:
     name: orders
-  config:
-    import: optional:configserver:http://localhost:8888
-  kafka:
-    topic: order-events
-    producer:
-      bootstrap-servers: localhost:9092
-      key-serializer: org.apache.kafka.common.serialization.IntegerSerializer
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
-    admin:
-      properties:
-        bootstrap-servers: localhost:9092
-server:
-  servlet:
-    context-path: /orders
-custom:
-  page:
-    default-size: 10
 ---
 spring:
   config:
     activate:
       on-profile: dev
-  datasource:
-    url: jdbc:postgresql://localhost:5432/orders_data
-    username:
-    password:
-    driver-class-name: org.postgresql.Driver
-server:
-  port: 8200
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://localhost:8761/eureka
----
-spring:
-  config:
-    activate:
-      on-profile: test
-  datasource:
-    url: jdbc:tc:postgresql:16.4:///test-db?TC_INITSCRIPT=data.sql&TC_DAEMON=true
-  jpa:
-    hibernate:
-      ddl-auto: none
-  autoconfigure:
-    exclude: org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration
-eureka:
-  client:
-    enabled: false
+    import: configserver:http://localhost:8888
