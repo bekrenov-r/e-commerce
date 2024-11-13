@@ -1,0 +1,40 @@
+spring:
+  application:
+    name: catalog
+  datasource:
+    url: jdbc:postgresql://localhost:5432/items_data
+    username: '{cipher}ea449cc948e7d635ffa77adf4a36da1184a721aeffc2d5d747633a4a70950bc3'
+    password: '{cipher}a0c3a49ada9959c39128ef348f12485bb6e6e5fdbedcc07bc208154fd5bf8feb'
+    driver-class-name: org.postgresql.Driver
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:9092
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      group-id: order-events-listener-group
+custom:
+  page:
+    default-size: 10
+  strategy:
+    popularity:
+      item-is-considered-popular-at-orders-count:
+        25
+    shoes-size:
+      min: 30
+      max: 46
+  category:
+    img-path-prefix:
+      men: catalog/src/main/resources/images/category/men/
+      women: catalog/src/main/resources/images/category/women/
+springdoc:
+  api-docs:
+    path: /docs # these urls will be used to load the api docs of this service by the api gateway
+  swagger-ui:
+    enabled: false
+server:
+  port: 8000
+  servlet:
+    context-path: /catalog
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka  

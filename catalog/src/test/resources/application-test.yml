@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: catalog
+  datasource:
+    url: jdbc:tc:postgresql:16.4:///test-db?TC_INITSCRIPT=data.sql&TC_DAEMON=true
+  jpa:
+    hibernate:
+      ddl-auto: none
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration
+custom:
+  page:
+    default-size: 10
+  strategy:
+    popularity:
+      item-is-considered-popular-at-orders-count:
+        25
+    shoes-size:
+      min: 30
+      max: 46
+  category:
+    img-path-prefix:
+      men: catalog/src/main/resources/images/category/men/
+      women: catalog/src/main/resources/images/category/women/
+springdoc:
+  api-docs:
+    path: /docs # these urls will be used to load the api docs of this service by the api gateway
+  swagger-ui:
+    enabled: false
+server:
+  servlet:
+    context-path: /catalog
+eureka:
+  client:
+    enabled: false

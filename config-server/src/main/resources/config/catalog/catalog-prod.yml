@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: catalog
+  datasource:
+    url: jdbc:postgresql://catalog-db:5432/items_data
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://eureka:8761/eureka
+server:
+  port: 8000
+  servlet:
+    context-path: /catalog
+custom:
+  page:
+    default-size: 10
+  strategy:
+    popularity:
+      item-is-considered-popular-at-orders-count:
+        25
+    shoes-size:
+      min: 30
+      max: 46
+  category:
+    img-path-prefix:
+      men: catalog/src/main/resources/images/category/men/
+      women: catalog/src/main/resources/images/category/women/
+springdoc:
+  api-docs:
+    path: /docs # these urls will be used to load the api docs of this service by the api gateway
+  swagger-ui:
+    enabled: false
