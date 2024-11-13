@@ -1,12 +1,13 @@
 package com.bekrenovr.ecommerce.catalog.util.dev;
 
-import com.bekrenovr.ecommerce.catalog.model.entity.Item;
-import com.bekrenovr.ecommerce.catalog.model.entity.ItemDetails;
-import com.bekrenovr.ecommerce.catalog.model.entity.ItemImage;
-import com.bekrenovr.ecommerce.catalog.model.entity.UniqueItem;
+import com.bekrenovr.ecommerce.catalog.item.Item;
+import com.bekrenovr.ecommerce.catalog.item.details.ItemDetails;
+import com.bekrenovr.ecommerce.catalog.item.image.ItemImage;
+import com.bekrenovr.ecommerce.catalog.item.uniqueitem.UniqueItem;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.text.StringSubstitutor;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
+@Profile("dev")
 public class ItemInsertGenerator {
     private final ItemGenerator itemGenerator;
 

@@ -1,12 +1,25 @@
 package com.bekrenovr.ecommerce.catalog.util.dev;
 
-import com.bekrenovr.ecommerce.catalog.jpa.repository.BrandRepository;
-import com.bekrenovr.ecommerce.catalog.jpa.repository.CategoryRepository;
-import com.bekrenovr.ecommerce.catalog.model.ShoesSize;
-import com.bekrenovr.ecommerce.catalog.model.Size;
-import com.bekrenovr.ecommerce.catalog.model.entity.*;
-import com.bekrenovr.ecommerce.catalog.model.enums.*;
+import com.bekrenovr.ecommerce.catalog.brand.Brand;
+import com.bekrenovr.ecommerce.catalog.brand.BrandRepository;
+import com.bekrenovr.ecommerce.catalog.category.Category;
+import com.bekrenovr.ecommerce.catalog.category.CategoryEnum;
+import com.bekrenovr.ecommerce.catalog.category.CategoryRepository;
+import com.bekrenovr.ecommerce.catalog.category.subcategory.Subcategory;
+import com.bekrenovr.ecommerce.catalog.item.Item;
+import com.bekrenovr.ecommerce.catalog.item.details.ItemDetails;
+import com.bekrenovr.ecommerce.catalog.item.filters.Color;
+import com.bekrenovr.ecommerce.catalog.item.filters.Gender;
+import com.bekrenovr.ecommerce.catalog.item.filters.Material;
+import com.bekrenovr.ecommerce.catalog.item.filters.Season;
+import com.bekrenovr.ecommerce.catalog.item.image.ItemImage;
+import com.bekrenovr.ecommerce.catalog.item.size.ClothesSize;
+import com.bekrenovr.ecommerce.catalog.item.size.ShoesSize;
+import com.bekrenovr.ecommerce.catalog.item.size.Size;
+import com.bekrenovr.ecommerce.catalog.item.size.SizeType;
+import com.bekrenovr.ecommerce.catalog.item.uniqueitem.UniqueItem;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -25,6 +38,7 @@ import static com.bekrenovr.ecommerce.catalog.util.RandomUtils.getRandomElement;
 import static com.bekrenovr.ecommerce.catalog.util.RandomUtils.getRandomSeries;
 
 @Component
+@Profile("dev")
 public class ItemGenerator {
 
     private final CategoryRepository categoryRepository;

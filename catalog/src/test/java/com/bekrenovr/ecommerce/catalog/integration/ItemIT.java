@@ -1,10 +1,10 @@
 package com.bekrenovr.ecommerce.catalog.integration;
 
-import com.bekrenovr.ecommerce.catalog.model.enums.Color;
-import com.bekrenovr.ecommerce.catalog.model.enums.Gender;
-import com.bekrenovr.ecommerce.catalog.model.enums.Material;
-import com.bekrenovr.ecommerce.catalog.model.enums.Season;
-import com.bekrenovr.ecommerce.catalog.util.sort.SortOption;
+import com.bekrenovr.ecommerce.catalog.item.filters.Color;
+import com.bekrenovr.ecommerce.catalog.item.filters.Gender;
+import com.bekrenovr.ecommerce.catalog.item.filters.Material;
+import com.bekrenovr.ecommerce.catalog.item.filters.Season;
+import com.bekrenovr.ecommerce.catalog.item.sorting.SortOption;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

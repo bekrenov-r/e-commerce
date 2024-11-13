@@ -1,9 +1,9 @@
 package com.bekrenovr.ecommerce.catalog.sort;
 
-import com.bekrenovr.ecommerce.catalog.jpa.repository.ItemRepository;
-import com.bekrenovr.ecommerce.catalog.model.entity.Item;
-import com.bekrenovr.ecommerce.catalog.util.sort.ItemSortComparators;
-import com.bekrenovr.ecommerce.catalog.util.sort.SortOption;
+import com.bekrenovr.ecommerce.catalog.item.Item;
+import com.bekrenovr.ecommerce.catalog.item.ItemRepository;
+import com.bekrenovr.ecommerce.catalog.item.sorting.ItemSortComparators;
+import com.bekrenovr.ecommerce.catalog.item.sorting.SortOption;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;

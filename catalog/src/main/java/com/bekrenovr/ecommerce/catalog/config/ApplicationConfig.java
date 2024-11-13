@@ -1,6 +1,6 @@
 package com.bekrenovr.ecommerce.catalog.config;
 
-import com.bekrenovr.ecommerce.catalog.model.SizeFactory;
+import com.bekrenovr.ecommerce.catalog.item.size.SizeFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

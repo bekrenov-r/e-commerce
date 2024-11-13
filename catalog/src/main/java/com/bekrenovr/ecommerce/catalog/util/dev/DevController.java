@@ -1,8 +1,9 @@
 package com.bekrenovr.ecommerce.catalog.util.dev;
 
-import com.bekrenovr.ecommerce.catalog.model.entity.Item;
-import com.bekrenovr.ecommerce.catalog.service.ItemService;
+import com.bekrenovr.ecommerce.catalog.item.Item;
+import com.bekrenovr.ecommerce.catalog.item.ItemService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +14,7 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/dev/items")
 @RequiredArgsConstructor
+@Profile("dev")
 public class DevController {
     private final ItemGenerator itemGenerator;
     private final ItemService itemService;

@@ -1,5 +1,9 @@
 spring:
   application:
     name: catalog
+---
+spring:
   config:
+    activate:
+      on-profile: dev
     import: configserver:http://localhost:8888

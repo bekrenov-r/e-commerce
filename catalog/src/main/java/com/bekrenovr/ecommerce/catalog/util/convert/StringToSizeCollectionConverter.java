@@ -1,7 +1,7 @@
 package com.bekrenovr.ecommerce.catalog.util.convert;
 
-import com.bekrenovr.ecommerce.catalog.model.Size;
-import com.bekrenovr.ecommerce.catalog.model.SizeFactory;
+import com.bekrenovr.ecommerce.catalog.item.size.Size;
+import com.bekrenovr.ecommerce.catalog.item.size.SizeFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;

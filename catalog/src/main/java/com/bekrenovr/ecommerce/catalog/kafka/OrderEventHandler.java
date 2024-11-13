@@ -1,9 +1,9 @@
 package com.bekrenovr.ecommerce.catalog.kafka;
 
-import com.bekrenovr.ecommerce.catalog.jpa.repository.UniqueItemRepository;
+import com.bekrenovr.ecommerce.catalog.item.uniqueitem.UniqueItem;
+import com.bekrenovr.ecommerce.catalog.item.uniqueitem.UniqueItemRepository;
 import com.bekrenovr.ecommerce.catalog.kafka.model.OrderEvent;
 import com.bekrenovr.ecommerce.catalog.kafka.model.OrderItemEntry;
-import com.bekrenovr.ecommerce.catalog.model.entity.UniqueItem;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
