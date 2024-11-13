@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: authorization
+  cloud:
+    config:
+      enabled: false
+  security:
+    oauth2:
+      login:
+        provider:
+          keycloak:
+            client-id: test
+            client-secret: test
+            scope: openid
+            grant-type: password
+          google:
+            client-id: test
+            client-secret: test
+            redirect-uri: ${frontend.base-url}/account
+            scope:
+              - https://www.googleapis.com/auth/userinfo.profile
+              - https://www.googleapis.com/auth/userinfo.email
+              - openid
+            grant-type: authorization_code
+server:
+  servlet:
+    context-path: /oauth2
+frontend:
+  base-url: http://localhost:4200
+  mapping:
+    activate-account: /activate-account
+    recover-password: /recover-password
+eureka:
+  client:
+    enabled: false

@@ -16,7 +16,7 @@ spring:
     config:
       server:
         native:
-          search-locations: classpath:/config/catalog
+          search-locations: classpath:/config/catalog,classpath:/config/authorization
 ---
 spring:
   config:

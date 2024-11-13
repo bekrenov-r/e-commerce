@@ -4,7 +4,6 @@ import com.bekrenovr.ecommerce.common.model.Person;
 import com.ecommerce.bekrenovr.authorizationserver.dto.request.CustomerRegistrationRequest;
 import com.ecommerce.bekrenovr.authorizationserver.proxy.CustomerServiceProxy;
 import com.ecommerce.bekrenovr.authorizationserver.proxy.KeycloakProxy;
-import com.ecommerce.bekrenovr.authorizationserver.service.MailService;
 import com.ecommerce.bekrenovr.authorizationserver.util.CustomerRegistrationRequestJsonBuilder;
 import feign.FeignException;
 import jakarta.ws.rs.core.MediaType;
@@ -33,11 +32,7 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-public class RegistrationIT {
-    TestRestTemplate restTemplate;
-
-    @MockBean
-    MailService mailService;
+public class RegistrationIT extends BaseIT {
     @MockBean
     KeycloakProxy keycloakProxy;
     @MockBean
@@ -45,7 +40,7 @@ public class RegistrationIT {
 
     @Autowired
     RegistrationIT(TestRestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
+        super(restTemplate);
     }
 
     @Nested

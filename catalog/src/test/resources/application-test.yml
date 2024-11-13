@@ -1,6 +1,9 @@
 spring:
   application:
     name: catalog
+  cloud:
+    config:
+      enabled: false
   datasource:
     url: jdbc:tc:postgresql:16.4:///test-db?TC_INITSCRIPT=data.sql&TC_DAEMON=true
   jpa:

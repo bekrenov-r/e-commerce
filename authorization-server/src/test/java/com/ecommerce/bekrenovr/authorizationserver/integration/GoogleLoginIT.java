@@ -28,9 +28,8 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-public class GoogleLoginIT {
+public class GoogleLoginIT extends BaseIT {
     static final String URI_MAPPING = "/login/google";
-    TestRestTemplate restTemplate;
 
     @MockBean
     CustomerServiceProxy customerServiceProxy;
@@ -39,7 +38,7 @@ public class GoogleLoginIT {
 
     @Autowired
     GoogleLoginIT(TestRestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
+        super(restTemplate);
     }
 
     @Nested

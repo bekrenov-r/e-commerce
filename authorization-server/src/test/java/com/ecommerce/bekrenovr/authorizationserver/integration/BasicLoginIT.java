@@ -23,16 +23,15 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-public class BasicLoginIT {
+public class BasicLoginIT extends BaseIT {
     static final String URI_MAPPING = "/login/basic";
-    TestRestTemplate restTemplate;
 
     @MockBean
     KeycloakProxy keycloakProxy;
 
     @Autowired
     BasicLoginIT(TestRestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
+        super(restTemplate);
     }
 
     @Nested

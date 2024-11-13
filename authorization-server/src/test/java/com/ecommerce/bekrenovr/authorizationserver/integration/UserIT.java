@@ -4,7 +4,6 @@ import com.bekrenovr.ecommerce.common.model.Person;
 import com.ecommerce.bekrenovr.authorizationserver.dto.response.CustomerResponse;
 import com.ecommerce.bekrenovr.authorizationserver.proxy.CustomerServiceProxy;
 import com.ecommerce.bekrenovr.authorizationserver.proxy.KeycloakProxy;
-import com.ecommerce.bekrenovr.authorizationserver.service.MailService;
 import feign.FeignException;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -27,20 +26,17 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-public class UserIT {
+public class UserIT extends BaseIT {
     static final String URI_MAPPING = "/users/recover-password";
-    TestRestTemplate restTemplate;
 
     @MockBean
     CustomerServiceProxy customerServiceProxy;
     @MockBean
     KeycloakProxy keycloakProxy;
-    @MockBean
-    MailService mailService;
 
     @Autowired
     UserIT(TestRestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
+        super(restTemplate);
     }
 
     @Nested
