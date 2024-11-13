@@ -1,11 +1,9 @@
-package com.bekrenovr.ecommerce.customers.service;
+package com.bekrenovr.ecommerce.customers.customer;
 
 import com.bekrenovr.ecommerce.common.exception.EcommerceApplicationException;
-import com.bekrenovr.ecommerce.customers.dto.mapper.CustomerMapper;
-import com.bekrenovr.ecommerce.customers.dto.request.CustomerRequest;
-import com.bekrenovr.ecommerce.customers.dto.response.CustomerResponse;
-import com.bekrenovr.ecommerce.customers.model.Customer;
-import com.bekrenovr.ecommerce.customers.repository.CustomerRepository;
+import com.bekrenovr.ecommerce.customers.customer.dto.CustomerMapper;
+import com.bekrenovr.ecommerce.customers.customer.dto.CustomerRequest;
+import com.bekrenovr.ecommerce.customers.customer.dto.CustomerResponse;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +14,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import static com.bekrenovr.ecommerce.customers.exception.UsersApplicationExceptionReason.EMAIL_ALREADY_EXISTS;
+import static com.bekrenovr.ecommerce.customers.exception.CustomersApplicationExceptionReason.EMAIL_ALREADY_EXISTS;
 
 @Service
 @RequiredArgsConstructor

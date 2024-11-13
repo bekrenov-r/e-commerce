@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 
 @AllArgsConstructor
 @Getter
-public enum UsersApplicationExceptionReason implements EcommerceApplicationExceptionReason {
+public enum CustomersApplicationExceptionReason implements EcommerceApplicationExceptionReason {
     EMAIL_ALREADY_EXISTS("User with email [%s] already exists", HttpStatus.CONFLICT),
     USER_NOT_FOUND_BY_EMAIL("User with email [%s] does not exist", HttpStatus.NOT_FOUND),
     ITEM_ALREADY_ON_WISH_LIST("Item with id [%s] is already on wish list", HttpStatus.CONFLICT),

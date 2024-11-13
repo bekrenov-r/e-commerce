@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 import java.util.UUID;
 
-@FeignClient("catalog")
+@FeignClient(name = "catalog", path = "/catalog")
 public interface CatalogProxy {
-    @GetMapping("/catalog/items/{id}")
+    @GetMapping("/items/{id}")
     ResponseEntity<?> getItemById(@PathVariable UUID id);
 
-    @GetMapping("/catalog/items/list")
+    @GetMapping("/items/list")
     ResponseEntity<?> getItemsByIds(@RequestParam List<UUID> ids);
 }

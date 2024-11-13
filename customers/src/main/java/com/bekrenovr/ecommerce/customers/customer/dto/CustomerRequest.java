@@ -1,4 +1,4 @@
-package com.bekrenovr.ecommerce.customers.dto.request;
+package com.bekrenovr.ecommerce.customers.customer.dto;
 
 import com.bekrenovr.ecommerce.common.model.Person;
 import jakarta.validation.constraints.Email;

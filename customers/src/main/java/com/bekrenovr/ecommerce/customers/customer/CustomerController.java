@@ -1,8 +1,7 @@
-package com.bekrenovr.ecommerce.customers.controller;
+package com.bekrenovr.ecommerce.customers.customer;
 
-import com.bekrenovr.ecommerce.customers.dto.request.CustomerRequest;
-import com.bekrenovr.ecommerce.customers.dto.response.CustomerResponse;
-import com.bekrenovr.ecommerce.customers.service.CustomerService;
+import com.bekrenovr.ecommerce.customers.customer.dto.CustomerRequest;
+import com.bekrenovr.ecommerce.customers.customer.dto.CustomerResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

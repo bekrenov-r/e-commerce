@@ -1,32 +1,9 @@
 spring:
-  config:
-    activate:
-      on-profile: dev
-    import: optional:configserver:http://localhost:8888
-  datasource:
-    url: jdbc:postgresql://localhost:5432/customers_data
-    username: postgres
-    password:
-    driver-class-name: org.postgresql.Driver
   application:
     name: customers
-server:
-  port: 8100
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://localhost:8761/eureka
 ---
 spring:
   config:
     activate:
-      on-profile: test
-    import: optional:configserver:http://localhost:8888
-  datasource:
-    url: jdbc:tc:postgresql:16.4:///test-db?TC_INITSCRIPT=data.sql&TC_DAEMON=true
-  jpa:
-    hibernate:
-      ddl-auto: none
-eureka:
-  client:
-    enabled: false
+      on-profile: dev
+    import: configserver:http://localhost:8888

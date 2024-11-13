@@ -1,4 +1,4 @@
-package com.bekrenovr.ecommerce.customers.model;
+package com.bekrenovr.ecommerce.customers.customer;
 
 import com.bekrenovr.ecommerce.common.model.Person;
 import com.bekrenovr.ecommerce.common.model.entity.AbstractEntity;

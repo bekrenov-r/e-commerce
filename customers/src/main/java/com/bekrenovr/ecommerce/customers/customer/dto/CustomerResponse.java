@@ -1,4 +1,4 @@
-package com.bekrenovr.ecommerce.customers.dto.response;
+package com.bekrenovr.ecommerce.customers.customer.dto;
 
 import java.util.UUID;
 

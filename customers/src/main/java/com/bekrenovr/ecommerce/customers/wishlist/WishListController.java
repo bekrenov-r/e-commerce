@@ -1,6 +1,5 @@
-package com.bekrenovr.ecommerce.customers.controller;
+package com.bekrenovr.ecommerce.customers.wishlist;
 
-import com.bekrenovr.ecommerce.customers.service.WishListService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,10 +1,10 @@
-package com.bekrenovr.ecommerce.customers.service;
+package com.bekrenovr.ecommerce.customers.wishlist;
 
 import com.bekrenovr.ecommerce.common.exception.EcommerceApplicationException;
 import com.bekrenovr.ecommerce.common.security.AuthenticationUtil;
-import com.bekrenovr.ecommerce.customers.model.Customer;
+import com.bekrenovr.ecommerce.customers.customer.Customer;
+import com.bekrenovr.ecommerce.customers.customer.CustomerRepository;
 import com.bekrenovr.ecommerce.customers.proxy.CatalogProxy;
-import com.bekrenovr.ecommerce.customers.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.UUID;
 
-import static com.bekrenovr.ecommerce.customers.exception.UsersApplicationExceptionReason.ITEM_ALREADY_ON_WISH_LIST;
-import static com.bekrenovr.ecommerce.customers.exception.UsersApplicationExceptionReason.WISH_LIST_ITEM_NOT_FOUND;
+import static com.bekrenovr.ecommerce.customers.exception.CustomersApplicationExceptionReason.ITEM_ALREADY_ON_WISH_LIST;
+import static com.bekrenovr.ecommerce.customers.exception.CustomersApplicationExceptionReason.WISH_LIST_ITEM_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
