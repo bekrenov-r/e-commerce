@@ -1,8 +1,8 @@
 package com.ecommerce.bekrenovr.authorizationserver.integration;
 
-import com.ecommerce.bekrenovr.authorizationserver.dto.request.CustomerRequest;
-import com.ecommerce.bekrenovr.authorizationserver.proxy.CustomerServiceProxy;
-import com.ecommerce.bekrenovr.authorizationserver.util.GoogleApiClient;
+import com.ecommerce.bekrenovr.authorizationserver.feign.CustomersProxy;
+import com.ecommerce.bekrenovr.authorizationserver.registration.CustomerRequest;
+import com.ecommerce.bekrenovr.authorizationserver.support.GoogleApiClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Nested;
@@ -32,7 +32,7 @@ public class GoogleLoginIT extends BaseIT {
     static final String URI_MAPPING = "/login/google";
 
     @MockBean
-    CustomerServiceProxy customerServiceProxy;
+    CustomersProxy customersProxy;
     @MockBean
     GoogleApiClient googleApiClient;
 
@@ -52,7 +52,7 @@ public class GoogleLoginIT extends BaseIT {
             when(googleApiClient.getAccessTokenResponse(anyString()))
                     .thenReturn(new JSONObject().put("access_token", ""));
             when(googleApiClient.getGoogleUserInfo(anyString())).thenReturn(userInfoJSON);
-            when(customerServiceProxy.createCustomer(any(CustomerRequest.class)))
+            when(customersProxy.createCustomer(any(CustomerRequest.class)))
                     .thenReturn(ResponseEntity.ok().build());
 
             URI uri = UriComponentsBuilder.fromPath(URI_MAPPING)

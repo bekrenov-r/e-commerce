@@ -1,4 +1,4 @@
-package com.ecommerce.bekrenovr.authorizationserver.service;
+package com.ecommerce.bekrenovr.authorizationserver.support;
 
 import com.bekrenovr.ecommerce.common.model.Person;
 import io.micrometer.core.instrument.util.IOUtils;

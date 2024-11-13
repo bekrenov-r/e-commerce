@@ -1,6 +1,6 @@
 package com.ecommerce.bekrenovr.authorizationserver.integration;
 
-import com.ecommerce.bekrenovr.authorizationserver.service.MailService;
+import com.ecommerce.bekrenovr.authorizationserver.support.MailService;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 

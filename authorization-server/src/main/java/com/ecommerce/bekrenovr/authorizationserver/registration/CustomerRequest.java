@@ -1,4 +1,4 @@
-package com.ecommerce.bekrenovr.authorizationserver.dto.request;
+package com.ecommerce.bekrenovr.authorizationserver.registration;
 
 import com.bekrenovr.ecommerce.common.model.Person;
 import jakarta.validation.constraints.Email;

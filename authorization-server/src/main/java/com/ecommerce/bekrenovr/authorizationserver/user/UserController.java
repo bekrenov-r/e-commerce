@@ -1,6 +1,5 @@
-package com.ecommerce.bekrenovr.authorizationserver.controller;
+package com.ecommerce.bekrenovr.authorizationserver.user;
 
-import com.ecommerce.bekrenovr.authorizationserver.service.UserService;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;

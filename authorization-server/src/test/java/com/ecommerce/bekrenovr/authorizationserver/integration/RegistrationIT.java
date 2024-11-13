@@ -1,9 +1,9 @@
 package com.ecommerce.bekrenovr.authorizationserver.integration;
 
 import com.bekrenovr.ecommerce.common.model.Person;
-import com.ecommerce.bekrenovr.authorizationserver.dto.request.CustomerRegistrationRequest;
-import com.ecommerce.bekrenovr.authorizationserver.proxy.CustomerServiceProxy;
-import com.ecommerce.bekrenovr.authorizationserver.proxy.KeycloakProxy;
+import com.ecommerce.bekrenovr.authorizationserver.feign.CustomersProxy;
+import com.ecommerce.bekrenovr.authorizationserver.feign.KeycloakProxy;
+import com.ecommerce.bekrenovr.authorizationserver.registration.CustomerRegistrationRequest;
 import com.ecommerce.bekrenovr.authorizationserver.util.CustomerRegistrationRequestJsonBuilder;
 import feign.FeignException;
 import jakarta.ws.rs.core.MediaType;
@@ -36,7 +36,7 @@ public class RegistrationIT extends BaseIT {
     @MockBean
     KeycloakProxy keycloakProxy;
     @MockBean
-    CustomerServiceProxy customerServiceProxy;
+    CustomersProxy customersProxy;
 
     @Autowired
     RegistrationIT(TestRestTemplate restTemplate) {
@@ -51,7 +51,7 @@ public class RegistrationIT extends BaseIT {
             doNothing().when(mailService).sendCustomerAccountActivationEmail(any(Person.class), anyString());
             when(keycloakProxy.createKeycloakUser(anyString(), anyString(), anyString(), anyString()))
                     .thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(""));
-            when(customerServiceProxy.createCustomer(any(CustomerRegistrationRequest.class)))
+            when(customersProxy.createCustomer(any(CustomerRegistrationRequest.class)))
                     .thenReturn(ResponseEntity.status(HttpStatus.CREATED).build());
 
             String requestBody = CustomerRegistrationRequestJsonBuilder.create()
@@ -95,7 +95,7 @@ public class RegistrationIT extends BaseIT {
             when(keycloakProxy.createKeycloakUser(anyString(), anyString(), anyString(), anyString()))
                     .thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(""));
             FeignException conflict = mockFeignException(HttpStatus.CONFLICT);
-            when(customerServiceProxy.createCustomer(any(CustomerRegistrationRequest.class))).thenThrow(conflict);
+            when(customersProxy.createCustomer(any(CustomerRegistrationRequest.class))).thenThrow(conflict);
 
             String requestBody = CustomerRegistrationRequestJsonBuilder.create()
                     .firstName("John")
@@ -122,7 +122,7 @@ public class RegistrationIT extends BaseIT {
             ResponseEntity<String> mockKeycloakResponse = mock(ResponseEntity.class);
             when(mockKeycloakResponse.getBody()).thenReturn("");
             doNothing().when(mailService).sendCustomerAccountActivationEmail(any(Person.class), anyString());
-            when(customerServiceProxy.getCustomerByEmail(anyString())).thenReturn(ResponseEntity.ok().build());
+            when(customersProxy.getCustomerByEmail(anyString())).thenReturn(ResponseEntity.ok().build());
             when(keycloakProxy.getActivationTokenForUser(anyString())).thenReturn(mockKeycloakResponse);
 
             String email = "test.customer@example.com";
@@ -139,7 +139,7 @@ public class RegistrationIT extends BaseIT {
         @Test
         void shouldReturn404_WhenCustomerWithEmailDoesNotExist() {
             FeignException notFound = mockFeignException(HttpStatus.NOT_FOUND);
-            when(customerServiceProxy.getCustomerByEmail(anyString()))
+            when(customersProxy.getCustomerByEmail(anyString()))
                     .thenThrow(notFound);
 
             String email = "test.customer@example.com";
@@ -155,7 +155,7 @@ public class RegistrationIT extends BaseIT {
 
         @Test
         void shouldReturn404_WhenActivationTokenNotFound() {
-            when(customerServiceProxy.getCustomerByEmail(anyString())).thenReturn(ResponseEntity.ok().build());
+            when(customersProxy.getCustomerByEmail(anyString())).thenReturn(ResponseEntity.ok().build());
             FeignException notFound = mockFeignException(HttpStatus.NOT_FOUND);
             when(keycloakProxy.getActivationTokenForUser(anyString()))
                     .thenThrow(notFound);

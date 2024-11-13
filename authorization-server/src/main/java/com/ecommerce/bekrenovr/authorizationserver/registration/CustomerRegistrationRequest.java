@@ -1,4 +1,4 @@
-package com.ecommerce.bekrenovr.authorizationserver.dto.request;
+package com.ecommerce.bekrenovr.authorizationserver.registration;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;

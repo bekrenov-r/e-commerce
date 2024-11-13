@@ -1,13 +1,13 @@
-package com.ecommerce.bekrenovr.authorizationserver.proxy;
+package com.ecommerce.bekrenovr.authorizationserver.feign;
 
-import com.ecommerce.bekrenovr.authorizationserver.dto.request.CustomerRequest;
-import com.ecommerce.bekrenovr.authorizationserver.dto.response.CustomerResponse;
+import com.ecommerce.bekrenovr.authorizationserver.registration.CustomerRequest;
+import com.ecommerce.bekrenovr.authorizationserver.registration.CustomerResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @FeignClient(name = "customers", path = "/customers")
-public interface CustomerServiceProxy {
+public interface CustomersProxy {
     @PostMapping
     ResponseEntity<?> createCustomer(@RequestBody CustomerRequest request);
 

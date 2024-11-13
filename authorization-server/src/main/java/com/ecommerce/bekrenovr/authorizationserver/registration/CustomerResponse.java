@@ -1,4 +1,4 @@
-package com.ecommerce.bekrenovr.authorizationserver.dto.response;
+package com.ecommerce.bekrenovr.authorizationserver.registration;
 
 import com.bekrenovr.ecommerce.common.model.Person;
 import lombok.AllArgsConstructor;

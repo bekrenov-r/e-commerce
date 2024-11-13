@@ -1,9 +1,9 @@
 package com.ecommerce.bekrenovr.authorizationserver.integration;
 
 import com.bekrenovr.ecommerce.common.model.Person;
-import com.ecommerce.bekrenovr.authorizationserver.dto.response.CustomerResponse;
-import com.ecommerce.bekrenovr.authorizationserver.proxy.CustomerServiceProxy;
-import com.ecommerce.bekrenovr.authorizationserver.proxy.KeycloakProxy;
+import com.ecommerce.bekrenovr.authorizationserver.feign.CustomersProxy;
+import com.ecommerce.bekrenovr.authorizationserver.feign.KeycloakProxy;
+import com.ecommerce.bekrenovr.authorizationserver.registration.CustomerResponse;
 import feign.FeignException;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -30,7 +30,7 @@ public class UserIT extends BaseIT {
     static final String URI_MAPPING = "/users/recover-password";
 
     @MockBean
-    CustomerServiceProxy customerServiceProxy;
+    CustomersProxy customersProxy;
     @MockBean
     KeycloakProxy keycloakProxy;
 
@@ -44,7 +44,7 @@ public class UserIT extends BaseIT {
         @Test
         void shouldReturn200_WhenEmailSentSuccessfully() {
             CustomerResponse mockCustomer = mockCustomer();
-            when(customerServiceProxy.getCustomerByEmail(anyString())).thenReturn(ResponseEntity.ok(mockCustomer));
+            when(customersProxy.getCustomerByEmail(anyString())).thenReturn(ResponseEntity.ok(mockCustomer));
             when(keycloakProxy.createPasswordRecoveryToken(anyString(), anyString()))
                     .thenReturn(ResponseEntity.ok().build());
             doNothing().when(mailService).sendPasswordRecoveryEmail(any(Person.class), anyString());
@@ -62,7 +62,7 @@ public class UserIT extends BaseIT {
         @Test
         void shouldReturn200_WhenUserWasNotRegisteredInKeycloak() {
             CustomerResponse mockCustomer = mockCustomer();
-            when(customerServiceProxy.getCustomerByEmail(anyString())).thenReturn(ResponseEntity.ok(mockCustomer));
+            when(customersProxy.getCustomerByEmail(anyString())).thenReturn(ResponseEntity.ok(mockCustomer));
             FeignException.NotFound notFound = mock(FeignException.NotFound.class);
             when(notFound.status()).thenReturn(404);
             when(keycloakProxy.createPasswordRecoveryToken(anyString(), anyString()))
@@ -86,7 +86,7 @@ public class UserIT extends BaseIT {
         @Test
         void shouldReturn404_WhenCustomerDoesNotExist() {
             FeignException notFound = mockFeignException(HttpStatus.NOT_FOUND);
-            when(customerServiceProxy.getCustomerByEmail(anyString())).thenThrow(notFound);
+            when(customersProxy.getCustomerByEmail(anyString())).thenThrow(notFound);
 
             URI uri = UriComponentsBuilder.fromPath(URI_MAPPING)
                     .queryParam("email", "test.user@example.com")
@@ -101,7 +101,7 @@ public class UserIT extends BaseIT {
         @Test
         void shouldReturn403_WhenUserDisabled() {
             CustomerResponse mockCustomer = mockCustomer();
-            when(customerServiceProxy.getCustomerByEmail(anyString())).thenReturn(ResponseEntity.ok(mockCustomer));
+            when(customersProxy.getCustomerByEmail(anyString())).thenReturn(ResponseEntity.ok(mockCustomer));
             FeignException forbidden = mockFeignException(HttpStatus.FORBIDDEN);
             when(keycloakProxy.createPasswordRecoveryToken(anyString(), anyString())).thenThrow(forbidden);
 
@@ -121,7 +121,7 @@ public class UserIT extends BaseIT {
         @Test
         void shouldReturn200_WhenPasswordRecoveredSuccessfully() {
             CustomerResponse mockCustomer = mockCustomer();
-            when(customerServiceProxy.getCustomerByEmail(anyString())).thenReturn(ResponseEntity.ok(mockCustomer));
+            when(customersProxy.getCustomerByEmail(anyString())).thenReturn(ResponseEntity.ok(mockCustomer));
             FeignException forbidden = mockFeignException(HttpStatus.FORBIDDEN);
             when(keycloakProxy.createPasswordRecoveryToken(anyString(), anyString())).thenThrow(forbidden);
 

@@ -1,7 +1,5 @@
-package com.ecommerce.bekrenovr.authorizationserver.controller;
+package com.ecommerce.bekrenovr.authorizationserver.registration;
 
-import com.ecommerce.bekrenovr.authorizationserver.dto.request.CustomerRegistrationRequest;
-import com.ecommerce.bekrenovr.authorizationserver.service.RegistrationService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

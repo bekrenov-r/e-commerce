@@ -1,6 +1,6 @@
 package com.ecommerce.bekrenovr.authorizationserver.integration;
 
-import com.ecommerce.bekrenovr.authorizationserver.proxy.KeycloakProxy;
+import com.ecommerce.bekrenovr.authorizationserver.feign.KeycloakProxy;
 import feign.FeignException;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

@@ -1,8 +1,8 @@
-package com.ecommerce.bekrenovr.authorizationserver.service;
+package com.ecommerce.bekrenovr.authorizationserver.login;
 
 import com.ecommerce.bekrenovr.authorizationserver.config.OAuth2LoginProviderProperties;
 import com.ecommerce.bekrenovr.authorizationserver.config.OAuth2LoginProviderProperties.Providers;
-import com.ecommerce.bekrenovr.authorizationserver.proxy.KeycloakProxy;
+import com.ecommerce.bekrenovr.authorizationserver.feign.KeycloakProxy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;

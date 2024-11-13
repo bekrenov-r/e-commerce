@@ -1,7 +1,5 @@
-package com.ecommerce.bekrenovr.authorizationserver.controller;
+package com.ecommerce.bekrenovr.authorizationserver.login;
 
-import com.ecommerce.bekrenovr.authorizationserver.service.GoogleLoginService;
-import com.ecommerce.bekrenovr.authorizationserver.service.KeycloakLoginService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

@@ -1,8 +1,8 @@
-package com.ecommerce.bekrenovr.authorizationserver.service;
+package com.ecommerce.bekrenovr.authorizationserver.login;
 
-import com.ecommerce.bekrenovr.authorizationserver.dto.request.CustomerRequest;
-import com.ecommerce.bekrenovr.authorizationserver.proxy.CustomerServiceProxy;
-import com.ecommerce.bekrenovr.authorizationserver.util.GoogleApiClient;
+import com.ecommerce.bekrenovr.authorizationserver.feign.CustomersProxy;
+import com.ecommerce.bekrenovr.authorizationserver.registration.CustomerRequest;
+import com.ecommerce.bekrenovr.authorizationserver.support.GoogleApiClient;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class GoogleLoginService {
-    private final CustomerServiceProxy customerServiceProxy;
+    private final CustomersProxy customersProxy;
     private final GoogleApiClient googleApiClient;
 
     public String getAccessTokenGoogle(String code) {
@@ -25,7 +25,7 @@ public class GoogleLoginService {
                 true
         );
         try {
-            customerServiceProxy.createCustomer(customer);
+            customersProxy.createCustomer(customer);
         } catch(FeignException.Conflict ex){
             // do nothing because CONFLICT means that user is already created
         }

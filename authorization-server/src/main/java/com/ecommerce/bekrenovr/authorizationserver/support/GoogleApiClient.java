@@ -1,4 +1,4 @@
-package com.ecommerce.bekrenovr.authorizationserver.util;
+package com.ecommerce.bekrenovr.authorizationserver.support;
 
 import com.ecommerce.bekrenovr.authorizationserver.config.OAuth2LoginProviderProperties;
 import com.ecommerce.bekrenovr.authorizationserver.config.OAuth2LoginProviderProperties.Providers;

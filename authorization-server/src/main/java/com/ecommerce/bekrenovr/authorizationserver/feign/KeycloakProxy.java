@@ -1,4 +1,4 @@
-package com.ecommerce.bekrenovr.authorizationserver.proxy;
+package com.ecommerce.bekrenovr.authorizationserver.feign;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;

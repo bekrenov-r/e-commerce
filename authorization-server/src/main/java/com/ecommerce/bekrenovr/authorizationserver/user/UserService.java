@@ -1,9 +1,10 @@
-package com.ecommerce.bekrenovr.authorizationserver.service;
+package com.ecommerce.bekrenovr.authorizationserver.user;
 
 import com.bekrenovr.ecommerce.common.model.Person;
 import com.bekrenovr.ecommerce.common.security.Role;
-import com.ecommerce.bekrenovr.authorizationserver.proxy.CustomerServiceProxy;
-import com.ecommerce.bekrenovr.authorizationserver.proxy.KeycloakProxy;
+import com.ecommerce.bekrenovr.authorizationserver.feign.CustomersProxy;
+import com.ecommerce.bekrenovr.authorizationserver.feign.KeycloakProxy;
+import com.ecommerce.bekrenovr.authorizationserver.support.MailService;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -13,11 +14,11 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserService {
     private final MailService mailService;
-    private final CustomerServiceProxy customerServiceProxy;
+    private final CustomersProxy customersProxy;
     private final KeycloakProxy keycloakProxy;
 
     public void sendEmailForPasswordRecovery(String email) {
-        Person person = customerServiceProxy.getCustomerByEmail(email).getBody();
+        Person person = customersProxy.getCustomerByEmail(email).getBody();
         String recoveryToken = RandomStringUtils.random(20, true, true);
         try {
             keycloakProxy.createPasswordRecoveryToken(person.getEmail(), recoveryToken);
