@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: reviews
+  cloud:
+    config:
+      enabled: false
+  data:
+    mongodb:
+      database: reviews_data
+      uuid-representation: java_legacy
+      init-file: /init.json
+custom:
+  page:
+    default-size: 10
+eureka:
+  client:
+    enabled: false
