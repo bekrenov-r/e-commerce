@@ -67,7 +67,7 @@ public class ItemGenerator {
         Subcategory subcategory = !subcategories.isEmpty()
                 ? getRandomElement(subcategories)
                 : null;
-        List<ItemImage> images = Arrays.asList(new ItemImage("catalog/src/main/resources/images/iStock-1280562095_63a051a70dbff.jpg", null));
+        List<ItemImage> images = Arrays.asList(new ItemImage("https://res.cloudinary.com/dnhvuiyt4/image/upload/v1731594365/iStock-1280562095_63a051a70dbff_gqos78.jpg", null));
         Color color = getRandomElement(Color.values());
         String itemName = capitalize(category.getName()) + " " + (rand.nextInt(100) + 1);
         String description = "Description";

@@ -37,4 +37,8 @@ server:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://localhost:8761/eureka  
+      defaultZone: http://localhost:8761/eureka
+cloudinary:
+  cloud-name: dnhvuiyt4
+  api-key: '{cipher}232b1fa6fe82929c40a98b36985ce50362261434448f0405c024dd5f89993855'
+  api-secret: '{cipher}520346c7dca80e2fff25b98a854b61dea029b5c1df626417f58b7a38457d99c43e4a68c5fd7e8251e94359e46949db99'

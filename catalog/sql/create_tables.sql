@@ -47,10 +47,10 @@ CREATE TABLE item
     foreign key (subcategory_id) references subcategory (id)
 );
 
-create table image
+create table item_image
 (
     item_id uuid,
-    path    text,
+    url    text,
     id      uuid primary key,
     foreign key (item_id) references item (id)
 );

@@ -86,8 +86,8 @@ public class ItemInsertGenerator {
     }
 
     private void createImageInsert(List<ItemImage> images, File file) throws IOException {
-        StringBuilder insert = new StringBuilder("\n\n-- IMAGE\n");
-        insert.append("INSERT INTO image (id, item_id, path) \nVALUES ");
+        StringBuilder insert = new StringBuilder("\n\n-- ITEM IMAGE\n");
+        insert.append("INSERT INTO item_image (id, item_id, url) \nVALUES ");
         String values = images.stream()
                 .map(this::createRecord)
                 .collect(Collectors.joining(",\n\t\t"));
@@ -147,11 +147,11 @@ public class ItemInsertGenerator {
     }
 
     private String createRecord(ItemImage image) {
-        String template = "(${id}, '${itemId}', '${path}')";
+        String template = "(${id}, '${itemId}', '${url}')";
         Map<String, Object> values = new HashMap<>();
         values.put("id", "gen_random_uuid()");
         values.put("itemId", image.getItem().getId());
-        values.put("path", image.getPath());
+        values.put("url", image.getUrl());
         return StringSubstitutor.replace(template, values, "${", "}");
     }
 }

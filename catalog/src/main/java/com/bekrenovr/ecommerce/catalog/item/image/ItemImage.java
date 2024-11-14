@@ -9,14 +9,14 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "image")
+@Table(name = "item_image")
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class ItemImage extends AbstractEntity {
-    @Column(name = "path")
-    private String path;
+    @Column(name = "url")
+    private String url;
 
     @ManyToOne
     @JoinColumn(name = "item_id")

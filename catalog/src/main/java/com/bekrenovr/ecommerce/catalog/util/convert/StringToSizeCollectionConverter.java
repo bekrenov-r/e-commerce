@@ -4,13 +4,11 @@ import com.bekrenovr.ecommerce.catalog.item.size.Size;
 import com.bekrenovr.ecommerce.catalog.item.size.SizeFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-@Component
 @RequiredArgsConstructor
 public class StringToSizeCollectionConverter implements Converter<String, Collection<Size>> {
     private final SizeFactory sizeFactory;
