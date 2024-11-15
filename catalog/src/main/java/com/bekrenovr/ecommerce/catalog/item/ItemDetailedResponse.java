@@ -21,7 +21,6 @@ public final class ItemDetailedResponse {
     private Color color;
     private String itemCode;
     private List<UniqueItemResponse> uniqueItems;
-    private List<?> reviews;
     private List<ItemResponse> similarItems;
     private String brand;
     private Double rating;

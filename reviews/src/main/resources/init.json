@@ -18,5 +18,15 @@
     "likes": 0,
     "dislikes": 0,
     "createdAt": "2024-11-10T12:00:30"
+  },
+  {
+    "itemId": "df694bcf-117b-446e-ba68-c5eab425f1d7",
+    "customerEmail": "jane.doe@example.com",
+    "rating": 4,
+    "title": "Decent",
+    "content": "Worth its money",
+    "likes": 0,
+    "dislikes": 0,
+    "createdAt": "2024-11-10T12:00:30"
   }
 ]

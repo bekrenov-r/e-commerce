@@ -56,7 +56,8 @@ values ('4c17c3c9-97a2-45ba-aaf4-d0d1fff56078', 'bekrenov.s@gmail.com', '2024103
        ('0a55358f-005f-4ed2-8d12-6ba0ad907909', 'bekrenov.s@gmail.com', '20241029-3474833', 'SHIPPING', 100.0, 100.0, gen_random_uuid(), current_timestamp, current_timestamp),
        ('0b8108eb-dd9b-47f8-aa67-3fd34f8a5a6b', 'bekrenov.s@gmail.com', '20241028-8987359', 'DELIVERED', 100.0, 100.0, gen_random_uuid(), current_timestamp, current_timestamp),
        ('36848d2a-22ac-4f46-a9ec-5f4f7e457bdc', 'bekrenov.s@gmail.com', '20241027-0912893', 'COMPLETED', 100.0, 100.0, gen_random_uuid(), current_timestamp, current_timestamp),
-       ('bd9cf9c9-55fc-4972-a848-a93ba4fedf35', 'bekrenov.s@gmail.com', '20241026-9234573', 'CANCELLED', 100.0, 100.0, gen_random_uuid(), current_timestamp, current_timestamp);
+       ('bd9cf9c9-55fc-4972-a848-a93ba4fedf35', 'bekrenov.s@gmail.com', '20241026-9234573', 'CANCELLED', 100.0, 100.0, gen_random_uuid(), current_timestamp, current_timestamp),
+       ('f72d6693-75a3-470c-b017-628a61fc6f1c', 'jane.doe@example.com', '20241026-4548974', 'COMPLETED', 100.0, 100.0, gen_random_uuid(), current_timestamp, current_timestamp);
 
 insert into item_entry(id, item_id, item_size, quantity)
 values ('72d755e3-3372-4015-b0dd-652b6b7cc916', '8594cc60-3807-4cdd-bc5b-7e722ae4fbc0', '41', 2),
@@ -64,7 +65,8 @@ values ('72d755e3-3372-4015-b0dd-652b6b7cc916', '8594cc60-3807-4cdd-bc5b-7e722ae
        ('a66ee450-956c-4e02-aca3-1774d27145ef', 'd4f5ebcb-a66f-48fc-8c7a-009aa8ea33c1', 'XS', 1),
        ('634e286d-6170-4e90-bd4b-730f4d88ac94', '6d819e32-afff-4a1b-94cf-8c10d0382c91', '32', 2),
        ('ea31ac3b-5601-41f1-822c-c8bacce31d9b', 'ea7cb002-3fea-4051-9f8d-c86ca4d4a696', 'XXL', 1),
-       ('10a19850-7bc1-42f6-8dd2-3fa24764e408', '4eca2602-1495-49e8-9ffe-123a65c9df2c', 'L', 1);
+       ('10a19850-7bc1-42f6-8dd2-3fa24764e408', '4eca2602-1495-49e8-9ffe-123a65c9df2c', 'L', 1),
+       ('36986509-cf30-443e-82c1-7fe176fedbba', 'df694bcf-117b-446e-ba68-c5eab425f1d7', 'S', 1);
 
 insert into order_item_entry(order_id, item_entry_id)
 values ('4c17c3c9-97a2-45ba-aaf4-d0d1fff56078', '72d755e3-3372-4015-b0dd-652b6b7cc916'),
@@ -72,4 +74,5 @@ values ('4c17c3c9-97a2-45ba-aaf4-d0d1fff56078', '72d755e3-3372-4015-b0dd-652b6b7
        ('0a55358f-005f-4ed2-8d12-6ba0ad907909', 'a66ee450-956c-4e02-aca3-1774d27145ef'),
        ('0b8108eb-dd9b-47f8-aa67-3fd34f8a5a6b', '634e286d-6170-4e90-bd4b-730f4d88ac94'),
        ('36848d2a-22ac-4f46-a9ec-5f4f7e457bdc', 'ea31ac3b-5601-41f1-822c-c8bacce31d9b'),
-       ('bd9cf9c9-55fc-4972-a848-a93ba4fedf35', '10a19850-7bc1-42f6-8dd2-3fa24764e408');
+       ('bd9cf9c9-55fc-4972-a848-a93ba4fedf35', '10a19850-7bc1-42f6-8dd2-3fa24764e408'),
+       ('f72d6693-75a3-470c-b017-628a61fc6f1c', '36986509-cf30-443e-82c1-7fe176fedbba');
