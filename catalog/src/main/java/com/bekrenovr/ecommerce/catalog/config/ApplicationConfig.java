@@ -55,7 +55,7 @@ public class ApplicationConfig implements WebMvcConfigurer {
         Map<String, Object> map = new HashMap<>();
         map.put("cloud_name", properties.getCloudName());
         map.put("api_key", properties.getApiKey());
-        map.put("api_secret", properties.getApiKey());
+        map.put("api_secret", properties.getApiSecret());
         map.put("secure", true);
         return new Cloudinary(map);
     }

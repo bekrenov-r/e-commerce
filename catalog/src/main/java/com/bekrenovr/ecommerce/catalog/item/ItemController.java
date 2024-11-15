@@ -1,7 +1,6 @@
 package com.bekrenovr.ecommerce.catalog.item;
 
 import com.bekrenovr.ecommerce.catalog.item.filters.FilterOptions;
-import com.bekrenovr.ecommerce.catalog.item.image.ItemImageResponse;
 import com.bekrenovr.ecommerce.catalog.item.image.ItemImageService;
 import com.bekrenovr.ecommerce.catalog.item.sorting.SortOption;
 import jakarta.validation.Valid;
@@ -39,11 +38,6 @@ public class ItemController {
             @ModelAttribute @Valid FilterOptions filters
     ){
         return ResponseEntity.ok(itemService.getItemsByCriteria(sort, pageNumber, pageSize, filters));
-    }
-
-    @GetMapping("/{itemId}/images")
-    public ResponseEntity<List<ItemImageResponse>> getAllImagesForItem(@PathVariable UUID itemId){
-        return ResponseEntity.ok(itemImageService.getAllImagesForItem(itemId));
     }
 
     @PostMapping
