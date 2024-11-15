@@ -2,7 +2,6 @@ package com.bekrenovr.ecommerce.catalog.item.image;
 
 import com.bekrenovr.ecommerce.catalog.item.Item;
 import com.bekrenovr.ecommerce.catalog.item.ItemRepository;
-import com.bekrenovr.ecommerce.common.exception.EcommerceApplicationException;
 import com.cloudinary.Cloudinary;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,8 +14,6 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static com.bekrenovr.ecommerce.catalog.exception.CatalogApplicationExceptionReason.ITEM_NOT_FOUND;
-
 @Service
 @RequiredArgsConstructor
 public class ItemImageService {
@@ -25,8 +22,7 @@ public class ItemImageService {
     private final Cloudinary cloudinary;
 
     public List<ItemImageResponse> getAll(UUID itemId){
-        List<ItemImage> itemImages = itemRepository.findById(itemId)
-                .orElseThrow(() -> new EcommerceApplicationException(ITEM_NOT_FOUND, itemId))
+        List<ItemImage> itemImages = itemRepository.findByIdOrThrowDefault(itemId)
                 .getImages();
         return itemImages.stream()
                 .map(i -> new ItemImageResponse(i.getId(), i.getUrl()))

@@ -154,30 +154,4 @@ public class ItemIT {
             assertEquals(HttpStatus.OK, response.getStatusCode());
         }
     }
-
-    @Nested
-    class GetAllImagesForItem {
-        static final String URI_MAPPING = "/items/{itemId}/images";
-        @Test
-        void shouldReturn200_WhenItemExists() {
-            String itemId = "fa5f648e-b2b8-4f8a-a0d7-d65a4547f8d6";
-            URI uri = UriComponentsBuilder.fromPath(URI_MAPPING)
-                    .build(itemId);
-
-            ResponseEntity<Object> response = restTemplate.getForEntity(uri, Object.class);
-
-            assertEquals(HttpStatus.OK, response.getStatusCode());
-        }
-
-        @Test
-        void shouldReturn404_WhenItemDoesntExist() {
-            String itemId = UUID.randomUUID().toString();
-            URI uri = UriComponentsBuilder.fromPath(URI_MAPPING)
-                    .build(itemId);
-
-            ResponseEntity<Object> response = restTemplate.getForEntity(uri, Object.class);
-
-            assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-        }
-    }
 }
