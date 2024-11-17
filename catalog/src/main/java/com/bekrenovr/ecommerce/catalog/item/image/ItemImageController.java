@@ -25,4 +25,9 @@ public class ItemImageController {
         itemImageService.upload(itemId, images);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
+    @DeleteMapping
+    public void delete(@PathVariable("id") UUID itemId, @RequestParam List<UUID> ids) {
+        itemImageService.delete(itemId, ids);
+    }
 }

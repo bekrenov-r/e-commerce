@@ -128,4 +128,8 @@ public class Item extends AbstractEntity {
                 priceBD.subtract(priceBD.multiply(discountBD)).setScale(2, RoundingMode.HALF_UP);
         return priceAfterDiscount.doubleValue();
     }
+
+    public void detachImage(ItemImage image) {
+        this.images.remove(image);
+    }
 }

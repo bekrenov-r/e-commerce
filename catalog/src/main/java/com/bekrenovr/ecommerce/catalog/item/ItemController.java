@@ -1,7 +1,6 @@
 package com.bekrenovr.ecommerce.catalog.item;
 
 import com.bekrenovr.ecommerce.catalog.item.filters.FilterOptions;
-import com.bekrenovr.ecommerce.catalog.item.image.ItemImageService;
 import com.bekrenovr.ecommerce.catalog.item.sorting.SortOption;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +17,6 @@ import java.util.UUID;
 public class ItemController {
 
     private final ItemService itemService;
-    private final ItemImageService itemImageService;
 
     @GetMapping("/{id}")
     public ResponseEntity<ItemDetailedResponse> getById(@PathVariable UUID id){

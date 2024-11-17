@@ -3,10 +3,7 @@ package com.bekrenovr.ecommerce.catalog.item.image;
 import com.bekrenovr.ecommerce.catalog.item.Item;
 import com.bekrenovr.ecommerce.common.model.entity.AbstractEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Table(name = "item_image")
@@ -20,5 +17,13 @@ public class ItemImage extends AbstractEntity {
 
     @ManyToOne
     @JoinColumn(name = "item_id")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Item item;
+
+    @PreRemove
+    void detachFromItem() {
+        item.detachImage(this);
+        this.item = null;
+    }
 }

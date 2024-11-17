@@ -30,6 +30,5 @@ public class Category extends AbstractEntity {
     @OneToMany(mappedBy = "category",
             cascade = CascadeType.ALL,
             fetch = FetchType.EAGER)
-    @EqualsAndHashCode.Exclude
     private List<Subcategory> subcategories;
 }
