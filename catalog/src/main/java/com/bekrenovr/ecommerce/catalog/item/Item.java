@@ -63,9 +63,6 @@ public class Item extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    @Column(name = "collection")
-    private String collection;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "brand_id", referencedColumnName = "id")
     private Brand brand;
@@ -106,7 +103,6 @@ public class Item extends AbstractEntity {
         this.subcategory = subcategory;
         this.images = images;
         this.gender = gender;
-        this.collection = collection;
         this.brand = brand;
         this.material = material;
         this.season = season;

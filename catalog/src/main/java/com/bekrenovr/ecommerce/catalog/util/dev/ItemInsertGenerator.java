@@ -54,7 +54,7 @@ public class ItemInsertGenerator {
 
     private void createItemInsert(List<Item> items, File file) throws IOException {
         StringBuilder insert = new StringBuilder("-- ITEM\n");
-        insert.append("INSERT INTO item (id, name, description, price, discount, price_after_discount, category_id, subcategory_id, brand_id, color, gender, collection, material, season, rating, item_code) \nVALUES ");
+        insert.append("INSERT INTO item (id, name, description, price, discount, price_after_discount, category_id, subcategory_id, brand_id, color, gender, material, season, rating, item_code) \nVALUES ");
         String values = items.stream()
                 .map(this::createRecord)
                 .collect(Collectors.joining(",\n\t\t"));
@@ -98,7 +98,7 @@ public class ItemInsertGenerator {
 
 
     private String createRecord(Item item) {
-        String template = "('${id}', '${name}', '${description}', ${price}, ${discount}, ${priceAfterDiscount}, '${categoryId}', ${subcategoryId}, '${brandId}', '${color}', '${gender}', '${collection}', '${material}', '${season}', ${rating}, '${itemCode}')";
+        String template = "('${id}', '${name}', '${description}', ${price}, ${discount}, ${priceAfterDiscount}, '${categoryId}', ${subcategoryId}, '${brandId}', '${color}', '${gender}', '${material}', '${season}', ${rating}, '${itemCode}')";
         String subcategoryId = item.getSubcategory() != null
                 ? "'" + item.getSubcategory().getId().toString() + "'"
                 : "null";
@@ -114,7 +114,6 @@ public class ItemInsertGenerator {
         values.put("brandId", item.getBrand().getId());
         values.put("color", item.getColor());
         values.put("gender", item.getGender());
-        values.put("collection", item.getCollection());
         values.put("material", item.getMaterial());
         values.put("season", item.getSeason());
         values.put("rating", item.getRating());

@@ -77,7 +77,6 @@ public class ItemGenerator {
                 .doubleValue() : 0.0;
         Double priceAfterDiscount = this.calculatePriceAfterDiscount(price, discount);
         Gender gender = getRandomElement(Gender.values());
-        String collection = "Collection";
         Brand brand = getRandomElement(brands);
         Material material = getRandomElement(Material.values());
         Season season = getRandomElement(Season.values());
@@ -93,7 +92,6 @@ public class ItemGenerator {
                 .subcategory(subcategory)
                 .color(color)
                 .gender(gender)
-                .collection(collection)
                 .brand(brand)
                 .material(material)
                 .season(season)

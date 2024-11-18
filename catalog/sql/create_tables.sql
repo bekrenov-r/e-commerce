@@ -37,7 +37,6 @@ CREATE TABLE item
     brand_id             uuid,
     color                text,
     gender               text,
-    collection           text,
     material             text,
     season               text,
     rating               float,
