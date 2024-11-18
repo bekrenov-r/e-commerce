@@ -121,7 +121,7 @@ public class Item extends AbstractEntity {
         this.itemDetails.setItem(this);
     }
 
-    public Double calculatePriceAfterDiscount(Double price, Double discount){
+    public static Double calculatePriceAfterDiscount(Double price, Double discount){
         BigDecimal priceBD = BigDecimal.valueOf(price);
         BigDecimal discountBD = BigDecimal.valueOf(discount);
         BigDecimal priceAfterDiscount =

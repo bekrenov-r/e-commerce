@@ -1,7 +1,9 @@
 package com.bekrenovr.ecommerce.catalog.util.dev;
 
 import com.bekrenovr.ecommerce.catalog.item.Item;
-import com.bekrenovr.ecommerce.catalog.item.ItemService;
+import com.bekrenovr.ecommerce.catalog.item.ItemRepository;
+import com.bekrenovr.ecommerce.catalog.item.details.ItemDetails;
+import com.bekrenovr.ecommerce.catalog.item.details.ItemDetailsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,14 +19,18 @@ import java.io.IOException;
 @Profile("dev")
 public class DevController {
     private final ItemGenerator itemGenerator;
-    private final ItemService itemService;
+    private final ItemRepository itemRepository;
+    private final ItemDetailsRepository itemDetailsRepository;
     private final ItemInsertGenerator itemInsertGenerator;
 
     @PostMapping("/{quantity}")
     public void createSampleItems(@PathVariable int quantity){
         for(int i = 0; i < quantity; i++){
             Item item = itemGenerator.generateItemWithDetails();
-            itemService.create(item);
+            Item savedItem = itemRepository.save(item);
+            ItemDetails details = item.getItemDetails();
+            details.setItem(savedItem);
+            itemDetailsRepository.save(details);
         }
     }
 

@@ -5,6 +5,8 @@ import com.bekrenovr.ecommerce.common.model.entity.AbstractEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.UUID;
+
 @Entity
 @Table(name = "subcategory")
 @NoArgsConstructor
@@ -20,4 +22,10 @@ public class Subcategory extends AbstractEntity {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Category category;
+
+    public Subcategory(UUID id, String name, Category category) {
+        super(id);
+        this.name = name;
+        this.category = category;
+    }
 }

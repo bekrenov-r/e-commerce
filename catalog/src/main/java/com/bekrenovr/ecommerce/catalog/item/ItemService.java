@@ -1,19 +1,21 @@
 package com.bekrenovr.ecommerce.catalog.item;
 
-import com.bekrenovr.ecommerce.catalog.item.details.ItemDetails;
-import com.bekrenovr.ecommerce.catalog.item.details.ItemDetailsRepository;
+import com.bekrenovr.ecommerce.catalog.item.details.ItemDetailsService;
 import com.bekrenovr.ecommerce.catalog.item.filters.FilterOptions;
 import com.bekrenovr.ecommerce.catalog.item.metadata.ItemMetadata;
 import com.bekrenovr.ecommerce.catalog.item.metadata.ItemMetadataService;
 import com.bekrenovr.ecommerce.catalog.item.sorting.ItemSortComparators;
 import com.bekrenovr.ecommerce.catalog.item.sorting.SortOption;
+import com.bekrenovr.ecommerce.catalog.item.uniqueitem.UniqueItem;
+import com.bekrenovr.ecommerce.catalog.item.uniqueitem.UniqueItemDTO;
+import com.bekrenovr.ecommerce.catalog.item.uniqueitem.UniqueItemRepository;
 import com.bekrenovr.ecommerce.common.util.PageUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -25,7 +27,8 @@ public class ItemService {
     private final ItemSpecificationBuilder itemSpecificationBuilder;
     private final ItemMapper itemMapper;
     private final ItemMetadataService metadataService;
-    private final ItemDetailsRepository itemDetailsRepository;
+    private final ItemDetailsService itemDetailsService;
+    private final UniqueItemRepository uniqueItemRepository;
 
     public Page<ItemResponse> getItemsByCriteria(
             SortOption sort, Integer pageNumber, Integer pageSize, FilterOptions filters
@@ -54,14 +57,28 @@ public class ItemService {
                 .toList();
     }
 
-    public void create(Item item) {
-        Item savedItem = itemRepository.save(item);
-        this.createItemDetails(savedItem);
+    @Transactional
+    public ItemDetailedResponse create(ItemRequest request) {
+        Item item = itemMapper.requestToItem(request);
+        item.setRating(0.0);
+        item = itemRepository.save(item);
+        item = itemDetailsService.addItemDetails(item);
+
+        if (request.uniqueItems() != null) {
+            addUniqueItems(request.uniqueItems(), item);
+        } else {
+            item.setUniqueItems(List.of());
+        }
+        item.setImages(List.of());
+        ItemMetadata metadata = metadataService.generateMetadata(item);
+        return itemMapper.itemToDetailedResponse(item, metadata);
     }
 
-    private void createItemDetails(Item item) {
-        ItemDetails itemDetails = new ItemDetails(0, 0, LocalDateTime.now(), "john.doe@example.com");
-        itemDetails.setItem(item);
-        itemDetailsRepository.save(itemDetails);
+    private void addUniqueItems(List<UniqueItemDTO> dtos, Item item) {
+        List<UniqueItem> uniqueItems = dtos.stream()
+                .map(dto -> new UniqueItem(dto.size(), dto.quantity(), item))
+                .toList();
+        uniqueItems = uniqueItemRepository.saveAll(uniqueItems);
+        item.setUniqueItems(uniqueItems);
     }
 }

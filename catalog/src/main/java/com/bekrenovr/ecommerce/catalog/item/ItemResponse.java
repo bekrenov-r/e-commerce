@@ -2,7 +2,7 @@ package com.bekrenovr.ecommerce.catalog.item;
 
 import com.bekrenovr.ecommerce.catalog.item.filters.Color;
 import com.bekrenovr.ecommerce.catalog.item.metadata.ItemMetadata;
-import com.bekrenovr.ecommerce.catalog.item.uniqueitem.UniqueItemResponse;
+import com.bekrenovr.ecommerce.catalog.item.uniqueitem.UniqueItemDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -20,6 +20,6 @@ public class ItemResponse {
     private String brand;
     private Double rating;
     private Color color;
-    private List<UniqueItemResponse> uniqueItems;
+    private List<UniqueItemDTO> uniqueItems;
     private ItemMetadata metadata;
 }

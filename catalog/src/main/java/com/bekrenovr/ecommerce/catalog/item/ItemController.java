@@ -5,6 +5,7 @@ import com.bekrenovr.ecommerce.catalog.item.sorting.SortOption;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,7 +40,8 @@ public class ItemController {
     }
 
     @PostMapping
-    public void create(@RequestBody Item item) {
-        itemService.create(item);
+    public ResponseEntity<ItemDetailedResponse> create(@RequestBody ItemRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(itemService.create(request));
     }
 }
