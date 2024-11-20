@@ -1,4 +1,4 @@
-package com.bekrenovr.ecommerce.catalog.kafka.model;
+package com.bekrenovr.ecommerce.catalog.kafka.order.model;
 
 import java.util.UUID;
 

@@ -1,8 +1,8 @@
-package com.bekrenovr.ecommerce.catalog.kafka;
+package com.bekrenovr.ecommerce.catalog.kafka.order;
 
-import com.bekrenovr.ecommerce.catalog.kafka.model.OrderEvent;
-import com.bekrenovr.ecommerce.catalog.kafka.model.OrderEventStatus;
-import com.bekrenovr.ecommerce.catalog.kafka.model.OrderItemEntry;
+import com.bekrenovr.ecommerce.catalog.kafka.order.model.OrderEvent;
+import com.bekrenovr.ecommerce.catalog.kafka.order.model.OrderEventStatus;
+import com.bekrenovr.ecommerce.catalog.kafka.order.model.OrderItemEntry;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import lombok.RequiredArgsConstructor;

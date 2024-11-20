@@ -22,10 +22,12 @@ create table token(
 insert into users(username, password, enabled, first_name)
 values ('john.doe@example.com', 'XohImNooBHFR0OVvjcYpJ3NgPQ1qq73WKhHvch0VQtg=', true, 'John'), --password
        ('jane.doe@example.com', 'XohImNooBHFR0OVvjcYpJ3NgPQ1qq73WKhHvch0VQtg=', true, 'Jane'),
-       ('bekrenov.s@gmail.com', 'XohImNooBHFR0OVvjcYpJ3NgPQ1qq73WKhHvch0VQtg=', true, 'Mathew');
+       ('bekrenov.s@gmail.com', 'XohImNooBHFR0OVvjcYpJ3NgPQ1qq73WKhHvch0VQtg=', true, 'Mathew'),
+       ('cr@example.com', 'XohImNooBHFR0OVvjcYpJ3NgPQ1qq73WKhHvch0VQtg=', true, 'Clarke');
 
 insert into roles(username, role)
 values ('john.doe@example.com', 'EMPLOYEE'),
        ('john.doe@example.com', 'ADMIN'),
        ('jane.doe@example.com', 'CUSTOMER'),
-       ('bekrenov.s@gmail.com', 'CUSTOMER');
+       ('bekrenov.s@gmail.com', 'CUSTOMER'),
+       ('cr@example.com', 'CUSTOMER');

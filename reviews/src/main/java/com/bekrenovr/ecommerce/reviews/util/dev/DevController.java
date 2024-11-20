@@ -1,16 +1,14 @@
-package com.bekrenovr.ecommerce.reviews.config;
+package com.bekrenovr.ecommerce.reviews.util.dev;
 
 import com.bekrenovr.ecommerce.reviews.review.Review;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,17 +17,14 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.StreamSupport;
 
-@Component
-@Profile("test")
+@RestController("/reviews/dev")
 @RequiredArgsConstructor
-public class PopulateDatabaseApplicationListener implements ApplicationListener<ApplicationReadyEvent> {
+@Profile("dev")
+public class DevController {
     private final MongoTemplate mongoTemplate;
 
-    @Value("${spring.data.mongodb.init-file}")
-    private String filePath;
-
-    @Override
-    public void onApplicationEvent(ApplicationReadyEvent event) {
+    @PostMapping("/populate-database")
+    public void populateDatabase() {
         mongoTemplate.remove(new Query(), "reviews");
         JSONArray jsonArray = new JSONArray(getReviewsJson());
         List<Review> reviews = StreamSupport.stream(jsonArray.spliterator(), false)
@@ -40,7 +35,7 @@ public class PopulateDatabaseApplicationListener implements ApplicationListener<
     }
 
     private String getReviewsJson() {
-        try(InputStream is = getClass().getResourceAsStream(filePath)){
+        try(InputStream is = getClass().getResourceAsStream("/init.json")){
             return new String(is.readAllBytes());
         } catch(IOException ex){
             throw new RuntimeException(ex);
