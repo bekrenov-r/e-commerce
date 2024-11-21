@@ -1,6 +1,5 @@
 package com.bekrenovr.ecommerce.catalog.category;
 
-import com.bekrenovr.ecommerce.catalog.category.subcategory.SubcategoryMapper;
 import com.bekrenovr.ecommerce.catalog.category.subcategory.SubcategoryRepository;
 import com.bekrenovr.ecommerce.catalog.category.subcategory.SubcategoryResponse;
 import com.bekrenovr.ecommerce.catalog.item.filters.Gender;
@@ -21,7 +20,6 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
     private final SubcategoryRepository subcategoryRepository;
     private final CategoryMapper categoryMapper;
-    private final SubcategoryMapper subcategoryMapper;
 
     public List<CategoryResponse> getAllCategories() {
         return categoryRepository.findAll().stream()
@@ -34,7 +32,7 @@ public class CategoryService {
                 .orElseThrow(() -> new EcommerceApplicationException(CATEGORY_NOT_FOUND, categoryId));
         return subcategoryRepository.findAllByCategory(category)
                 .stream()
-                .map(subcategoryMapper::subcategoryToResponse)
+                .map(subcategory -> new SubcategoryResponse(subcategory.getId(), subcategory.getName()))
                 .toList();
     }
 
