@@ -40,8 +40,14 @@ public class ItemController {
     }
 
     @PostMapping
-    public ResponseEntity<ItemDetailedResponse> create(@RequestBody ItemRequest request) {
+    public ResponseEntity<ItemDetailedResponse> create(@RequestBody @Valid ItemRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(itemService.create(request));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ItemDetailedResponse> update(@PathVariable UUID id, @RequestBody @Valid ItemRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(itemService.update(id, request));
     }
 }

@@ -1,5 +1,10 @@
 package com.bekrenovr.ecommerce.catalog.item;
 
+import com.bekrenovr.ecommerce.catalog.brand.Brand;
+import com.bekrenovr.ecommerce.catalog.brand.BrandRepository;
+import com.bekrenovr.ecommerce.catalog.category.Category;
+import com.bekrenovr.ecommerce.catalog.category.CategoryRepository;
+import com.bekrenovr.ecommerce.catalog.category.subcategory.Subcategory;
 import com.bekrenovr.ecommerce.catalog.item.details.ItemDetailsService;
 import com.bekrenovr.ecommerce.catalog.item.filters.FilterOptions;
 import com.bekrenovr.ecommerce.catalog.item.metadata.ItemMetadata;
@@ -18,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -29,6 +35,8 @@ public class ItemService {
     private final ItemMetadataService metadataService;
     private final ItemDetailsService itemDetailsService;
     private final UniqueItemRepository uniqueItemRepository;
+    private final CategoryRepository categoryRepository;
+    private final BrandRepository brandRepository;
 
     public Page<ItemResponse> getItemsByCriteria(
             SortOption sort, Integer pageNumber, Integer pageSize, FilterOptions filters
@@ -45,6 +53,7 @@ public class ItemService {
 
     public ItemDetailedResponse getById(UUID id) {
         Item item = itemRepository.findByIdOrThrowDefault(id);
+        System.out.println(item.getItemDetails());
         ItemMetadata metadata = metadataService.generateMetadata(item);
         return itemMapper.itemToDetailedResponse(item, metadata);
     }
@@ -72,6 +81,47 @@ public class ItemService {
         item.setImages(List.of());
         ItemMetadata metadata = metadataService.generateMetadata(item);
         return itemMapper.itemToDetailedResponse(item, metadata);
+    }
+
+    public ItemDetailedResponse update(UUID id, ItemRequest request) {
+        Item item = itemRepository.findByIdOrThrowDefault(id);
+        item.setName(request.name());
+        item.setDescription(request.description());
+        item.setPrice(request.price());
+        item.setDiscount(request.discount());
+        item.setPriceAfterDiscount(Item.calculatePriceAfterDiscount(request.price(), request.discount()));
+        item.setColor(request.color());
+        item.setGender(request.gender());
+        item.setMaterial(request.material());
+        item.setSeason(request.season());
+        item.setItemCode(request.itemCode());
+        if(!item.getCategory().getId().equals(request.categoryId())) {
+            this.updateCategoryAndSubcategory(item, request.categoryId(), request.subcategoryId());
+        } else if(!Objects.equals(item.getSubcategory().getId(), request.subcategoryId())) {
+            this.updateSubcategory(item, request.subcategoryId());
+        }
+        if(!item.getBrand().getId().equals(request.brandId())) {
+            this.updateBrand(item, request.brandId());
+        }
+        item = itemRepository.save(item);
+        ItemMetadata metadata = metadataService.generateMetadata(item);
+        return itemMapper.itemToDetailedResponse(item, metadata);
+    }
+
+    private void updateBrand(Item item, UUID brandId) {
+        Brand brand = brandRepository.findByIdOrThrowDefault(brandId);
+        item.setBrand(brand);
+    }
+
+    private void updateCategoryAndSubcategory(Item item, UUID categoryId, UUID subcategoryId) {
+        Category category = categoryRepository.findByIdOrThrowDefault(categoryId);
+        item.setCategory(category);
+        this.updateSubcategory(item, subcategoryId);
+    }
+
+    private void updateSubcategory(Item item, UUID subcategoryId) {
+        Subcategory subcategory = subcategoryId != null ? item.getCategory().findSubcategory(subcategoryId) : null;
+        item.setSubcategory(subcategory);
     }
 
     private void addUniqueItems(List<UniqueItemDTO> dtos, Item item) {

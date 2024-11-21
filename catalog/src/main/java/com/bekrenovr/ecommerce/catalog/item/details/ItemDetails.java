@@ -3,10 +3,7 @@ package com.bekrenovr.ecommerce.catalog.item.details;
 import com.bekrenovr.ecommerce.catalog.item.Item;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -26,6 +23,8 @@ public class ItemDetails {
     @JoinColumn(name = "item_id")
     @MapsId
     @JsonIgnore
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Item item;
 
     @Column(name = "orders_count_total")

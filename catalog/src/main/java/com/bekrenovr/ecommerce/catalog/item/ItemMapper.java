@@ -8,13 +8,10 @@ import com.bekrenovr.ecommerce.catalog.category.subcategory.Subcategory;
 import com.bekrenovr.ecommerce.catalog.item.metadata.ItemMetadata;
 import com.bekrenovr.ecommerce.catalog.item.sorting.UniqueItemBySizeComparator;
 import com.bekrenovr.ecommerce.catalog.item.uniqueitem.UniqueItemMapper;
-import com.bekrenovr.ecommerce.common.exception.EcommerceApplicationException;
 import org.mapstruct.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.UUID;
-
-import static com.bekrenovr.ecommerce.catalog.exception.CatalogApplicationExceptionReason.SUBCATEGORY_NOT_FOUND;
 
 @Mapper(componentModel = "spring", uses = UniqueItemMapper.class)
 public abstract class ItemMapper {
@@ -62,11 +59,6 @@ public abstract class ItemMapper {
 
     @Named("mapSubcategory")
     protected Subcategory mapSubcategory(ItemRequest request) {
-        return categoryRepository.findByIdOrThrowDefault(request.categoryId())
-                .getSubcategories()
-                .stream()
-                .filter(sc -> sc.getId().equals(request.subcategoryId()))
-                .findFirst()
-                .orElseThrow(() -> new EcommerceApplicationException(SUBCATEGORY_NOT_FOUND, request.subcategoryId()));
+        return categoryRepository.findByIdOrThrowDefault(request.categoryId()).findSubcategory(request.subcategoryId());
     }
 }

@@ -38,6 +38,7 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka
+    org.apache.kafka.clients.consumer.ConsumerConfig: off
 cloudinary:
   cloud-name: dnhvuiyt4
   api-key: '{cipher}232b1fa6fe82929c40a98b36985ce50362261434448f0405c024dd5f89993855'
