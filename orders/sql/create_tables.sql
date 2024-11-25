@@ -61,8 +61,8 @@ values ('4c17c3c9-97a2-45ba-aaf4-d0d1fff56078', 'bekrenov.s@gmail.com', '2024103
        ('e551fd4f-6111-4140-9f29-abe03ae3cdfb', 'cr@example.com', '20241026-5630127', 'COMPLETED', 100.0, 100.0, gen_random_uuid(), current_timestamp, current_timestamp);
 
 insert into item_entry(id, item_id, item_size, quantity)
-values ('72d755e3-3372-4015-b0dd-652b6b7cc916', '8594cc60-3807-4cdd-bc5b-7e722ae4fbc0', '41', 2),
-       ('1d49d4d5-2e10-4b66-abb3-4a57492ab1e8', '80e9e95f-b187-48b4-8ed4-5898ec25ae2c', '41', 2),
+values ('72d755e3-3372-4015-b0dd-652b6b7cc916', '2c2f2478-b665-473b-a2e7-d876e385028b', '41', 2),
+       ('1d49d4d5-2e10-4b66-abb3-4a57492ab1e8', '60c126f7-76b7-43ab-b4a1-1147546fb7e7', '41', 2),
        ('a66ee450-956c-4e02-aca3-1774d27145ef', 'd4f5ebcb-a66f-48fc-8c7a-009aa8ea33c1', 'XS', 1),
        ('634e286d-6170-4e90-bd4b-730f4d88ac94', '6d819e32-afff-4a1b-94cf-8c10d0382c91', '32', 2),
        ('ea31ac3b-5601-41f1-822c-c8bacce31d9b', 'ea7cb002-3fea-4051-9f8d-c86ca4d4a696', 'XXL', 1),

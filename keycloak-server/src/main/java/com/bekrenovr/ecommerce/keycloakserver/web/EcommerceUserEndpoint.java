@@ -9,6 +9,7 @@ import com.bekrenovr.ecommerce.keycloakserver.providers.userstorage.EcommerceUse
 import com.bekrenovr.ecommerce.keycloakserver.providers.userstorage.EcommerceUserStorageProviderFactory;
 import com.bekrenovr.ecommerce.keycloakserver.repository.TokenRepository;
 import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -81,10 +82,11 @@ public class EcommerceUserEndpoint {
 
     @POST
     @Path("/recover-password")
-    @Produces(MediaType.APPLICATION_JSON)
     public Response recoverPassword(@QueryParam("token") String username, @QueryParam("password") String newPassword) {
         doRecoverPassword(username, newPassword);
-        return Response.status(Response.Status.OK).build();
+        return Response.status(Response.Status.OK)
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+                .build();
     }
 
     @POST
