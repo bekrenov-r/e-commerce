@@ -1,0 +1,33 @@
+spring:
+  main:
+    web-application-type: reactive
+  application:
+    name: api-gateway
+  security:
+    oauth2:
+      issuers:
+        - uri: http://192.168.0.59:8400/keycloak/realms/e-commerce
+          username-json-path: $.preferred_username
+          roles-json-path: $.realm_access.roles
+        - uri: http://localhost:8400/keycloak/realms/e-commerce
+          username-json-path: $.preferred_username
+          roles-json-path: $.realm_access.roles
+        - uri: https://accounts.google.com
+          username-json-path: $.email
+          default-roles: CUSTOMER
+springdoc:
+  enable-native-support: true
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    path: /api-docs
+    urls:
+      - url: /catalog/docs
+        name: Catalog Service
+server:
+  port: 8765
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/

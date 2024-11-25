@@ -23,6 +23,7 @@ spring:
             - classpath:/config/keycloak
             - classpath:/config/orders
             - classpath:/config/reviews
+            - classpath:/config/api-gateway
 ---
 spring:
   config:
