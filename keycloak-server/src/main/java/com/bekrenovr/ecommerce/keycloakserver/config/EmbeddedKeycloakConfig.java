@@ -2,6 +2,9 @@ package com.bekrenovr.ecommerce.keycloakserver.config;
 
 import com.bekrenovr.ecommerce.keycloakserver.config.properties.KeycloakServerProperties;
 import com.bekrenovr.ecommerce.keycloakserver.providers.SimplePlatformProvider;
+import com.bekrenovr.ecommerce.keycloakserver.util.EntityManagerFactoryHolder;
+import jakarta.persistence.EntityManagerFactory;
+import lombok.RequiredArgsConstructor;
 import org.jboss.resteasy.plugins.server.servlet.HttpServlet30Dispatcher;
 import org.jboss.resteasy.plugins.server.servlet.ResteasyContextParameters;
 import org.keycloak.platform.Platform;
@@ -18,7 +21,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 @Configuration
+@RequiredArgsConstructor
 public class EmbeddedKeycloakConfig {
+    private final EntityManagerFactory entityManagerFactory;
+
     @Bean
     public ServletRegistrationBean<HttpServlet30Dispatcher> keycloakJaxRsApplication(
             KeycloakServerProperties keycloakServerProperties, DataSource dataSource
@@ -36,6 +42,7 @@ public class EmbeddedKeycloakConfig {
         servlet.addUrlMappings(keycloakServerProperties.getContextPath() + "/*");
         servlet.setLoadOnStartup(1);
         servlet.setAsyncSupported(true);
+        EntityManagerFactoryHolder.initialize(entityManagerFactory);
         return servlet;
     }
 

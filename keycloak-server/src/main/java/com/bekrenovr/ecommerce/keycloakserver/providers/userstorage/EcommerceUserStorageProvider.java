@@ -37,11 +37,11 @@ public class EcommerceUserStorageProvider implements
     private SHAPasswordEncoder passwordEncoder;
     private EcommerceUserRepository userRepository;
 
-    public EcommerceUserStorageProvider(KeycloakSession keycloakSession, ComponentModel componentModel, SHAPasswordEncoder passwordEncoder) {
+    public EcommerceUserStorageProvider(KeycloakSession keycloakSession, ComponentModel componentModel, SHAPasswordEncoder passwordEncoder, EcommerceUserRepository userRepository) {
         this.keycloakSession = keycloakSession;
         this.componentModel = componentModel;
         this.passwordEncoder = passwordEncoder;
-        this.userRepository = new EcommerceUserRepository();
+        this.userRepository = userRepository;
     }
 
     @Override

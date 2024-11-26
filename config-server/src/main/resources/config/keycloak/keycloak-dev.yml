@@ -2,6 +2,11 @@ spring:
   datasource:
     username: sa
     url: jdbc:h2:mem:testdb;DB_CLOSE_ON_EXIT=FALSE;NON_KEYWORDS=USER;
+    postgresql:
+      database-name: keycloak
+      url: jdbc:postgresql://localhost:5432/${spring.datasource.postgresql.database-name}
+      username: postgres
+      password: '{cipher}820d89138c76064f7a65b0edabf9440582c32060f38cb6cfe29c375adce7d803'
   application:
     name: keycloak
 keycloak:

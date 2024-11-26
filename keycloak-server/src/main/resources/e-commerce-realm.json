@@ -1326,32 +1326,7 @@
         "name": "ecommerce-user-provider",
         "providerId": "ecommerce-user-provider",
         "subComponents": {},
-        "config": {
-          "jdbcDriver": [
-            "org.postgresql.Driver"
-          ],
-          "validationQuery": [
-            "select 1"
-          ],
-          "jdbcUrl": [
-            "jdbc:postgresql://localhost:5432/keycloak"
-          ],
-          "cachePolicy": [
-            "DEFAULT"
-          ],
-          "priority": [
-            "0"
-          ],
-          "enabled": [
-            "true"
-          ],
-          "username": [
-            "postgres"
-          ],
-          "password": [
-            "postgres"
-          ]
-        }
+        "config": {}
       }
     ],
     "org.keycloak.keys.KeyProvider": [

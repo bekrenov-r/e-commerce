@@ -8,6 +8,8 @@ import com.bekrenovr.ecommerce.keycloakserver.model.entity.Token;
 import com.bekrenovr.ecommerce.keycloakserver.providers.userstorage.EcommerceUserStorageProvider;
 import com.bekrenovr.ecommerce.keycloakserver.providers.userstorage.EcommerceUserStorageProviderFactory;
 import com.bekrenovr.ecommerce.keycloakserver.repository.TokenRepository;
+import com.bekrenovr.ecommerce.keycloakserver.util.EntityManagerFactoryHolder;
+import jakarta.persistence.EntityManager;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
@@ -38,9 +40,10 @@ public class EcommerceUserEndpoint {
     private final EcommerceUserStorageProvider userStorage;
 
     public EcommerceUserEndpoint(KeycloakSession session) {
+        EntityManager entityManager = EntityManagerFactoryHolder.getEntityManagerFactory().createEntityManager();
         this.session = session;
         this.realmModel = session.realms().getRealm("e-commerce");
-        this.tokenRepository = new TokenRepository();
+        this.tokenRepository = new TokenRepository(entityManager);
         this.userStorage = (EcommerceUserStorageProvider)session.getComponentProvider(UserStorageProvider.class, EcommerceUserStorageProviderFactory.COMPONENT_ID);
     }
 
