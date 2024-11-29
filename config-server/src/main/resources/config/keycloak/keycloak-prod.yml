@@ -1,0 +1,31 @@
+spring:
+  datasource:
+    username: sa
+    url: jdbc:h2:mem:testdb;DB_CLOSE_ON_EXIT=FALSE;NON_KEYWORDS=USER;
+    postgresql:
+      database-name: keycloak
+      url: jdbc:postgresql://keycloak-db:5432/${spring.datasource.postgresql.database-name}
+      username: postgres
+      password: '{cipher}820d89138c76064f7a65b0edabf9440582c32060f38cb6cfe29c375adce7d803'
+  application:
+    name: keycloak
+  cloud:
+    config:
+      fail-fast: true
+keycloak:
+  server:
+    contextPath: /keycloak
+    adminUser:
+      username: admin
+      password: '{cipher}3087743a6e7079a922542c86b696bd6131ddc123471410a32db6b2371f8c2e1e'
+    adminClient:
+      clientId: admin-cli
+      clientSecret: '{cipher}6cfa70bc4b0ff701ae93957cf001256c8c40d491485bcec0bc2b23b64b5745d2ae812526d61b566bfa5f3d22c6a24b38'
+    realmImportFile: e-commerce-realm.json
+server:
+  port: 8400
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://eureka:8761/eureka
+    registry-fetch-interval-seconds: 10

@@ -9,31 +9,169 @@ services:
     ports:
       - "8761:8761"
     command: java -jar app.jar
-  catalog-db:
-    hostname: catalog-db
-    container_name: catalog-db
-    build: catalog/sql
+  config:
+    container_name: config
+    hostname: config
+    build: config-server
     networks:
       - e-commerce-net
     ports:
-      - "5432:5432"
+      - "8888:8888"
     environment:
-      POSTGRES_PASSWORD_FILE: /run/secrets/postgres-passwd
+      SPRING_PROFILES_ACTIVE: native,prod
+    command: java -jar app.jar
+    depends_on:
+      - eureka
+  catalog-db:
+    container_name: catalog-db
+    hostname: catalog-db
+    image: postgres:latest
+    networks:
+      - e-commerce-net
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_DB: items_data
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${CATALOG_DB_PASSWORD}
+    volumes:
+      - ./catalog/sql/data:/var/lib/postgresql/data
+      - ./catalog/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
   catalog:
     container_name: catalog
     hostname: catalog
-    profiles:
-      - dev
     build: catalog
     networks:
       - e-commerce-net
     ports:
       - "8000:8000"
     environment:
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: PASSWORD
-      SPRING_PROFILES_ACTIVE: dev
+      SPRING_PROFILES_ACTIVE: prod
     command: java -jar app.jar
+    restart: on-failure
+    depends_on:
+      - kafka
+      - api-gateway
+      - catalog-db
+  keycloak-db:
+    container_name: keycloak-db
+    hostname: keycloak-db
+    image: postgres:latest
+    networks:
+      - e-commerce-net
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
+    volumes:
+      - ./keycloak-server/sql/data:/var/lib/postgresql/data
+      - ./keycloak-server/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+  keycloak:
+    container_name: keycloak
+    hostname: keycloak
+    build: keycloak-server
+    networks:
+      - e-commerce-net
+    ports:
+      - "8400:8400"
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+    command: java -jar app.jar
+    restart: on-failure
+    depends_on:
+      - keycloak-db
+      - config
+  orders-db:
+    container_name: orders-db
+    hostname: orders-db
+    image: postgres:latest
+    networks:
+      - e-commerce-net
+    ports:
+      - "5435:5432"
+    environment:
+      POSTGRES_DB: orders_data
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${ORDERS_DB_PASSWORD}
+    volumes:
+      - ./orders/sql/data:/var/lib/postgresql/data
+      - ./orders/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+  orders:
+    container_name: orders
+    hostname: orders
+    build: orders
+    networks:
+      - e-commerce-net
+    ports:
+      - "8200:8200"
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+    command: java -jar app.jar
+    restart: on-failure
+    depends_on:
+      - kafka
+      - api-gateway
+      - orders-db
+  customers-db:
+    container_name: customers-db
+    hostname: customers-db
+    image: postgres:latest
+    networks:
+      - e-commerce-net
+    ports:
+      - "5436:5432"
+    environment:
+      POSTGRES_DB: customers_data
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${CUSTOMERS_DB_PASSWORD}
+    volumes:
+      - ./customers/sql/data:/var/lib/postgresql/data
+      - ./customers/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+  customers:
+    container_name: customers
+    hostname: customers
+    build: customers
+    networks:
+      - e-commerce-net
+    ports:
+      - "8100:8100"
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+    command: java -jar app.jar
+    restart: on-failure
+    depends_on:
+      - api-gateway
+      - customers-db
+  reviews-db:
+    container_name: reviews-db
+    hostname: reviews-db
+    image: mongo:latest
+    networks:
+      - e-commerce-net
+    ports:
+      - "27018:27017"
+    environment:
+      MONGO_INITDB_DATABASE: reviews_data
+    volumes:
+      - ./reviews/mongo/data:/data/db
+  reviews:
+    container_name: reviews
+    hostname: reviews
+    build: reviews
+    networks:
+      - e-commerce-net
+    ports:
+      - "8300:8300"
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+    command: java -jar app.jar
+    restart: on-failure
+    depends_on:
+      - kafka
+      - api-gateway
+      - reviews-db
   api-gateway:
     container_name: api-gateway
     hostname: api-gateway
@@ -42,11 +180,32 @@ services:
       - e-commerce-net
     ports:
       - "8765:8765"
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
     command: java -jar app.jar
+    restart: on-failure
+    depends_on:
+      - keycloak
+  authorization:
+    container_name: authorization
+    hostname: authorization
+    build: authorization-server
+    networks:
+      - e-commerce-net
+    ports:
+      - "8500:8500"
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+    command: java -jar app.jar
+    restart: on-failure
+    depends_on:
+      - api-gateway
   zookeeper:
     image: confluentinc/cp-zookeeper:7.3.2
     hostname: zookeeper
     container_name: zookeeper
+    networks:
+      - e-commerce-net
     ports:
       - "2181:2181"
     environment:
@@ -57,11 +216,13 @@ services:
     image: confluentinc/cp-kafka:7.3.2
     hostname: kafka
     container_name: kafka
+    networks:
+      - e-commerce-net
     ports:
       - "9092:9092"
       - "29092:29092"
     environment:
-      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:19092,EXTERNAL://${DOCKER_HOST_IP:-127.0.0.1}:9092,DOCKER://host.docker.internal:29092
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:29092,EXTERNAL://${DOCKER_HOST_IP:-127.0.0.1}:9092,DOCKER://host.docker.internal:19092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT,DOCKER:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
@@ -69,6 +230,7 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+    restart: on-failure
     depends_on:
       - zookeeper
 networks:

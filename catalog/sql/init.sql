@@ -1,5 +1,3 @@
-\c items_data
-
 drop schema public cascade;
 create schema public;
 

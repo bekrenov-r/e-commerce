@@ -3,9 +3,14 @@ spring:
     name: catalog
   datasource:
     url: jdbc:postgresql://catalog-db:5432/items_data
-    username: ${SPRING_DATASOURCE_USERNAME}
-    password: ${SPRING_DATASOURCE_PASSWORD}
+    username: postgres
+    password: '{cipher}612a8a919af1ec8cb26a8a1e4180ff98a5c12e85f9466f7a72869726d5502ae5'
     driver-class-name: org.postgresql.Driver
+  kafka:
+    consumer:
+      bootstrap-servers: kafka:29092
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      group-id: order-events-listener-group
 eureka:
   client:
     serviceUrl:
@@ -26,10 +31,17 @@ custom:
       max: 46
   category:
     img-path-prefix:
-      men: catalog/src/main/resources/images/category/men/
-      women: catalog/src/main/resources/images/category/women/
+      men: /images/category/men/
+      women: /images/category/women/
 springdoc:
   api-docs:
     path: /docs # these urls will be used to load the api docs of this service by the api gateway
   swagger-ui:
     enabled: false
+cloudinary:
+  cloud-name: dnhvuiyt4
+  api-key: '{cipher}232b1fa6fe82929c40a98b36985ce50362261434448f0405c024dd5f89993855'
+  api-secret: '{cipher}520346c7dca80e2fff25b98a854b61dea029b5c1df626417f58b7a38457d99c43e4a68c5fd7e8251e94359e46949db99'
+logging:
+  level:
+    org.apache.kafka.clients.consumer.ConsumerConfig: off

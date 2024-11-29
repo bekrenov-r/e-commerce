@@ -4,7 +4,7 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 spec.txt
-items-data/src/test/java/com/ecommerce/salesdataservice/Test.java
+sql/data
 
 ### STS ###
 .apt_generated

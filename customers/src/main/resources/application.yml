@@ -7,3 +7,9 @@ spring:
     activate:
       on-profile: dev
     import: configserver:http://localhost:8888
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+    import: configserver:http://config:8888

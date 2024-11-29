@@ -1,0 +1,45 @@
+spring:
+  application:
+    name: authorization
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: '{cipher}bd768ae67b5baee5624d5f12b4990094eabd39992da12b7467b12699659c1dbcae5346da08a659ea4292392bbe56015c'
+    password: '{cipher}65e7ecc13d30abe596dc1eed28fd78051a2c59aa14773d124bb512d0057c0f2c83ca409428e8a83f826c839c9f1afe92'
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  security:
+    oauth2:
+      login:
+        provider:
+          keycloak:
+            client-id: '{cipher}28c9bda5cbf2b91ae049acf8450d138dfed5e8229496ea2ac3fb991185ac956e'
+            client-secret: '{cipher}f104420294362710128a4aa81bbbdcc1fd43628a79a5c3cd0a843bd2a8faa1de2ff7150fe34cfb0965a27ce098fc8893'
+            scope: openid
+            grant-type: password
+          google:
+            client-id: '{cipher}c35be30819d1b849dbcf905efc8a37c75feab9147ce57617b76eab36f9790a333f12a64e8d4bf022fe28e94416067fbc9349c61005c996f5abd2f86a250e0f7c36a9cff112f11d3ba317d04936798914ee61287c2ead1a7b2a7b88a9e9487d33'
+            client-secret: '{cipher}df6aaf82c6981fa1387a4599ee7385eff2dcbe1c5f72040db5693b4c625a24b2f62c9ed2e19bd310a60941a45439e590dd4475e6c6b1b826506f0bad1456068e'
+            redirect-uri: ${frontend.base-url}/account
+            scope:
+              - https://www.googleapis.com/auth/userinfo.profile
+              - https://www.googleapis.com/auth/userinfo.email
+              - openid
+            grant-type: authorization_code
+server:
+  port: 8500
+  servlet:
+    context-path: /oauth2
+frontend:
+  base-url: http://localhost:4200
+  mapping:
+    activate-account: /activate-account
+    recover-password: /recover-password
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://eureka:8761/eureka

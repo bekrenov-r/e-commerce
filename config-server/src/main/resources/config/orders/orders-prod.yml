@@ -2,15 +2,15 @@ spring:
   application:
     name: orders
   datasource:
-    url: jdbc:postgresql://localhost:5432/orders_data
+    url: jdbc:postgresql://orders-db:5432/orders_data
     username: '{cipher}43ea62e2086e6ffa3dfe3c349ca26b8a06abe0de39e6e6e5faae0730da91fe09'
     password: '{cipher}7609c30dd80e38d809639e2e0a4b507da31c9e04b4829ba754d40a19b4029676'
     driver-class-name: org.postgresql.Driver
   kafka:
     topic: order-events
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: kafka:29092
     producer:
-      bootstrap-servers: localhost:9092
+      bootstrap-servers: kafka:29092
       key-serializer: org.apache.kafka.common.serialization.IntegerSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
 server:
@@ -23,4 +23,4 @@ custom:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: http://eureka:8761/eureka
