@@ -3,6 +3,7 @@ package com.bekrenovr.ecommerce.catalog.item;
 import com.bekrenovr.ecommerce.catalog.brand.Brand;
 import com.bekrenovr.ecommerce.catalog.brand.BrandRepository;
 import com.bekrenovr.ecommerce.catalog.category.Category;
+import com.bekrenovr.ecommerce.catalog.category.CategoryMapper;
 import com.bekrenovr.ecommerce.catalog.category.CategoryRepository;
 import com.bekrenovr.ecommerce.catalog.category.subcategory.Subcategory;
 import com.bekrenovr.ecommerce.catalog.item.metadata.ItemMetadata;
@@ -13,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.UUID;
 
-@Mapper(componentModel = "spring", uses = UniqueItemMapper.class)
+@Mapper(componentModel = "spring", uses = { UniqueItemMapper.class, CategoryMapper.class })
 public abstract class ItemMapper {
     @Autowired
     protected UniqueItemBySizeComparator uniqueItemComparator;

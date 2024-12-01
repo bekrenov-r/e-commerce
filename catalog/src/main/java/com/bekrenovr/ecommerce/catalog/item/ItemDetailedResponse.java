@@ -1,6 +1,8 @@
 package com.bekrenovr.ecommerce.catalog.item;
 
+import com.bekrenovr.ecommerce.catalog.category.CategoryResponse;
 import com.bekrenovr.ecommerce.catalog.item.filters.Color;
+import com.bekrenovr.ecommerce.catalog.item.filters.Gender;
 import com.bekrenovr.ecommerce.catalog.item.metadata.ItemMetadata;
 import com.bekrenovr.ecommerce.catalog.item.uniqueitem.UniqueItemDTO;
 import lombok.AllArgsConstructor;
@@ -19,6 +21,8 @@ public final class ItemDetailedResponse {
     private Double discount;
     private Double priceAfterDiscount;
     private Color color;
+    private Gender gender;
+    private CategoryResponse category;
     private String itemCode;
     private List<UniqueItemDTO> uniqueItems;
     private String brand;
