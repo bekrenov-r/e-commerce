@@ -35,7 +35,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: ${CATALOG_DB_PASSWORD}
     volumes:
-      - ./catalog/sql/data:/var/lib/postgresql/data
+      - catalog_data:/var/lib/postgresql/data
       - ./catalog/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
   catalog:
     container_name: catalog
@@ -66,7 +66,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
     volumes:
-      - ./keycloak-server/sql/data:/var/lib/postgresql/data
+      - keycloak_data:/var/lib/postgresql/data
       - ./keycloak-server/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
   keycloak:
     container_name: keycloak
@@ -96,7 +96,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: ${ORDERS_DB_PASSWORD}
     volumes:
-      - ./orders/sql/data:/var/lib/postgresql/data
+      - orders_data:/var/lib/postgresql/data
       - ./orders/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
   orders:
     container_name: orders
@@ -127,7 +127,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: ${CUSTOMERS_DB_PASSWORD}
     volumes:
-      - ./customers/sql/data:/var/lib/postgresql/data
+      - customers_data:/var/lib/postgresql/data
       - ./customers/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
   customers:
     container_name: customers
@@ -155,7 +155,7 @@ services:
     environment:
       MONGO_INITDB_DATABASE: reviews_data
     volumes:
-      - ./reviews/mongo/data:/data/db
+      - mongo_data:/data/db
   reviews:
     container_name: reviews
     hostname: reviews
@@ -236,3 +236,9 @@ services:
 networks:
   e-commerce-net:
     driver: bridge
+volumes:
+  catalog_data:
+  keycloak_data:
+  orders_data:
+  customers_data:
+  mongo_data:
