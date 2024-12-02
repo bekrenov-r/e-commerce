@@ -39,6 +39,7 @@ public class SecurityConfig {
                 .authorizeExchange(auth -> auth
                         .pathMatchers(HttpMethod.GET, "/catalog/**").access(new OptionalAuthAuthorizationManager())
                         .pathMatchers(HttpMethod.POST, "/catalog/**").hasAuthority("EMPLOYEE")
+                        .pathMatchers(HttpMethod.PUT, "/catalog/**").hasAuthority("EMPLOYEE")
                         .pathMatchers(HttpMethod.DELETE, "/catalog/**").hasAuthority("EMPLOYEE")
                         .pathMatchers(
                                 "/oauth2/login/**",

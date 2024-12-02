@@ -3,10 +3,7 @@ package com.bekrenovr.ecommerce.common.exception;
 import feign.FeignException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -15,88 +12,60 @@ import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.time.LocalDateTime;
-
 @Log4j2
 public class StandardResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorDetail> handleAllExceptions(Exception ex, WebRequest webRequest){
+    public ResponseEntity<ProblemDetail> handleAllExceptions(Exception ex, WebRequest webRequest){
         logException(ex);
-        ErrorDetail errorDetail = new ErrorDetail(
-                LocalDateTime.now(),
-                HttpStatus.INTERNAL_SERVER_ERROR,
-                ex.getMessage()
-        );
-        return new ResponseEntity<>(errorDetail, HttpStatus.INTERNAL_SERVER_ERROR);
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+        return ResponseEntity.status(problemDetail.getStatus()).body(problemDetail);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ErrorDetail> handleIllegalArgument(IllegalArgumentException ex, WebRequest webRequest){
+    public ResponseEntity<ProblemDetail> handleIllegalArgument(IllegalArgumentException ex, WebRequest webRequest){
         logException(ex);
-        ErrorDetail errorDetail = new ErrorDetail(
-                LocalDateTime.now(),
-                HttpStatus.BAD_REQUEST,
-                ex.getMessage()
-        );
-
-        return new ResponseEntity<>(errorDetail, HttpStatus.BAD_REQUEST);
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getMessage());
+        return ResponseEntity.status(problemDetail.getStatus()).body(problemDetail);
     }
 
     @ExceptionHandler(RestClientResponseException.class)
-    public ResponseEntity<ErrorDetail> handleRestClientResponseException(RestClientResponseException ex) {
+    public ResponseEntity<ProblemDetail> handleRestClientResponseException(RestClientResponseException ex) {
         logException(ex);
-        ErrorDetail errorDetail = new ErrorDetail(
-                LocalDateTime.now(),
-                ex.getStatusCode(),
-                ex.getMessage()
-        );
-        return new ResponseEntity<>(errorDetail, ex.getStatusCode());
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(ex.getStatusCode(), ex.getMessage());
+        return ResponseEntity.status(problemDetail.getStatus())
+                .body(problemDetail);
     }
 
     @ExceptionHandler(EcommerceApplicationException.class)
-    public ResponseEntity<ErrorDetail> handleEcommerceApplicationException(EcommerceApplicationException ex) {
+    public ResponseEntity<ProblemDetail> handleEcommerceApplicationException(EcommerceApplicationException ex) {
         logException(ex);
-        ErrorDetail errorDetail = new ErrorDetail(
-                LocalDateTime.now(),
-                ex.getReason().getStatus(),
-                ex.getMessage()
-        );
-        return new ResponseEntity<>(errorDetail, ex.getReason().getStatus());
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(ex.getReason().getStatus(), ex.getMessage());
+        return ResponseEntity.status(problemDetail.getStatus()).body(problemDetail);
     }
 
     @ExceptionHandler(FeignException.class)
-    public ResponseEntity<ErrorDetail> handleFeignException(FeignException ex){
-        HttpStatus status = HttpStatus.resolve(ex.status());
+    public ResponseEntity<ProblemDetail> handleFeignException(FeignException ex){
         logException(ex);
-        ErrorDetail errorDetail = new ErrorDetail(
-                LocalDateTime.now(),
-                status,
-                ex.getMessage()
-        );
-        return new ResponseEntity<>(errorDetail, status);
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.resolve(ex.status()), ex.getMessage());
+        return ResponseEntity.status(problemDetail.getStatus())
+                .body(problemDetail);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<ErrorDetail> handleConstraintViolationException(ConstraintViolationException ex){
+    public ResponseEntity<ProblemDetail> handleConstraintViolationException(ConstraintViolationException ex){
         logException(ex);
-        ErrorDetail errorDetail = new ErrorDetail(
-                LocalDateTime.now(),
-                HttpStatus.BAD_REQUEST,
-                ex.getMessage()
-        );
-        return new ResponseEntity<>(errorDetail, HttpStatus.BAD_REQUEST);
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getMessage());
+        return ResponseEntity.status(problemDetail.getStatus())
+                .body(problemDetail);
     }
 
     @Override
     public ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request){
         logException(ex);
-        ErrorDetail errorDetail = new ErrorDetail(
-                LocalDateTime.now(),
-                status,
-                ex.getMessage()
-        );
-        return new ResponseEntity<>(errorDetail, status);
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(status, ex.getMessage());
+        return ResponseEntity.status(problemDetail.getStatus())
+                .body(problemDetail);
     }
 
     @Override
@@ -115,12 +84,9 @@ public class StandardResponseEntityExceptionHandler extends ResponseEntityExcept
                     .append(error.getRejectedValue())
                     .append("]");
         }
-        ErrorDetail errorDetail = new ErrorDetail(
-                LocalDateTime.now(),
-                status,
-                message.toString()
-        );
-        return new ResponseEntity<>(errorDetail, status);
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(status, ex.getMessage());
+        return ResponseEntity.status(problemDetail.getStatus())
+                .body(problemDetail);
     }
 
     protected void logException(Exception ex){
