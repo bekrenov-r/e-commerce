@@ -53,7 +53,6 @@ public class ItemService {
 
     public ItemDetailedResponse getById(UUID id) {
         Item item = itemRepository.findByIdOrThrowDefault(id);
-        System.out.println(item.getItemDetails());
         ItemMetadata metadata = metadataService.generateMetadata(item);
         return itemMapper.itemToDetailedResponse(item, metadata);
     }

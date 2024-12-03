@@ -6,8 +6,10 @@ import com.bekrenovr.ecommerce.catalog.category.Category;
 import com.bekrenovr.ecommerce.catalog.category.CategoryRepository;
 import com.bekrenovr.ecommerce.catalog.category.subcategory.Subcategory;
 import com.bekrenovr.ecommerce.catalog.item.filters.FilterOptions;
+import com.bekrenovr.ecommerce.catalog.util.convert.StringToDoubleRangeConverter;
 import com.bekrenovr.ecommerce.common.exception.EcommerceApplicationException;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang.math.DoubleRange;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
@@ -28,37 +30,38 @@ public class ItemSpecificationBuilder {
     public Specification<Item> buildFromFilterOptions(FilterOptions filterOptions){
         Collection<Specification<Item>> specifications = new HashSet<>();
 
-        var specFromCategoryAndSubcategory = resolveFromCategoryAndSubcategory(filterOptions.categoryId(), filterOptions.subcategoryId());
+        var specFromCategoryAndSubcategory = resolveFromCategoryAndSubcategory(filterOptions.getCategoryId(), filterOptions.getSubcategoryId());
         if(specFromCategoryAndSubcategory != null){
             specifications.add(specFromCategoryAndSubcategory);
         }
-        if(filterOptions.brandsIds() != null){
-            Collection<Brand> brands = brandRepository.findAllById(filterOptions.brandsIds());
+        if(filterOptions.getBrandsIds() != null){
+            Collection<Brand> brands = brandRepository.findAllById(filterOptions.getBrandsIds());
             specifications.add(hasBrandIn(brands));
         }
-        if(filterOptions.gender() != null){
-            specifications.add(hasGender(filterOptions.gender()));
+        if(filterOptions.getGender() != null){
+            specifications.add(hasGender(filterOptions.getGender()));
         }
-        if(filterOptions.priceRange() != null){
-            specifications.add(hasPriceWithinRange(filterOptions.priceRange()));
+        if(filterOptions.getPriceRange() != null){
+            DoubleRange priceRange = new StringToDoubleRangeConverter().convert(filterOptions.getPriceRange());
+            specifications.add(hasPriceWithinRange(priceRange));
         }
-        if(filterOptions.sizes() != null){
-            specifications.add(hasSizeIn(filterOptions.sizes()));
+        if(filterOptions.getSizes() != null){
+            specifications.add(hasSizeIn(filterOptions.getSizes()));
         }
-        if(filterOptions.colors() != null){
-            specifications.add(hasColorIn(filterOptions.colors()));
+        if(filterOptions.getColors() != null){
+            specifications.add(hasColorIn(filterOptions.getColors()));
         }
-        if(filterOptions.materials() != null){
-            specifications.add(hasMaterialIn(filterOptions.materials()));
+        if(filterOptions.getMaterials() != null){
+            specifications.add(hasMaterialIn(filterOptions.getMaterials()));
         }
-        if(filterOptions.season() != null){
-            specifications.add(hasSeason(filterOptions.season()));
+        if(filterOptions.getSeason() != null){
+            specifications.add(hasSeason(filterOptions.getSeason()));
         }
-        if(filterOptions.rating() != null){
-            specifications.add(hasRatingGreaterThan(filterOptions.rating()));
+        if(filterOptions.getRating() != null){
+            specifications.add(hasRatingGreaterThan(filterOptions.getRating()));
         }
-        if(filterOptions.searchPattern() != null){
-            specifications.add(matchesSearchPattern(filterOptions.searchPattern()));
+        if(filterOptions.getSearchPattern() != null){
+            specifications.add(matchesSearchPattern(filterOptions.getSearchPattern()));
         }
         return Specification.allOf(specifications);
     }

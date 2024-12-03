@@ -27,9 +27,9 @@ custom:
       women: /images/category/women/
 springdoc:
   api-docs:
-    path: /docs # these urls will be used to load the api docs of this service by the api gateway
+    path: /docs
   swagger-ui:
-    enabled: false
+    enabled: true
 server:
   port: 8000
   servlet:

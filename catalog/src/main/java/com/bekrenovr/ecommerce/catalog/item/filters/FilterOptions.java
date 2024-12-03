@@ -1,22 +1,33 @@
 package com.bekrenovr.ecommerce.catalog.item.filters;
 
 import com.bekrenovr.ecommerce.catalog.item.size.Size;
-import org.apache.commons.lang.math.DoubleRange;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Collection;
 import java.util.UUID;
 
-public record FilterOptions(
-        Gender gender,
-        UUID categoryId,
-        UUID subcategoryId,
-        DoubleRange priceRange,
-        Collection<Size> sizes,
-        Collection<Color> colors,
-        Collection<UUID> brandsIds,
-        Collection<Material> materials,
-        Season season,
-        Short rating,
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class FilterOptions {
+        private Gender gender;
+        private UUID categoryId;
+        private UUID subcategoryId;
+        @Schema(example = "50,100")
+        private String priceRange;
+        @ArraySchema(schema = @Schema(example = "XL", type = "string"))
+        private Collection<Size> sizes;
+        @ArraySchema(schema = @Schema(example = "BLACK", type = "string", implementation = Color.class))
+        private Collection<Color> colors;
+        @ArraySchema(schema = @Schema(implementation = UUID.class))
+        private Collection<UUID> brandsIds;
+        private Collection<Material> materials;
+        private Season season;
+        private Short rating;
         @jakarta.validation.constraints.Size(min = 3)
-        String searchPattern
-) {}
+        private String searchPattern;
+}

@@ -6,7 +6,6 @@ import com.bekrenovr.ecommerce.catalog.item.filters.Material;
 import com.bekrenovr.ecommerce.catalog.item.filters.Season;
 import com.bekrenovr.ecommerce.catalog.item.size.SizeFactory;
 import com.bekrenovr.ecommerce.catalog.item.sorting.SortOption;
-import com.bekrenovr.ecommerce.catalog.util.convert.StringToDoubleRangeConverter;
 import com.bekrenovr.ecommerce.catalog.util.convert.StringToSizeCollectionConverter;
 import com.cloudinary.Cloudinary;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +36,6 @@ public class ApplicationConfig implements WebMvcConfigurer {
         formatterRegistry.addConverter(String.class, Material.class, Material::ofString);
         formatterRegistry.addConverter(String.class, Gender.class, Gender::ofString);
         formatterRegistry.addConverter(stringToSizeCollectionConverter());
-        formatterRegistry.addConverter(new StringToDoubleRangeConverter());
     }
 
     @Bean
