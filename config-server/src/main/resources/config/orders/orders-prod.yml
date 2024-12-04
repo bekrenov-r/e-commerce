@@ -15,8 +15,6 @@ spring:
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
 server:
   port: 8200
-  servlet:
-    context-path: /orders
 custom:
   page:
     default-size: 10
@@ -24,3 +22,8 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://eureka:8761/eureka
+springdoc:
+  api-docs:
+    path: /orders/docs
+  swagger-ui:
+    enabled: false

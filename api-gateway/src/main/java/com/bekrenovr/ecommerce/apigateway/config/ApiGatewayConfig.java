@@ -17,8 +17,10 @@ public class ApiGatewayConfig {
     @Bean
     public RouteLocator gatewayRouter(RouteLocatorBuilder builder){
         return builder.routes()
-                .route("orders", p -> p.path("/orders/**") // if request comes to the path /orders/**
-                        .uri("lb://orders")) // redirect it to load-balanced server named orders-data
+                .route("orders", p -> p.path("/orders/**")
+                        .uri("lb://orders"))
+                .route("cart", p -> p.path("/cart/**")
+                        .uri("lb://orders"))
                 .route("catalog", p -> p.path("/catalog/**")
                         .uri("lb://catalog"))
                 .route("customers", p -> p.path("/customers/**")

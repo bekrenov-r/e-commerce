@@ -20,9 +20,6 @@ spring:
     admin:
       properties:
         bootstrap-servers: localhost:9092
-server:
-  servlet:
-    context-path: /orders
 custom:
   page:
     default-size: 10
