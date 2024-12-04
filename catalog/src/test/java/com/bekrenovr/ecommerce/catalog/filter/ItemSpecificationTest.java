@@ -15,6 +15,7 @@ import com.bekrenovr.ecommerce.catalog.item.size.ClothesSize;
 import com.bekrenovr.ecommerce.catalog.item.size.ShoesSize;
 import com.bekrenovr.ecommerce.catalog.item.size.Size;
 import com.bekrenovr.ecommerce.catalog.util.RandomUtils;
+import com.bekrenovr.ecommerce.catalog.util.convert.StringToDoubleRangeConverter;
 import jakarta.transaction.Transactional;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.DoubleRange;
@@ -61,7 +62,7 @@ public class ItemSpecificationTest {
         this.itemSpecificationBuilder = new ItemSpecificationBuilder(categoryRepository, brandRepository);
     }
 
-    private static final DoubleRange PRICE_RANGE = new DoubleRange(10.0, 50.0);
+    private static final String PRICE_RANGE = "10,50";
 
     @ParameterizedTest
     @EnumSource(Gender.class)
@@ -96,11 +97,12 @@ public class ItemSpecificationTest {
 
     @Test
     public void hasPriceWithinRange() {
-        Specification<Item> spec = ItemSpecification.hasPriceWithinRange(PRICE_RANGE);
+        DoubleRange priceRange = new StringToDoubleRangeConverter().convert(PRICE_RANGE);
+        Specification<Item> spec = ItemSpecification.hasPriceWithinRange(priceRange);
 
         List<Item> items = itemRepository.findAll(spec);
 
-        assertTrue(allItemsHavePriceWithinRange(items, PRICE_RANGE));
+        assertTrue(allItemsHavePriceWithinRange(items, priceRange));
     }
 
     @Test
@@ -187,6 +189,7 @@ public class ItemSpecificationTest {
         var materials = RandomUtils.getRandomSeries(Material.values(), 3);
         var season = RandomUtils.getRandomElement(Season.values());
         var searchPattern = category.getName().substring(0, 4);
+        var priceRange = new StringToDoubleRangeConverter().convert(PRICE_RANGE);
         Collection<Size> sizeValues = category.getEnumValue().equals(CategoryEnum.SHOES)
                 ? getRandomShoesSizes(5)
                 : Arrays.asList(ClothesSize.values());
@@ -197,7 +200,7 @@ public class ItemSpecificationTest {
         List<Item> items = itemRepository.findAll(compositeSpecification);
 
         assertAll(
-                () -> allItemsHavePriceWithinRange(items, PRICE_RANGE),
+                () -> allItemsHavePriceWithinRange(items, priceRange),
                 () -> allItemsHaveGender(items, gender),
                 () -> allItemsHaveCategoryAndSubcategory(items, category, subcategory),
                 () -> allItemsHaveSizeIn(items, sizeValues),

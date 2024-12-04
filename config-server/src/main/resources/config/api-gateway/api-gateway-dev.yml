@@ -6,9 +6,6 @@ spring:
   security:
     oauth2:
       issuers:
-        - uri: http://192.168.0.59:8400/keycloak/realms/e-commerce
-          username-json-path: $.preferred_username
-          roles-json-path: $.realm_access.roles
         - uri: http://localhost:8400/keycloak/realms/e-commerce
           username-json-path: $.preferred_username
           roles-json-path: $.realm_access.roles
@@ -19,12 +16,21 @@ springdoc:
   enable-native-support: true
   api-docs:
     enabled: true
+    path: /docs
   swagger-ui:
     enabled: true
-    path: /api-docs
+    path: /swagger-ui
     urls:
       - url: /catalog/docs
-        name: Catalog Service
+        name: catalog
+      - url: /oauth2/docs
+        name: authorization-server
+      - url: /customers/docs
+        name: customers
+      - url: /orders/docs
+        name: orders
+      - url: /reviews/docs
+        name: reviews
 server:
   port: 8765
 eureka:

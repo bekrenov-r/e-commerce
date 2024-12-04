@@ -18,10 +18,18 @@ springdoc:
     enabled: true
   swagger-ui:
     enabled: true
-    path: /api-docs
+    path: /swagger-ui
     urls:
       - url: /catalog/docs
-        name: Catalog Service
+        name: Catalog
+      - url: /oauth2/docs
+        name: Authorization Server
+      - url: /customers/docs
+        name: Customers
+      - url: /orders/docs
+        name: Orders
+      - url: /reviews/docs
+        name: Reviews
 server:
   port: 8765
 eureka:
