@@ -22,3 +22,8 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://eureka:8761/eureka
+springdoc:
+  api-docs:
+    path: /reviews/docs
+  swagger-ui:
+    enabled: false
