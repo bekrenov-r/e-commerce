@@ -32,7 +32,8 @@ public class OpenAPIConfig {
         return new OpenAPI()
                 .info(new Info()
                         .title("Authorization Server API")
-                        .description("OpenAPI definition for authorization service"))
+                        .description("OpenAPI definition for authorization service")
+                        .version("0.1"))
                 .servers(List.of(new Server().url(serverUrl())))
                 .schema("AccessTokenResponseSchema", accessTokenResponseSchema);
     }

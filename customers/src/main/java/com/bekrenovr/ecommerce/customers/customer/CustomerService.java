@@ -4,15 +4,12 @@ import com.bekrenovr.ecommerce.common.exception.EcommerceApplicationException;
 import com.bekrenovr.ecommerce.customers.customer.dto.CustomerMapper;
 import com.bekrenovr.ecommerce.customers.customer.dto.CustomerRequest;
 import com.bekrenovr.ecommerce.customers.customer.dto.CustomerResponse;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 import static com.bekrenovr.ecommerce.customers.exception.CustomersApplicationExceptionReason.EMAIL_ALREADY_EXISTS;
 
@@ -52,14 +49,5 @@ public class CustomerService {
         customer.setLastName(request.getLastName());
         customerRepository.save(customer);
         return customerMapper.customerToResponse(customer);
-    }
-
-    public ResponseEntity<Void> delete(UUID id){
-        Customer customer = customerRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("No customer found for id: " + id));
-        customerRepository.delete(customer);
-        return ResponseEntity
-                .ok()
-                .build();
     }
 }

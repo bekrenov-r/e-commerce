@@ -1,4 +1,4 @@
-package com.bekrenovr.ecommerce.catalog.config;
+package com.bekrenovr.ecommerce.customers.config;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -15,21 +15,19 @@ import java.util.List;
 public class OpenAPIConfig {
     @Value("${server.port}")
     private int port;
-    @Value("${server.servlet.context-path}")
-    private String contextPath;
 
     @Bean
     public OpenAPI openAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("Catalog API")
-                        .description("OpenAPI definition for catalog service")
+                        .title("Customers API")
+                        .description("OpenAPI definition for customers service")
                         .version("0.1"))
                 .servers(List.of(new Server().url(serverUrl())));
     }
 
     private String serverUrl() {
-        return "http://localhost:" + port + contextPath;
+        return "http://localhost:" + port;
     }
 }
 
