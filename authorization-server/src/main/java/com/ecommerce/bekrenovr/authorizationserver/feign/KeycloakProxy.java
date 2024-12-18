@@ -1,5 +1,6 @@
 package com.ecommerce.bekrenovr.authorizationserver.feign;
 
+import com.ecommerce.bekrenovr.authorizationserver.user.KeycloakUserResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,9 @@ public interface KeycloakProxy {
 
     @GetMapping("/users/activation-token")
     ResponseEntity<String> getActivationTokenForUser(@RequestParam("username") String username);
+
+    @GetMapping("/users")
+    ResponseEntity<KeycloakUserResponse> getUserByEmail(@RequestParam("email") String email);
 
     @PostMapping("/users/enable")
     ResponseEntity<?> enableUser(@RequestParam String token);

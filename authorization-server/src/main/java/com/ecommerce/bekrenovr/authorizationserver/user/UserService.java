@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -18,11 +20,13 @@ public class UserService {
     private final KeycloakProxy keycloakProxy;
 
     public void sendEmailForPasswordRecovery(String email) {
-        Person person = customersProxy.getCustomerByEmail(email).getBody();
         String recoveryToken = RandomStringUtils.random(20, true, true);
+        Person person;
         try {
-            keycloakProxy.createPasswordRecoveryToken(person.getEmail(), recoveryToken);
+            keycloakProxy.createPasswordRecoveryToken(email, recoveryToken);
+            person = Objects.requireNonNull(keycloakProxy.getUserByEmail(email).getBody());
         } catch(FeignException.NotFound ex) {
+            person = customersProxy.getCustomerByEmail(email).getBody();
             String tempPassword = RandomStringUtils.random(20, true, true);
             String activationToken = keycloakProxy
                     .createKeycloakUser(person.getEmail(), tempPassword, Role.CUSTOMER.name(), person.getFirstName())

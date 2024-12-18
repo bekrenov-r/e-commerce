@@ -2,6 +2,7 @@ package com.bekrenovr.ecommerce.keycloakserver.web;
 
 import com.bekrenovr.ecommerce.common.exception.EcommerceApplicationException;
 import com.bekrenovr.ecommerce.common.security.Role;
+import com.bekrenovr.ecommerce.keycloakserver.model.EcommerceUserResponse;
 import com.bekrenovr.ecommerce.keycloakserver.model.PasswordCredentialInput;
 import com.bekrenovr.ecommerce.keycloakserver.model.TokenType;
 import com.bekrenovr.ecommerce.keycloakserver.model.entity.Token;
@@ -58,6 +59,15 @@ public class EcommerceUserEndpoint {
         String activationToken = createActivationToken(username);
         return Response.status(Response.Status.CREATED)
                 .entity(activationToken)
+                .build();
+    }
+
+    @GET
+    @Path("")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getUserByEmail(@QueryParam("email") String email) {
+        UserModel user = userStorage.getUserByEmail(realmModel, email);
+        return Response.ok(new EcommerceUserResponse(user.getEmail(), user.getFirstName()))
                 .build();
     }
 
