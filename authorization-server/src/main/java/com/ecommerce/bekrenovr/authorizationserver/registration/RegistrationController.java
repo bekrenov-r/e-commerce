@@ -43,7 +43,7 @@ public class RegistrationController {
     @ApiResponse(responseCode = "400", description = "Invalid parameter supplied",
             content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                     schema = @Schema(implementation = ProblemDetail.class)))
-    @ApiResponse(responseCode = "404", description = "Customer not found",
+    @ApiResponse(responseCode = "404", description = "Customer or activation token not found",
             content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                     schema = @Schema(implementation = ProblemDetail.class)))
     @PostMapping("/customer/resend-email")

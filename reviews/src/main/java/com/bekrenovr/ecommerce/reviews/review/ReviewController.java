@@ -27,7 +27,7 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @Operation(summary = "Get all reviews for item")
-    @ApiResponse(responseCode = "201", description = "Page with reviews",
+    @ApiResponse(responseCode = "200", description = "Page with reviews",
             content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                     schema = @Schema(implementation = ReviewResponsePageModel.class)))
     @ApiResponse(responseCode = "400", description = "Invalid parameter supplied",

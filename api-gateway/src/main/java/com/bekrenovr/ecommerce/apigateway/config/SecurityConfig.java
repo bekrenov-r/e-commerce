@@ -52,7 +52,7 @@ public class SecurityConfig {
                         .pathMatchers(HttpMethod.PUT, "/reviews/**").hasAuthority("CUSTOMER")
                         .pathMatchers(HttpMethod.DELETE, "/reviews/**").hasAnyAuthority("CUSTOMER", "ADMIN")
                         .pathMatchers(HttpMethod.GET, "/orders/docs").permitAll()
-                        .pathMatchers(HttpMethod.POST, "/orders/").access(postOrderEndpointAuthorizationManager)
+                        .pathMatchers(HttpMethod.POST, "/orders").access(postOrderEndpointAuthorizationManager)
                         .pathMatchers(HttpMethod.GET, "/orders/{id}").hasAnyAuthority("CUSTOMER", "EMPLOYEE")
                         .pathMatchers(HttpMethod.GET, "/orders/customer").hasAuthority("CUSTOMER")
                         .pathMatchers(HttpMethod.DELETE, "/orders/**").hasAuthority("CUSTOMER")

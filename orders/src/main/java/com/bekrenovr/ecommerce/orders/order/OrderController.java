@@ -76,10 +76,10 @@ public class OrderController {
 
     @Operation(summary = "Cancel order")
     @ApiResponse(responseCode = "200", description = "Order canceled successfully")
-    @ApiResponse(responseCode = "400", description = "Invalid parameter supplied / Cannot cancel order",
+    @ApiResponse(responseCode = "400", description = "Invalid parameter supplied",
             content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                     schema = @Schema(implementation = ProblemDetail.class)))
-    @ApiResponse(responseCode = "409", description = "Cannot cancel order",
+    @ApiResponse(responseCode = "409", description = "Cannot cancel order with this status",
             content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                     schema = @Schema(implementation = ProblemDetail.class)))
     @ApiResponse(responseCode = "403", description = "Authenticated customer is not order owner",

@@ -16,20 +16,21 @@ springdoc:
   enable-native-support: true
   api-docs:
     enabled: true
+    path: /docs
   swagger-ui:
     enabled: true
     path: /swagger-ui
     urls:
       - url: /catalog/docs
-        name: Catalog
+        name: catalog
       - url: /oauth2/docs
-        name: Authorization Server
+        name: authorization-server
       - url: /customers/docs
-        name: Customers
+        name: customers
       - url: /orders/docs
-        name: Orders
+        name: orders
       - url: /reviews/docs
-        name: Reviews
+        name: reviews
 server:
   port: 8765
 eureka:
