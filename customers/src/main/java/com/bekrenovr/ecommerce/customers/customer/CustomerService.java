@@ -27,7 +27,7 @@ public class CustomerService {
     public HttpStatus create(CustomerRequest request) {
         return customerRepository.findByEmail(request.getEmail())
                 .map(customer -> {
-                    if (!customer.isRegistered()) {
+                    if (!customer.isRegistered() && request.isRegistered()) {
                         customer.setRegistered(true);
                         customerRepository.save(customer);
                         return HttpStatus.OK;
